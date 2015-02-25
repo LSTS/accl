@@ -1,0 +1,3 @@
+[submodule "imcjava"]
+	path = imcjava
+	url = git://github.com/LSTS/imcjava.git
