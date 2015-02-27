@@ -77,6 +77,7 @@ public class AcclBus {
 	 * @param event The event to be posted
 	 */
 	public static void post(Object event) {
+		if (event!=null)
 		bus().post(event);
 	}
 	
