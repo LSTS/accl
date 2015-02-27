@@ -29,7 +29,8 @@ public class AcclBus {
 		if (busInstance == null) {
 			try {
 				Class.forName("android.os.Looper");
-				busInstance = new Bus("accl");				
+				//busInstance = new Bus("accl");
+				busInstance = new Bus(ThreadEnforcer.ANY, "accl");
 			}
 			catch (Exception e) {
 				busInstance = new Bus(ThreadEnforcer.ANY, "accl");
