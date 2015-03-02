@@ -1,6 +1,7 @@
 package pt.lsts.accl.bus;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.concurrent.Executors;
@@ -24,6 +25,7 @@ public class AcclBus {
 
 	private static Bus busInstance = null;
 	private static ImcAdapter imcInstance = null;
+	private static HashSet<Integer> registeredListeners = new HashSet<Integer>();
 	
 	private synchronized static Bus bus() {
 		if (busInstance == null) {
@@ -69,7 +71,7 @@ public class AcclBus {
 	public static void disconnect(String system) {
 		if (imcInstance == null)			
 			return;
-		imcInstance.disconnect(system);		
+		imcInstance.disconnect(system);
 	}
 	
 	
@@ -88,14 +90,23 @@ public class AcclBus {
 	 */
 	public static void register(Object pojo) {
 		bus().register(pojo);
+		registeredListeners.add(pojo.hashCode());
+		
 	}
 	
 	/**
 	 * Unregister a component with ACCL
 	 * @param pojo An object that wishes to stop receiving events
 	 */
-	public static void forget(Object pojo) {
+	public static synchronized void forget(Object pojo) {
 		bus().unregister(pojo);
+		registeredListeners.remove(pojo.hashCode());
+		
+		if (registeredListeners.isEmpty() && imcInstance != null) {
+			imcInstance.stop();
+			imcInstance = null;
+		}
+			
 	}
 	
 	public static boolean send(IMCMessage msg, String destination) {
@@ -148,6 +159,7 @@ public class AcclBus {
 
 		public void stop() {
 			imc.stop();
+			executor.shutdown();
 		}
 
 		public void connect(String system) {

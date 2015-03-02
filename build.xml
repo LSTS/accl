@@ -29,7 +29,9 @@
   <target name="compile">
 	<delete dir="build"/>
 	<mkdir dir="build"/>
-  	<javac encoding="UTF-8" srcdir="${imcjava-src};${imcjava-gen}" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false" />
+  	<javac encoding="UTF-8" srcdir="${imcjava-src};${imcjava-gen}" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false">
+  		<exclude name="${imcjava-src}/pt/lsts/imc/control/**"/>
+  	</javac>	
 	<javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false">
 		<classpath refid="classpath.libs"/>
   	</javac>

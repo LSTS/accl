@@ -50,9 +50,21 @@ public class DesktopExample {
 		System.out.println(event);
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		AcclBus.bind("DesktopExample", 6006);
-		AcclBus.register(new DesktopExample());
-		AcclBus.register(new DesktopExample2());
+		
+		DesktopExample c1 = new DesktopExample();
+		DesktopExample2 c2 = new DesktopExample2();
+		
+		AcclBus.register(c1);
+		AcclBus.register(c2);
+		
+		Thread.sleep(30000);
+		
+		AcclBus.forget(c1);
+		AcclBus.forget(c2);
+		
+		System.out.println();
+		
 	}
 }
