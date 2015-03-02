@@ -64,7 +64,5 @@ public class DesktopExample {
 		AcclBus.forget(c1);
 		AcclBus.forget(c2);
 		
-		System.out.println();
-		
 	}
 }

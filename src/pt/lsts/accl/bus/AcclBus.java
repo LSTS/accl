@@ -158,8 +158,9 @@ public class AcclBus {
 		}
 
 		public void stop() {
-			imc.stop();
 			executor.shutdown();
+			imc.stop();
+			
 		}
 
 		public void connect(String system) {
