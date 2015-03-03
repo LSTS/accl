@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="pt.lsts.accl_test.MainActivity$PlaceholderFragment" >
+    tools:context="pt.lsts.accl.MainActivity$PlaceholderFragment" >
 
     <TextView
         android:tag="hello"

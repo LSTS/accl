@@ -1,4 +1,4 @@
-package pt.lsts.accl_test;
+package pt.lsts.accl;
 
 import pt.lsts.accl.R;
 import pt.lsts.accl.bus.AcclBus;
