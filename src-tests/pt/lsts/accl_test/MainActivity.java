@@ -1,7 +1,6 @@
 package pt.lsts.accl_test;
 
-import com.squareup.otto.Subscribe;
-
+import pt.lsts.accl.R;
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.event.EventMainSystemSelected;
 import pt.lsts.accl.event.EventSystemConnected;
@@ -16,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.squareup.otto.Subscribe;
 
 public class MainActivity extends Activity {
 
