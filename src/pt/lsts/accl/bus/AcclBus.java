@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pt.lsts.accl.event.EventSystemConnected;
 import pt.lsts.accl.event.EventSystemDisconnected;
@@ -26,7 +25,7 @@ public class AcclBus {
 	private static Bus busInstance = null;
 	private static ImcAdapter imcInstance = null;
 	private static HashSet<Integer> registeredListeners = new HashSet<Integer>();
-	
+
 	private synchronized static Bus bus() {
 		if (busInstance == null) {
 			try {
@@ -41,7 +40,7 @@ public class AcclBus {
 		}
 		return busInstance;	
 	}
-	
+
 	/**
 	 * Start listening for IMC messages and start announcing this node
 	 * @param localname The name of this node in the IMC network
@@ -50,10 +49,10 @@ public class AcclBus {
 	public synchronized static void bind(String localname, int localport) {
 		if (imcInstance != null)
 			imcInstance.stop();
-		
+
 		imcInstance = new AcclBus.ImcAdapter(localname, localport);
 	}
-	
+
 	/**
 	 * Start sending {@link pt.lsts.imc.Heartbeat} to a system
 	 * @param system The name of the system to connect to
@@ -63,7 +62,7 @@ public class AcclBus {
 			return;
 		imcInstance.connect(system);		
 	}
-	
+
 	/**
 	 * Stop sending {@link pt.lsts.imc.Heartbeat} to a system
 	 * @param system The name of the system to be disconnected
@@ -73,17 +72,17 @@ public class AcclBus {
 			return;
 		imcInstance.disconnect(system);
 	}
-	
-	
+
+
 	/**
 	 * Post an event to the application
 	 * @param event The event to be posted
 	 */
 	public static void post(Object event) {
 		if (event!=null)
-		bus().post(event);
+			bus().post(event);
 	}
-	
+
 	/**
 	 * Register a component with ACCL
 	 * @param pojo An object that wishes to receive events
@@ -91,9 +90,9 @@ public class AcclBus {
 	public static void register(Object pojo) {
 		bus().register(pojo);
 		registeredListeners.add(pojo.hashCode());
-		
+
 	}
-	
+
 	/**
 	 * Unregister a component with ACCL
 	 * @param pojo An object that wishes to stop receiving events
@@ -101,20 +100,20 @@ public class AcclBus {
 	public static synchronized void forget(Object pojo) {
 		bus().unregister(pojo);
 		registeredListeners.remove(pojo.hashCode());
-		
+
 		if (registeredListeners.isEmpty() && imcInstance != null) {
 			imcInstance.stop();
 			imcInstance = null;
 		}
-			
+
 	}
-	
+
 	public static boolean send(IMCMessage msg, String destination) {
 		if (imcInstance == null)
 			return false;
 		return imcInstance.send(msg, destination);
 	}
-	
+
 	private static class ImcAdapter implements MessageListener<MessageInfo, IMCMessage> {
 
 		private IMCProtocol imc;
@@ -122,7 +121,7 @@ public class AcclBus {
 		private LinkedHashSet<String> systemsConnected = new LinkedHashSet<String>();
 		private LinkedHashMap<String, Announce> lastAnnounce = new LinkedHashMap<String, Announce>();
 
-		private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+		private Timer timer = new Timer(true);
 
 		protected ImcAdapter(String name, int port) {
 			imc = new IMCProtocol(name, port);
@@ -130,20 +129,21 @@ public class AcclBus {
 			imc.setAutoConnect(":never:");
 			imc.addMessageListener(this);
 
-			executor.scheduleAtFixedRate(new Runnable() {
+			TimerTask sendHeartbeat = new TimerTask() {
+
 				@Override
 				public void run() {
 					synchronized (systemsToConnectTo) {
 						for (String s : systemsToConnectTo)
 							imc.sendMessage(s, new Heartbeat());					
-					}				
+					}	
 				}
-			}, 1, 1, TimeUnit.SECONDS);
+			};
+			
+			TimerTask clearAnnounces = new TimerTask() {
 
-			executor.scheduleAtFixedRate(new Runnable() {
 				@Override
 				public void run() {
-
 					ArrayList<Announce> announces = new ArrayList<Announce>();
 					announces.addAll(lastAnnounce.values());
 
@@ -154,13 +154,15 @@ public class AcclBus {
 						}
 					}
 				}
-			}, 30, 30, TimeUnit.SECONDS);
+			};
+			
+			timer.scheduleAtFixedRate(sendHeartbeat, 1000, 1000);
+			timer.scheduleAtFixedRate(clearAnnounces, 30000, 30000);
 		}
 
 		public void stop() {
-			executor.shutdown();
+			timer.cancel();
 			imc.stop();
-			
 		}
 
 		public void connect(String system) {
@@ -168,20 +170,20 @@ public class AcclBus {
 				systemsToConnectTo.add(system);
 			}
 		}
-		
+
 		public void disconnect(String system) {
 			synchronized (systemsToConnectTo) {
 				systemsToConnectTo.remove(system);
 			}
 		}
-		
+
 		public boolean send(IMCMessage msg, String destination) {
 			return imc.sendMessage(destination, msg);
 		}
 
 		@Override
 		public void onMessage(MessageInfo info, IMCMessage msg) {
-			
+
 			String source = msg.getSourceName();
 			if (msg.getMgid() == Announce.ID_STATIC) {
 				if (msg.getSrc() == imc.getLocalId())
@@ -203,7 +205,7 @@ public class AcclBus {
 					}
 				}			
 			}
-			
+
 			AcclBus.post(msg);
 		}
 
