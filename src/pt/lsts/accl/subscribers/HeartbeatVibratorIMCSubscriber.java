@@ -1,7 +1,6 @@
 package pt.lsts.accl.subscribers;
 
 import pt.lsts.accl.ACCL;
-import pt.lsts.accl.comms.IMCSubscriber;
 import pt.lsts.accl.feedback.HeartbeatVibrator;
 import pt.lsts.imc.IMCMessage;
 

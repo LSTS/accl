@@ -1,4 +1,4 @@
-package pt.lsts.accl.comms;
+package pt.lsts.accl.subscribers;
 
 import pt.lsts.imc.IMCMessage;
 

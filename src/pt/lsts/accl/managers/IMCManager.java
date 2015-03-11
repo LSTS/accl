@@ -1,7 +1,7 @@
 package pt.lsts.accl.managers;
 
 import pt.lsts.accl.ACCL;
-import pt.lsts.accl.comms.IMCSubscriber;
+import pt.lsts.accl.subscribers.IMCSubscriber;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.util.MUtil;
 import pt.lsts.imc.Announce;

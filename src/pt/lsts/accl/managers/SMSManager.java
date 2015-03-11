@@ -1,13 +1,11 @@
-package pt.lsts.accl.handlers;
+package pt.lsts.accl.managers;
 
-
-import pt.lsts.accl.managers.IMCManager;
 
 import android.content.Context;
 import android.telephony.SmsManager;
 import android.widget.Toast;
 
-public class AccuSmsHandler {
+public class SMSManager {
 
 	private IMCManager mManager;
 	private Context mContext;
@@ -21,7 +19,7 @@ public class AccuSmsHandler {
 		this.mManager = mManager;
 	}
 
-	public AccuSmsHandler(Context context) {
+	public SMSManager(Context context) {
 		mContext = context;
 	}
 

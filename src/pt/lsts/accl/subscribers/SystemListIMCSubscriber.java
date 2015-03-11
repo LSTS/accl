@@ -1,7 +1,6 @@
 package pt.lsts.accl.subscribers;
 
 import pt.lsts.accl.ACCL;
-import pt.lsts.accl.comms.IMCSubscriber;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.sys.SystemList;
 import pt.lsts.accl.util.IMCUtils;
@@ -10,7 +9,6 @@ import pt.lsts.imc.Heartbeat;
 import pt.lsts.imc.IMCDefinition;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.VehicleState;
-
 import android.util.Log;
 
 public class SystemListIMCSubscriber implements IMCSubscriber{

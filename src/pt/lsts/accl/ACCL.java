@@ -1,17 +1,17 @@
 package pt.lsts.accl;
 
 import pt.lsts.accl.comms.Announcer;
-import pt.lsts.accl.comms.IMCSubscriber;
 //import pt.lsts.accl.feedback.CallOut;
 import pt.lsts.accl.feedback.Heart;
 import pt.lsts.accl.feedback.HeartbeatVibrator;
-import pt.lsts.accl.handlers.AccuSmsHandler;
 import pt.lsts.accl.listenners.MainSysChangeListener;
+import pt.lsts.accl.managers.SMSManager;
 import pt.lsts.accl.managers.GPSManager;
 import pt.lsts.accl.managers.IMCManager;
 //import pt.lsts.accl.pos.LblBeaconList;
-import pt.lsts.accl.subscribers.AccuSmsHandlerIMCSubscriber;
+import pt.lsts.accl.subscribers.SMSManagerIMCSubscriber;
 import pt.lsts.accl.subscribers.HeartbeatVibratorIMCSubscriber;
+import pt.lsts.accl.subscribers.IMCSubscriber;
 //import pt.lsts.accl.subscribers.LblBeaconListIMCSubscriber;
 import pt.lsts.accl.subscribers.SystemListIMCSubscriber;
 import pt.lsts.accl.subscribers.SystemsUpdaterServiceIMCSubscriber;
@@ -55,8 +55,8 @@ public class ACCL {
 	public SystemListIMCSubscriber systemListIMCSubscriber;
 	
 	public static Announcer announcer;
-	public static AccuSmsHandler smsHandler;
-	public static AccuSmsHandlerIMCSubscriber accuSmsHandlerIMCSubscriber;
+	public static SMSManager smsHandler;
+	public static SMSManagerIMCSubscriber sMSManagerIMCSubscriber;
 	public static GPSManager gpsManager;
 	public static HeartbeatVibrator hearbeatVibrator;
 	public static HeartbeatVibratorIMCSubscriber heartbeatVibratorIMCSubscriber;
@@ -155,8 +155,8 @@ public class ACCL {
 	}
 	
 	public void initSubscribers(Context context){
-		smsHandler = new AccuSmsHandler(context);
-		accuSmsHandlerIMCSubscriber = new AccuSmsHandlerIMCSubscriber(smsHandler);
+		smsHandler = new SMSManager(context);
+		sMSManagerIMCSubscriber = new SMSManagerIMCSubscriber(smsHandler);
 		
 		hearbeatVibrator = new HeartbeatVibrator(context, imcManager);
 		heartbeatVibratorIMCSubscriber = new HeartbeatVibratorIMCSubscriber(hearbeatVibrator);
@@ -166,7 +166,7 @@ public class ACCL {
 	
 	public void addInitialSubscribers(){
 		addSubscriber(heartbeatVibratorIMCSubscriber, heartbeatVibratorIMCSubscriber.SUBSCRIBED_MSGS);
-		addSubscriber(accuSmsHandlerIMCSubscriber, accuSmsHandlerIMCSubscriber.SUBSCRIBED_MSGS);
+		addSubscriber(sMSManagerIMCSubscriber, sMSManagerIMCSubscriber.SUBSCRIBED_MSGS);
 		addSubscriber(systemListIMCSubscriber);
 		//addSubscriber(lblBeaconListIMCSubscriber, lblBeaconListIMCSubscriber.SUBSCRIBED_MSGS);
 	}	

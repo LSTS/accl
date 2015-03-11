@@ -1,21 +1,19 @@
 package pt.lsts.accl.subscribers;
 
-import pt.lsts.accl.comms.IMCSubscriber;
-import pt.lsts.accl.handlers.AccuSmsHandler;
+import pt.lsts.accl.managers.SMSManager;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.Sms;
-
 import android.util.Log;
 
-public class AccuSmsHandlerIMCSubscriber implements IMCSubscriber{
+public class SMSManagerIMCSubscriber implements IMCSubscriber{
 
 	public static final String[] SUBSCRIBED_MSGS = { "Sms" };
 	public static final String TAG = "AccuSmsHandler";
-	private AccuSmsHandler accuSmsHandler;
+	private SMSManager sMSManager;
     private Thread thread;
 	
-	public AccuSmsHandlerIMCSubscriber(AccuSmsHandler accuSmsHandler){
-		this.accuSmsHandler = accuSmsHandler;
+	public SMSManagerIMCSubscriber(SMSManager sMSManager){
+		this.sMSManager = sMSManager;
 	}
 	
 	@Override
@@ -29,13 +27,13 @@ public class AccuSmsHandlerIMCSubscriber implements IMCSubscriber{
             public void run() {
 
                 if (msg.getMgid() == Sms.ID_STATIC
-                        && msg.getDst() == accuSmsHandler.getmManager().getLocalId()) {
+                        && msg.getDst() == sMSManager.getmManager().getLocalId()) {
                     Log.i("SmsManager", "Sending an SMS to " + msg.getString("number"));
-                    accuSmsHandler.sendSms(msg.getString("number"), msg.getString("contents"),
+                    sMSManager.sendSms(msg.getString("number"), msg.getString("contents"),
                             msg.getInteger("timeout"));
                 } else {
                     Log.w("SmsManager", "Ignoring Sms request");
-                    System.out.println(accuSmsHandler.getmManager().getLocalId());
+                    System.out.println(sMSManager.getmManager().getLocalId());
                     System.out.println(msg.toString());
                 }
 

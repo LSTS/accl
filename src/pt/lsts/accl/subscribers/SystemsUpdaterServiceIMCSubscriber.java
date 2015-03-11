@@ -8,10 +8,10 @@ import android.util.Pair;
 
 //import com.google.android.gms.maps.model.LatLng;
 
+
 import java.util.List;
 
 import pt.lsts.accl.ACCL;
-import pt.lsts.accl.comms.IMCSubscriber;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.sys.SystemList;
 //import pt.lsts.accl.util.GmapsUtil;
