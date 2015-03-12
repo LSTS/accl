@@ -7,7 +7,7 @@ import java.util.Map;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.squareup.otto.Bus;
+//import com.squareup.otto.Bus;
 
 public class Settings {
 

@@ -33,7 +33,7 @@ public class App extends Application {
 
 		IMCDefinition.getInstance();
 		ACCL.getInstance(this);
-		ACCL.getInstance().load();
+		//ACCL.getInstance().load();
 		ACCL.getInstance().start();
 		Log.i("App", "Global ACCL Object Initialized");
 

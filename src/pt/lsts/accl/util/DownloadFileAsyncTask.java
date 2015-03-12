@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import pt.lsts.accl.util.mjpeg.MjpegInputStream;
 
 /**
  * Created by jloureiro on 2/23/15.
@@ -49,6 +48,4 @@ class DownloaFileAsyncTask extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    protected void onPostExecute(MjpegInputStream result) {
-    }
 }

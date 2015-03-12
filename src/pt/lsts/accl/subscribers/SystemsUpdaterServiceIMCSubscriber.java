@@ -133,7 +133,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
                 systemList.changeList(systemList.getList());
                 // Send an Heartbeat to resume communications in case of
                 // system prior crash
-                try {
+                /*try {
                 	ACCL.getInstance()
                             .getIMCManager()
                             .send(s.getAddress(),
@@ -142,7 +142,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
                                             "Heartbeat"));
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                }
+                }*/
             }
             return;
         }
@@ -176,7 +176,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
 
         // Send an Heartbeat to register as a node in the vehicle (maybe
         // EntityList?)
-        try {
+        /*try {
             Heartbeat mm = new Heartbeat();
             mm.setSrc(0x4100);
             ACCL.getInstance().getIMCManager()
@@ -185,7 +185,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
                     .sendMessage(sys.getAddress(), sys.getPort(), mm);
         } catch (Exception e1) {
             e1.printStackTrace();
-        }
+        }*/
     }
 
     public void processVehicleState(IMCMessage msg, Sys sys){

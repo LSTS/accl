@@ -103,16 +103,15 @@ public class SystemListIMCSubscriber implements IMCSubscriber{
 
                     // Send an Heartbeat to register as a node in the vehicle (maybe
                     // EntityList?)
-                    try {
+                    /*try {
                         Heartbeat mm = new Heartbeat();
                         mm.setSrc(0x4100);
                         ACCL.getInstance().getIMCManager()
                                 .send(s.getAddress(), s.getPort(), mm);
-                        ACCL.getInstance().getIMCManager().getComm()
-                                .sendMessage(s.getAddress(), s.getPort(), mm);
+                        //ACCL.getInstance().getIMCManager().getComm().sendMessage(s.getAddress(), s.getPort(), mm);
                     } catch (Exception e1) {
                         e1.printStackTrace();
-                    }
+                    }*/
                 }
                 // Process VehicleState to get error count
                 else if (ID_MSG == VehicleState.ID_STATIC) {

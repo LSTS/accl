@@ -1,7 +1,6 @@
 package pt.lsts.accl.settings;
 
 import pt.lsts.accl.util.FileOperations;
-import pt.lsts.accl.util.StringUtils;
 
 import java.io.File;
 import java.util.Map;
@@ -44,10 +43,7 @@ public class Profile {
             Log.i(TAG,"setting commented: "+setting);
             return;
         }
-		if (StringUtils.validateSetting(setting)==false){
-            Log.i(TAG,"setting not valid: "+setting);
-            return;
-        }
+
         String key = parts[2];
         /*
 		String type = parts[0];

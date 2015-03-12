@@ -5,7 +5,6 @@ import pt.lsts.accl.R;
 import pt.lsts.accl.settings.Settings;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.util.AndroidUtil;
-import pt.lsts.accl.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -117,7 +116,7 @@ public class SystemListFragment extends Fragment {
         }
     }
 
-    public String showMoreInfo(){
+    /*public String showMoreInfo(){
 
         String sysName = StringUtils.removeSysExtraInfo(systemListView.getAdapter().getItem(selectedInt).toString());
         Sys sys = ACCL.getInstance().getSystemList().findSysByName(sysName);
@@ -142,7 +141,7 @@ public class SystemListFragment extends Fragment {
         }
         return message;
 
-    }
+    }*/
 
     public ArrayList<String> addSysStatus(){
         ArrayList<String> arrayListName = ACCL.getInstance().getSystemList().getNameList();
@@ -164,9 +163,9 @@ public class SystemListFragment extends Fragment {
             if(sys.equals(ACCL.getInstance().getActiveSys())) {
                 s += " (M)";
             }
-            if (i==selectedInt){
+            /*if (i==selectedInt){
                 s += showMoreInfo();
-            }
+            }*/
 
             newArrayListName.add(s);
         }
@@ -219,7 +218,7 @@ public class SystemListFragment extends Fragment {
             return;
         }
         String sysName = systemListView.getAdapter().getItem(selectedInt).toString();
-        sysName = StringUtils.removeSysExtraInfo(sysName);
+        //sysName = StringUtils.removeSysExtraInfo(sysName);
         ACCL.getInstance().setActiveSys(ACCL.getInstance().getSystemList().findSysByName(sysName));
         if (ACCL.getInstance().getActiveSys()==null){
             AndroidUtil.showToastLong(fragmentActivity,"ERROR no system selected");
@@ -269,8 +268,8 @@ public class SystemListFragment extends Fragment {
 
             String sysName = textView.getText().toString();
             Log.i(TAG,"sysName antes= "+sysName);
-            sysName = StringUtils.removeSysExtraInfo(sysName);
-            Log.i(TAG,"sysName depois= "+sysName);
+            //sysName = StringUtils.removeSysExtraInfo(sysName);
+            //Log.i(TAG,"sysName depois= "+sysName);
             Sys sys = ACCL.getInstance().getSystemList().findSysByName(sysName);
 
             //generic color for text

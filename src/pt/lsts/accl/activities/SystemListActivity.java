@@ -42,10 +42,10 @@ public class SystemListActivity extends FragmentActivity {
 		if (itemId == R.id.select_as_active_system_system_list_menu) {
 			systemListFragment.selectActiveSystem();
 			return true;
-		} else if (itemId == R.id.more_info_system_list_menu) {
+		} /*else if (itemId == R.id.more_info_system_list_menu) {
 			systemListFragment.showMoreInfo();
 			return true;
-		} else if (itemId == R.id.refresh_system_list_menu) {
+		}*/ else if (itemId == R.id.refresh_system_list_menu) {
 			systemListFragment.populateSystemListView();
 			return true;
 		} else {

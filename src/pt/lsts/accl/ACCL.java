@@ -1,16 +1,16 @@
 package pt.lsts.accl;
 
-import pt.lsts.accl.comms.Announcer;
 //import pt.lsts.accl.feedback.CallOut;
-import pt.lsts.accl.feedback.Heart;
-import pt.lsts.accl.feedback.HeartbeatVibrator;
+//import pt.lsts.accl.feedback.Heart;
+//import pt.lsts.accl.feedback.HeartbeatVibrator;
 import pt.lsts.accl.listenners.MainSysChangeListener;
 import pt.lsts.accl.managers.SMSManager;
 import pt.lsts.accl.managers.GPSManager;
 import pt.lsts.accl.managers.IMCManager;
+import pt.lsts.accl.subscribers.Announcer;
 //import pt.lsts.accl.pos.LblBeaconList;
 import pt.lsts.accl.subscribers.SMSManagerIMCSubscriber;
-import pt.lsts.accl.subscribers.HeartbeatVibratorIMCSubscriber;
+//import pt.lsts.accl.subscribers.HeartbeatVibratorIMCSubscriber;
 import pt.lsts.accl.subscribers.IMCSubscriber;
 //import pt.lsts.accl.subscribers.LblBeaconListIMCSubscriber;
 import pt.lsts.accl.subscribers.SystemListIMCSubscriber;
@@ -58,9 +58,9 @@ public class ACCL {
 	public static SMSManager smsHandler;
 	public static SMSManagerIMCSubscriber sMSManagerIMCSubscriber;
 	public static GPSManager gpsManager;
-	public static HeartbeatVibrator hearbeatVibrator;
-	public static HeartbeatVibratorIMCSubscriber heartbeatVibratorIMCSubscriber;
-	public static Heart heart;
+	//public static HeartbeatVibrator hearbeatVibrator;
+	//public static HeartbeatVibratorIMCSubscriber heartbeatVibratorIMCSubscriber;
+	//public static Heart heart;
 	//public static LblBeaconList lblBeaconList;
 	//public static LblBeaconListIMCSubscriber lblBeaconListIMCSubscriber;
 	public static SensorManager sensorManager;
@@ -158,14 +158,14 @@ public class ACCL {
 		smsHandler = new SMSManager(context);
 		sMSManagerIMCSubscriber = new SMSManagerIMCSubscriber(smsHandler);
 		
-		hearbeatVibrator = new HeartbeatVibrator(context, imcManager);
-		heartbeatVibratorIMCSubscriber = new HeartbeatVibratorIMCSubscriber(hearbeatVibrator);
+		//hearbeatVibrator = new HeartbeatVibrator(context, imcManager);
+		//heartbeatVibratorIMCSubscriber = new HeartbeatVibratorIMCSubscriber(hearbeatVibrator);
 		
 		addInitialSubscribers();
 	}
 	
 	public void addInitialSubscribers(){
-		addSubscriber(heartbeatVibratorIMCSubscriber, heartbeatVibratorIMCSubscriber.SUBSCRIBED_MSGS);
+		//addSubscriber(heartbeatVibratorIMCSubscriber, heartbeatVibratorIMCSubscriber.SUBSCRIBED_MSGS);
 		addSubscriber(sMSManagerIMCSubscriber, sMSManagerIMCSubscriber.SUBSCRIBED_MSGS);
 		addSubscriber(systemListIMCSubscriber);
 		//addSubscriber(lblBeaconListIMCSubscriber, lblBeaconListIMCSubscriber.SUBSCRIBED_MSGS);
@@ -173,7 +173,7 @@ public class ACCL {
 
 	public void load() {
 		Log.i(TAG, ACCL.class.getSimpleName() + ": load");
-		heart = new Heart();
+		//heart = new Heart();
 		//addLblSubscriber();
 	}
 	
@@ -188,7 +188,7 @@ public class ACCL {
 			imcManager.startComms();
 			announcer.start();
 			sysList.start();
-			heart.start();
+			//heart.start();
 			started = true;
             startAndBindSystemsUpdaterIMCSubscriber();
 		} else
@@ -202,7 +202,7 @@ public class ACCL {
 			imcManager.killComms();
 			announcer.stop();
 			sysList.stop();
-			heart.stop();
+			//heart.stop();
 			smsHandler.stop();
 			started = false;
 		} else
