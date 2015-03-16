@@ -2,20 +2,18 @@ package pt.lsts.accl.event;
 
 import java.util.LinkedHashMap;
 
-//import pt.lsts.imc.EntityState;
+public class EventImcSystemState extends AbstractACCLEvent {
 
-public class EventImcSystemState {
-
-	private String sys_name;
+	private String sysName;
 	private LinkedHashMap<String, String> errors = new LinkedHashMap<>();
 		
 	public boolean hasErrors() {
 		return !errors.isEmpty();
 	}
 	
-	public EventImcSystemState(String name) {
+	public EventImcSystemState(String systemName) {
 		super();
-		this.setSysName(name);
+		this.setSysName(systemName);
 	}
 	
 	public void clearErrors() {
@@ -27,11 +25,11 @@ public class EventImcSystemState {
 	}
 	
 	public String getSysName() {
-		return sys_name;
+		return sysName;
 	}
 
-	public void setSysName(String sys_name) {
-		this.sys_name = sys_name;
+	public void setSysName(String system) {
+		this.sysName = system;
 	}
 
 	public String toString() {
@@ -39,10 +37,10 @@ public class EventImcSystemState {
 		StringBuilder sb = new StringBuilder();
 		
 		if (hasErrors()) {
-			sb.append("System "+sys_name+" reported errors {\n");
+			sb.append("System "+sysName+" reported errors {\n");
 		}
 		else {
-			return "System "+sys_name+" didn't report any errors.";
+			return "System "+sysName+" didn't report any errors.";
 		}
 	
 		
@@ -54,11 +52,4 @@ public class EventImcSystemState {
 		return sb.toString();
 	}
 	
-	//public static void main(String[] args) {
-		//EntityState s = new EntityState();
-		//s.set
-		//EventImcSystemState state = new EventImcSystemState("lauv-seacon-1");
-		//state.addError("Maneuver ETA", "Maneuver ETA is above 60 seconds");
-		//System.out.println(state);
-	//}
 }
