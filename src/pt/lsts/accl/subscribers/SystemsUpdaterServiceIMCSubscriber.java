@@ -61,7 +61,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
                 //only parse messages from active Sys
                 //see what messages are important
                 break;
-            case MANUAL:
+            /*case MANUAL:
                 //only parse EstimatedState and IndicatedSpeed from active Sys
                 switch (ID_MSG) {
                     case EstimatedState.ID_STATIC:
@@ -73,8 +73,8 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
                         processIndicatedSpeed(msg,sys);
                         break;
                 }
-                break;
-            case AUTO:
+                break;*/
+            /*case AUTO:
                 switch (ID_MSG) {
                     case EstimatedState.ID_STATIC:
                         Log.v(TAG, "EstimatedState:\n"+msg.toString());
@@ -93,7 +93,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
                         processPlanDB(msg, sys);
                         break;
                 }
-                break;
+                break;*/
             case SYSTEMLIST:
                 Log.v(TAG,"ACCL.mode==SYSTEMLIST, message ignored:\n"+msg.toString());
                 break;
@@ -198,7 +198,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
         }
     }
 
-    public void processEstimatedState(IMCMessage msg, Sys sys){
+    /*public void processEstimatedState(IMCMessage msg, Sys sys){
         Float alt = - ((Float) msg.getValue("z"));
         sys.setAlt(alt);
         int altInt = Math.round(alt);
@@ -231,9 +231,9 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
         ACCL.getInstance().getBus().post(sys);
         //gmapfragment.updateSysMarker(sys);
         //call OTTO
-    }
+    }*/
 
-    public void processIndicatedSpeed(IMCMessage msg, Sys sys){
+    /*public void processIndicatedSpeed(IMCMessage msg, Sys sys){
         Double ias = (Double) msg.getValue("value");
         Log.v(TAG,"IndicatedSpedd received: ias="+ias);
         sys.setIas(ias);
@@ -247,9 +247,9 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
             }
         }
         //call OTTO
-    }
+    }*/
 
-    public void processPlanControlState(IMCMessage msg,Sys sys){
+    /*public void processPlanControlState(IMCMessage msg,Sys sys){
         if (IMCUtils.isMsgFromActive(msg)) {
             Log.i(TAG, "PlanControlState: \n" + msg.toString());
             PlanControlState planControlState = (PlanControlState) msg;
@@ -266,7 +266,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
                 }
             }
         }
-    }
+    }*/
 
     public static void sendPlanDBrequestPlanID(String planID){
         Log.i(TAG,"sendPlanDBrequestPlanID");
@@ -277,7 +277,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
         ACCL.getInstance().getIMCManager().sendToActiveSys(planDB);
     }
 
-    public void processPlanDB(IMCMessage msg, Sys sys){
+    /*public void processPlanDB(IMCMessage msg, Sys sys){
         PlanDB planDB = (PlanDB) msg;
         String planID = planDB.getPlanId();
         if (ACCL.getInstance().getActiveSys().getPaintedPlanID().equals(planID)){
@@ -292,7 +292,7 @@ public class SystemsUpdaterServiceIMCSubscriber extends Service implements IMCSu
             PlanSpecification planSpecification = (PlanSpecification) planDB.getArg();
             ACCL.getInstance().getBus().post(planSpecification);
         }
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {
