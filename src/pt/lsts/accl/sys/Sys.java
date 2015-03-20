@@ -131,8 +131,8 @@ public class Sys {
 	}
 
 	// ------get Last IMC Message
-	public String getLastIMCMessage() {
-		String mLast = sys.recv("EstimatedState", 5000).toString();
+	public IMCMessage getLastIMCMessage() {
+		IMCMessage mLast = sys.recv("EstimatedState", 5000);
 		return mLast;
 	}
 

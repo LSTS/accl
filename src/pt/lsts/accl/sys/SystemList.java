@@ -6,13 +6,40 @@ import pt.lsts.accl.util.AccuTimer;
 
 import java.util.ArrayList;
 
+import com.squareup.otto.Subscribe;
+
 import android.util.Log;
+import pt.lsts.accl.bus.AcclBus;
+import pt.lsts.accl.event.EventMainSystemSelected;
+import pt.lsts.accl.event.EventSystemConnected;
+import pt.lsts.imc.Announce;
+import pt.lsts.imc.IMCMessage;
 
 public class SystemList {
 
 	public static final String TAG = "SystemList";
 	public static final int CONNECTED_TIME_LIMIT = 5000;
 	public static final boolean DEBUG = false;
+	Announce announce = new Announce();
+	private String sysName = announce.getSysName();
+
+	private EventMainSystemSelected selectedSystem = null;
+
+	@Subscribe
+	public void on(Announce ann) {
+		Log.i("ANNOUNCE", ann.getSourceName());
+	}
+
+	@Subscribe
+	public void on(EventSystemConnected event) {
+		System.out.println(event.getSysName() + " is now connected");
+		if (selectedSystem == null) {
+			System.out.println("selecting " + event.getSysName()
+					+ " as main system");
+			selectedSystem = new EventMainSystemSelected(event.getSysName());
+			AcclBus.post(selectedSystem);
+		}
+	}
 
 	ArrayList<Sys> sysList = new ArrayList<Sys>();
 	ArrayList<SystemListChangeListener> listeners = new ArrayList<SystemListChangeListener>();
@@ -20,6 +47,8 @@ public class SystemList {
 	AccuTimer timer;
 	Runnable task = new Runnable() {
 		public void run() {
+			AcclBus.bind("accldroid", 6009);
+			AcclBus.register(this);
 			checkConnection();
 		}
 	};
@@ -52,8 +81,14 @@ public class SystemList {
 		}
 	}
 
+	// ------add Changed Listenner
 	public void addSystemListChangeListener(SystemListChangeListener l) {
 		listeners.add(l);
+	}
+
+	// ------remove Changed Listenner
+	public void removeChangedListenner(SystemListChangeListener l) {
+		listeners.remove(l);
 	}
 
 	public void changeList(ArrayList<Sys> list) {
@@ -105,6 +140,14 @@ public class SystemList {
 		}
 		return list;
 	}
+	
+	public ArrayList<String> getAddressList() {
+		ArrayList<String> list = new ArrayList<String>();
+		for (Sys s : sysList) {
+			list.add(s.getAddress());
+		}
+		return list;
+	}
 
 	public ArrayList<String> getNameListByType(String type) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -121,6 +164,69 @@ public class SystemList {
 
 	public void stop() {
 		timer.stop();
+	}
+
+	public String getActiveSys() {
+		return sysName;
+	}
+
+	public Sys findSysByAddress(String address) {
+		for (int c = 0; c < sysList.size(); c++) {
+			if (sysList.get(c).getAddress().equalsIgnoreCase(address))
+				return sysList.get(c);
+		}
+		return null;
+	}
+
+	// ------has Sys
+	public Boolean hasSys() {
+		Boolean hasSys=false;
+		for (int c = 0; c < sysList.size(); c++) {
+			if (sysList.get(c).getName().isEmpty())
+				return hasSys;
+			else return hasSys=true;
+		}
+		return hasSys;
+	}
+
+	// ------is Empty
+	public Boolean isEmpty() {
+		Boolean empty = false;
+		if (sysName != "") {
+			empty = false;
+		} else {
+			empty = true;
+		}
+		return empty;
+	}
+
+	// ------get Vehicles
+	public String getVehicles() {
+		String vehicles = Sys.SYS_TYPE.UUV.toString();
+		vehicles += "\n" + Sys.SYS_TYPE.USV.toString();
+		vehicles += "\n" + Sys.SYS_TYPE.UAV.toString();
+		vehicles += "\n" + Sys.SYS_TYPE.UGV.toString();
+		return vehicles;
+	}
+
+	// ------get CCUs
+	public String getCCUs() {
+		return Sys.SYS_TYPE.CCU.toString();
+	}
+
+	// ------send Broadcast Message To All
+	public void sendBroadcastMessageToAll(IMCMessage msg) {
+		AcclBus.send(msg, sysName);
+	}
+
+	// ------send Broadcast Message To Vehicles
+	public void sendBroadcastMessageToVehicles(IMCMessage msg) {
+		AcclBus.send(msg, sysName);
+	}
+
+	// ------send Broadcast Message To CCUs
+	public void sendBroadcastMessageToCCUs(IMCMessage msg) {
+		AcclBus.send(msg, sysName);
 	}
 
 }
