@@ -1,8 +1,10 @@
 <project name="accl" default="dist">
 
   <property name="accl.version" value="1.0.0"/>	
-  <property name="imcjava-src" value="imcjava/src"/>	
-  <property name="imcjava-gen" value="imcjava/src-generated"/>
+  <property name="imcjava" value="libs/imcjava"/>
+  <property name="imcjava-src" value="libs/imcjava/src"/>	
+  <property name="imcjava-gen" value="libs/imcjava/src-generated"/>
+  <property name="imcjava-dist" value="libs/imcjava/dist"/>
   
   <path id="classpath.base">
   	<pathelement location="build" />
@@ -11,11 +13,11 @@
 	
   <path id="classpath.libs">
   	<pathelement location="libs/otto-1.3.6.jar" />
+    <pathelement location="${imcjava-dist}/libimc.jar" />
   </path>
-  
+
   <target name="dist" depends="compile" description="generates accl.jar">
   	<unjar src="libs/otto-1.3.6.jar" dest="build"/>
-  	
   	<delete>
 		<fileset dir="build">
 	   	  <include name="**/*.java"/>	    
@@ -29,9 +31,12 @@
   <target name="compile">
 	<delete dir="build"/>
 	<mkdir dir="build"/>
-  	<javac encoding="UTF-8" srcdir="${imcjava-src};${imcjava-gen}" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false">
-  		<exclude name="${imcjava-src}/pt/lsts/imc/control/**"/>
-  	</javac>	
+    <subant>
+            <filelist dir="libs/imcjava">
+                <file name="build.xml"/>
+            </filelist>
+      </subant>
+
 	<javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false">
 		<classpath refid="classpath.libs"/>
   	</javac>
