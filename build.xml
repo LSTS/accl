@@ -1,6 +1,5 @@
 <project name="accl" default="dist">
 
-  <property name="accl.version" value="1.0.0"/>	
   <property name="imcjava" value="libs/imcjava"/>
   <property name="imcjava-src" value="libs/imcjava/src"/>	
   <property name="imcjava-gen" value="libs/imcjava/src-generated"/>
@@ -18,20 +17,20 @@
 
   <target name="dist" depends="compile" description="generates accl.jar">
   	<unjar src="libs/otto-1.3.6.jar" dest="build"/>
+    <unjar src="libs/imcjava/dist/libimc.jar" dest="build"/>
   	<delete>
 		<fileset dir="build">
 	   	  <include name="**/*.java"/>	    
 		</fileset>
 	</delete>
-  	
-  	<jar destfile="accl-${accl.version}.jar" basedir="build" index="true"/>
+  	<jar destfile="accl.jar" basedir="build" index="true"/>
   	<delete dir="build"/>
   </target>
 	
   <target name="compile">
 	<delete dir="build"/>
 	<mkdir dir="build"/>
-    <subant>
+    <subant target="jar-stripped">
             <filelist dir="libs/imcjava">
                 <file name="build.xml"/>
             </filelist>
