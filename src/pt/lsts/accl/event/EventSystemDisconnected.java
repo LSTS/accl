@@ -1,23 +1,25 @@
 package pt.lsts.accl.event;
 
+import pt.lsts.accl.sys.Sys;
+
 public class EventSystemDisconnected extends AbstractACCLEvent {
 
-	private String sysName;
+	private Sys sys;
 		
-	public EventSystemDisconnected(String systemName) {
-		this.sysName = systemName;
+	public EventSystemDisconnected(Sys sys) {
+		this.sys = sys;
 	}
 
 	/**
-	 * @return the name of the system that disconnected
+	 * @return the the system that disconnected
 	 */
-	public final String getSysName() {
-		return sysName;
+	public final Sys getSys() {
+		return sys;
 	}
 	
 	@Override
 	public String toString() {
-		return super.toString()+ " - "+sysName;
+		return super.toString()+ " - "+sys.getName();
 	}
 
 }

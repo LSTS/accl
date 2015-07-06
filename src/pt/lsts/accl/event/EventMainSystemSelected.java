@@ -1,22 +1,24 @@
 package pt.lsts.accl.event;
 
+import pt.lsts.accl.sys.Sys;
+
 public class EventMainSystemSelected extends AbstractACCLEvent {
 
-	private String system;
+	private Sys sys;
 	
-	public EventMainSystemSelected(String system) {
-		this.system = system;
+	public EventMainSystemSelected(Sys sys) {
+		this.sys = sys;
 	}
 
 	/**
 	 * @return the system
 	 */
-	public final String getSystem() {
-		return system;
+	public final Sys getSys() {
+		return sys;
 	}
 	
 	@Override
 	public String toString() {
-		return super.toString() + " - "+system;
+		return super.toString() + " - "+sys.getName();
 	}	
 }

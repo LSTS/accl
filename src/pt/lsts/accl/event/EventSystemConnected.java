@@ -1,22 +1,24 @@
 package pt.lsts.accl.event;
 
+import pt.lsts.accl.sys.Sys;
+
 public class EventSystemConnected extends AbstractACCLEvent {
 
-	private String sysName;
+	private Sys sys;
 		
-	public EventSystemConnected(String systemName) {
-		this.sysName = systemName;
+	public EventSystemConnected(Sys sys) {
+		this.sys = sys;
 	}
 
 	/**
-	 * @return the name of the system that became visible
+	 * @return the system that became visible
 	 */
-	public final String getSysName() {
-		return sysName;
+	public final Sys getSys() {
+		return sys;
 	}
 	
 	@Override
 	public String toString() {
-		return super.toString()+ " - "+sysName;
+		return super.toString()+ " - "+sys.getName();
 	}
 }
