@@ -31,20 +31,17 @@ public class AcclBusListenner extends Service {
 
     @Subscribe
     public void on(EventSystemVisible event) {
-        if (event.getSysName().startsWith("lauv"))
-            AcclBus.connect(event.getSysName());
-
-        Log.v(TAG, event.getSysName()+" became visible");
+        Log.v(TAG, event.getSys().getName()+" became visible");
     }
 
     @Subscribe
     public void on(EventSystemConnected event) {
 
-        Log.v(TAG, event.getSysName() + " is now connected");
+        Log.v(TAG, event.getSys().getName() + " is now connected");
 
         if (selectedSystem == null) {
-            Log.v(TAG, "selecting " + event.getSysName() + " as main system");
-            selectedSystem = new EventMainSystemSelected(event.getSysName());
+            Log.v(TAG, "selecting " + event.getSys().getName() + " as main system");
+            selectedSystem = new EventMainSystemSelected(event.getSys());
             AcclBus.post(selectedSystem);
         }
     }
