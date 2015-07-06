@@ -10,6 +10,8 @@ import java.util.TimerTask;
 import pt.lsts.accl.event.EventSystemConnected;
 import pt.lsts.accl.event.EventSystemDisconnected;
 import pt.lsts.accl.event.EventSystemVisible;
+import pt.lsts.accl.sys.Sys;
+import pt.lsts.accl.sys.SysList;
 import pt.lsts.imc.Announce;
 import pt.lsts.imc.Heartbeat;
 import pt.lsts.imc.IMCMessage;
@@ -25,6 +27,8 @@ public class AcclBus {
 	private static Bus busInstance = null;
 	private static ImcAdapter imcInstance = null;
 	private static HashSet<Integer> registeredListeners = new HashSet<Integer>();
+	private static Sys activeSys = null;
+	private static ArrayList<Sys> systemList = new ArrayList<Sys>();
 
 	private synchronized static Bus bus() {
 		if (busInstance == null) {
@@ -49,29 +53,34 @@ public class AcclBus {
 	public synchronized static void bind(String localname, int localport) {
 		if (imcInstance != null)
 			imcInstance.stop();
-
 		imcInstance = new AcclBus.ImcAdapter(localname, localport);
 	}
 
+/*
 	/**
 	 * Start sending {@link pt.lsts.imc.Heartbeat} to a system
 	 * @param system The name of the system to connect to
 	 */
+/*
 	public static void connect(String system) {
 		if (imcInstance == null)			
 			return;
 		imcInstance.connect(system);		
 	}
-
+*/
+	
+	/*
 	/**
 	 * Stop sending {@link pt.lsts.imc.Heartbeat} to a system
 	 * @param system The name of the system to be disconnected
 	 */
+	/*
 	public static void disconnect(String system) {
 		if (imcInstance == null)			
 			return;
 		imcInstance.disconnect(system);
 	}
+	*/
 
 
 	/**
@@ -120,6 +129,7 @@ public class AcclBus {
 		private LinkedHashSet<String> systemsToConnectTo = new LinkedHashSet<String>();
 		private LinkedHashSet<String> systemsConnected = new LinkedHashSet<String>();
 		private LinkedHashMap<String, Announce> lastAnnounce = new LinkedHashMap<String, Announce>();
+		private SysList sysList = new SysList();
 
 		private Timer timer = new Timer(true);
 
@@ -133,9 +143,9 @@ public class AcclBus {
 
 				@Override
 				public void run() {
-					synchronized (systemsToConnectTo) {
-						for (String s : systemsToConnectTo)
-							imc.sendMessage(s, new Heartbeat());					
+					synchronized (sysList) {
+						for (Sys sys : sysList.getList())
+							imc.sendMessage(sys.getName(), new Heartbeat());
 					}	
 				}
 			};
@@ -144,14 +154,8 @@ public class AcclBus {
 
 				@Override
 				public void run() {
-					ArrayList<Announce> announces = new ArrayList<Announce>();
-					announces.addAll(lastAnnounce.values());
-
-					for (Announce a : announces) {
-						if (a.getAgeInSeconds() > 60) {
-							lastAnnounce.remove(a.getSourceName());
-							AcclBus.post(new EventSystemDisconnected(a.getSourceName()));
-						}
+					synchronized (sysList) {
+						sysList.clearInnactiveSys();
 					}
 				}
 			};
@@ -165,6 +169,7 @@ public class AcclBus {
 			imc.stop();
 		}
 
+/*
 		public void connect(String system) {
 			synchronized (systemsToConnectTo) {
 				systemsToConnectTo.add(system);
@@ -176,37 +181,49 @@ public class AcclBus {
 				systemsToConnectTo.remove(system);
 			}
 		}
+*/
 
 		public boolean send(IMCMessage msg, String destination) {
 			return imc.sendMessage(destination, msg);
+			/**
+			 * !!! TODO: add more generic send that reccur on this one, like:
+			 * sendMsgToSys, sendMsgToCCUs, sendMsgToALL, sendMsgToVehicles, ....
+			**/
 		}
 
 		@Override
 		public void onMessage(MessageInfo info, IMCMessage msg) {
-
+			// !!! TODO: scann all types of messages and post its specific type.
+			// 		devs can they add listenner and receive such messages
+			// Have different classes that handle all generic status messages:
+			// position(EstState), speeds, FuelLevel, pathcontrolstate, maneuvercontrolstate, ...
 			String source = msg.getSourceName();
 			if (msg.getMgid() == Announce.ID_STATIC) {
 				if (msg.getSrc() == imc.getLocalId())
 					return;
-				Announce before;
-				synchronized (lastAnnounce) {
-					before = lastAnnounce.get(source);
-					lastAnnounce.put(source, (Announce)msg);	
+				Announce announceMsg = (Announce) msg;
+				Sys sys = new Sys(announceMsg);
+				
+				synchronized (sysList) {
+					if (!sysList.contains(sys)){//add new system
+						sysList.addSys(sys);
+						AcclBus.post(new EventSystemVisible(sys));
+					}
 				}
-
-				if (before == null)
-					AcclBus.post(new EventSystemVisible(source));
+					
 			}
-			else {
+			else {// !!! TODO: figure out what this else does
+				/*
 				synchronized (systemsConnected) {
 					if (!systemsConnected.contains(source)) {
 						systemsConnected.add(source);
 						AcclBus.post(new EventSystemConnected(source));
 					}
-				}			
+				}
+				*/			
 			}
 
-			AcclBus.post(msg);
+			AcclBus.post(msg);//have a generic method with IMCMessage or a specific one with its type?
 		}
 
 		@Override
@@ -214,4 +231,13 @@ public class AcclBus {
 			stop();
 		}
 	}
+
+	public static void setActiveSys(Sys sys){
+		AcclBus.activeSys = sys;
+	}
+
+	public static Sys getActiveSys(){
+		return AcclBus.activeSys;
+	}
+
 }
