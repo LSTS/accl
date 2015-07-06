@@ -5,6 +5,9 @@ import pt.lsts.imc.Announce;
 import pt.lsts.imc.IMCMessage;
 
 /**
+ * Class that represents the generic IMC System.
+ * Specific systems can extend this class for better and more specific fields and methods.
+ *
  * Created by jloureiro on 02-07-2015.
  */
 public class Sys {
@@ -14,15 +17,29 @@ public class Sys {
     private String ipAddress;
     private IMCMessage lastMsgReceived;
 
+    /**
+     *  Build a sys from its Announce Message
+     * @param announceMsg the Announce of the system
+     */
     public Sys(Announce announceMsg){
         this(announceMsg.getOwner(), announceMsg.getSysName(), announceMsg.getSysType(), IMCUtils.getAnnounceIMCAddressPort(announceMsg)[0]);
         setLastMsgReceived(announceMsg);
     }
 
+    /**
+     * Necessary empty construtor to extend class
+     */
     public Sys(){
 
     }
 
+    /**
+     * Generic Construtor specifying each field
+     * @param ID System ID
+     * @param name System Name to be displayed. Also used in {@link pt.lsts.imc.net.IMCProtocol#sendMessage(String, IMCMessage)}
+     * @param sysType The type of sys, can be used to cast to subclasses of this class
+     * @param ipAddress The IP Address used to communicate with system
+     */
     public Sys(int ID, String name, Announce.SYS_TYPE sysType, String ipAddress){
         setID(ID);
         setName(name);
@@ -66,6 +83,10 @@ public class Sys {
         return getLastMsgReceived().getTimestampMillis();
     }
 
+    /**
+     * Used {@link IMCMessage#getAgeInSeconds()}
+     * @return seconds since last message received
+     */
     public double getLastMsgReceivedAgeInSeconds() {
         return getLastMsgReceived().getAgeInSeconds();
     }
@@ -78,6 +99,11 @@ public class Sys {
         this.lastMsgReceived = lastMsgReceived;
     }
 
+    /**
+     * Compare this system with another
+     * @param sys the system to compare with
+     * @return true if same system, false otherwise
+     */
     public boolean isEqualTo(Sys sys){
         if (sys.getName().equals(this.getName())
             && sys.getIpAddress().equals(this.getIpAddress())
