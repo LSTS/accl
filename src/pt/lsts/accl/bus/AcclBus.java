@@ -25,10 +25,10 @@ import com.squareup.otto.ThreadEnforcer;
 public class AcclBus {
 
 	private static Bus busInstance = null;
-	private static ImcAdapter imcInstance = null;
+	private static ImcAdapter imcAdapter = null;
 	private static HashSet<Integer> registeredListeners = new HashSet<Integer>();
-	private static Sys activeSys = null;
-	private static ArrayList<Sys> systemList = new ArrayList<Sys>();
+	private static Sys mainSys = null;
+	private static ArrayList<Sys> sysList = new ArrayList<Sys>();
 
 	private synchronized static Bus bus() {
 		if (busInstance == null) {
@@ -51,37 +51,10 @@ public class AcclBus {
 	 * @param localport The port to bind to. 
 	 */
 	public synchronized static void bind(String localname, int localport) {
-		if (imcInstance != null)
-			imcInstance.stop();
-		imcInstance = new AcclBus.ImcAdapter(localname, localport);
+		if (imcAdapter != null)
+			imcAdapter.stop();
+		imcAdapter = new AcclBus.ImcAdapter(localname, localport);
 	}
-
-/*
-	/**
-	 * Start sending {@link pt.lsts.imc.Heartbeat} to a system
-	 * @param system The name of the system to connect to
-	 */
-/*
-	public static void connect(String system) {
-		if (imcInstance == null)			
-			return;
-		imcInstance.connect(system);		
-	}
-*/
-	
-	/*
-	/**
-	 * Stop sending {@link pt.lsts.imc.Heartbeat} to a system
-	 * @param system The name of the system to be disconnected
-	 */
-	/*
-	public static void disconnect(String system) {
-		if (imcInstance == null)			
-			return;
-		imcInstance.disconnect(system);
-	}
-	*/
-
 
 	/**
 	 * Post an event to the application
@@ -106,51 +79,52 @@ public class AcclBus {
 	 * Unregister a component with ACCL
 	 * @param pojo An object that wishes to stop receiving events
 	 */
-	public static synchronized void forget(Object pojo) {
+	public static synchronized void unregister(Object pojo) {
 		bus().unregister(pojo);
 		registeredListeners.remove(pojo.hashCode());
 
-		if (registeredListeners.isEmpty() && imcInstance != null) {
-			imcInstance.stop();
-			imcInstance = null;
+		if (registeredListeners.isEmpty() && imcAdapter != null) {
+			imcAdapter.stop();
+			imcAdapter = null;
 		}
 
 	}
 
-	public static boolean send(IMCMessage msg, String destination) {
-		if (imcInstance == null)
+	public static boolean sendMessage(IMCMessage msg, String destinationName) {
+		if (imcAdapter == null)
 			return false;
-		return imcInstance.send(msg, destination);
+		return imcAdapter.sendMessage(msg, destinationName);
+	}
+
+	public static boolean sendMessage(IMCMessage msg, Sys destination){
+		return sendMessage(msg, destination.getName());
 	}
 
 	private static class ImcAdapter implements MessageListener<MessageInfo, IMCMessage> {
 
-		private IMCProtocol imc;
-		private LinkedHashSet<String> systemsToConnectTo = new LinkedHashSet<String>();
-		private LinkedHashSet<String> systemsConnected = new LinkedHashSet<String>();
-		private LinkedHashMap<String, Announce> lastAnnounce = new LinkedHashMap<String, Announce>();
+		private IMCProtocol imcProtocol;
 		private SysList sysList = new SysList();
 
 		private Timer timer = new Timer(true);
 
 		protected ImcAdapter(String name, int port) {
-			imc = new IMCProtocol(name, port);
+			imcProtocol = new IMCProtocol(name, port);
 			// Do not connect automatically
-			imc.setAutoConnect(":never:");
-			imc.addMessageListener(this);
+			imcProtocol.setAutoConnect(":never:");
+			imcProtocol.addMessageListener(this);
 
-			TimerTask sendHeartbeat = new TimerTask() {
+			TimerTask sendHeartbeats = new TimerTask() {
 
 				@Override
 				public void run() {
 					synchronized (sysList) {
 						for (Sys sys : sysList.getList())
-							imc.sendMessage(sys.getName(), new Heartbeat());
+							imcProtocol.sendMessage(sys.getName(), new Heartbeat());
 					}	
 				}
 			};
 			
-			TimerTask clearAnnounces = new TimerTask() {
+			TimerTask clearInnactiveSys = new TimerTask() {
 
 				@Override
 				public void run() {
@@ -160,31 +134,17 @@ public class AcclBus {
 				}
 			};
 			
-			timer.scheduleAtFixedRate(sendHeartbeat, 1000, 1000);
-			timer.scheduleAtFixedRate(clearAnnounces, 30000, 30000);
+			timer.scheduleAtFixedRate(sendHeartbeats, 1000, 1000);
+			timer.scheduleAtFixedRate(clearInnactiveSys, 30000, 30000);
 		}
 
 		public void stop() {
 			timer.cancel();
-			imc.stop();
+			imcProtocol.stop();
 		}
 
-/*
-		public void connect(String system) {
-			synchronized (systemsToConnectTo) {
-				systemsToConnectTo.add(system);
-			}
-		}
-
-		public void disconnect(String system) {
-			synchronized (systemsToConnectTo) {
-				systemsToConnectTo.remove(system);
-			}
-		}
-*/
-
-		public boolean send(IMCMessage msg, String destination) {
-			return imc.sendMessage(destination, msg);
+		public boolean sendMessage(IMCMessage msg, String destination) {
+			return imcProtocol.sendMessage(destination, msg);
 			/**
 			 * !!! TODO: add more generic send that reccur on this one, like:
 			 * sendMsgToSys, sendMsgToCCUs, sendMsgToALL, sendMsgToVehicles, ....
@@ -199,7 +159,7 @@ public class AcclBus {
 			// position(EstState), speeds, FuelLevel, pathcontrolstate, maneuvercontrolstate, ...
 			String source = msg.getSourceName();
 			if (msg.getMgid() == Announce.ID_STATIC) {
-				if (msg.getSrc() == imc.getLocalId())
+				if (msg.getSrc() == imcProtocol.getLocalId())
 					return;
 				Announce announceMsg = (Announce) msg;
 				Sys sys = new Sys(announceMsg);
@@ -212,15 +172,11 @@ public class AcclBus {
 				}
 					
 			}
-			else {// !!! TODO: figure out what this else does
-				/*
-				synchronized (systemsConnected) {
-					if (!systemsConnected.contains(source)) {
-						systemsConnected.add(source);
-						AcclBus.post(new EventSystemConnected(source));
-					}
-				}
-				*/			
+			else {//not an announce just update last msg for now
+				synchronized (sysList) {
+					Sys sys = sysList.getSys(msg.getSourceName());
+					sys.setLastMsgReceived(msg);
+				}	
 			}
 
 			AcclBus.post(msg);//have a generic method with IMCMessage or a specific one with its type?
@@ -232,12 +188,12 @@ public class AcclBus {
 		}
 	}
 
-	public static void setActiveSys(Sys sys){
-		AcclBus.activeSys = sys;
+	public static void setMainSys(Sys sys){
+		AcclBus.mainSys = sys;
 	}
 
-	public static Sys getActiveSys(){
-		return AcclBus.activeSys;
+	public static Sys getMainSys(){
+		return AcclBus.mainSys;
 	}
 
 }

@@ -30,6 +30,15 @@ public class SysList {
 		}
 	}
 
+	public Sys getSys(String sysName){
+		for (int i=0;i<sysArrayList.size();i++){
+			if (sysArrayList.get(i).getName().equals(sysName)){
+				return sysArrayList.get(i);
+			}
+		}
+		return null;
+	}
+
 	public Sys containsSys(Sys sys){
 		for (int i=0;i<sysArrayList.size();i++){
 			if (sysArrayList.get(i).isEqualTo(sys)){
