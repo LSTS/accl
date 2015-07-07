@@ -1,8 +1,11 @@
 package pt.lsts.accl.sys;
 
+
 import pt.lsts.accl.util.IMCUtils;
+
 import pt.lsts.imc.Announce;
 import pt.lsts.imc.IMCMessage;
+
 
 /**
  * Class that represents the generic IMC System.
@@ -47,38 +50,95 @@ public class Sys {
         setIpAddress(ipAddress);
     }
 
+    /**
+     * Get the Source of this system ID
+     * @return The Source ID
+     */
     public int getID() {
         return ID;
     }
 
+    /**
+     * Set the Source of this system ID
+     * @param ID The Source ID
+     */
     public void setID(int ID) {
         this.ID = ID;
     }
 
+    /**
+     * Get the display name of this System
+     * @return The Name of this system
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the display name of this System
+     * @param name The new Name for this system
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Set System Type:
+     * CCU(0),
+     * HUMANSENSOR(1),
+     * UUV(2),
+     * USV(3),
+     * UAV(4),
+     * UGV(5),
+     * STATICSENSOR(6),
+     * MOBILESENSOR(7),
+     * WSN(8);
+     * @return The Announce.SYS_TYPE of this System
+     * @see pt.lsts.imc.Announce.SYS_TYPE
+     */
     public Announce.SYS_TYPE getSysType() {
         return sysType;
     }
 
+    /**
+     * Set System Type:
+     * CCU(0),
+     * HUMANSENSOR(1),
+     * UUV(2),
+     * USV(3),
+     * UAV(4),
+     * UGV(5),
+     * STATICSENSOR(6),
+     * MOBILESENSOR(7),
+     * WSN(8);
+     * @param sysType The Announce.SYS_TYPE of this System
+     * @see pt.lsts.imc.Announce.SYS_TYPE
+     */
     public void setSysType(Announce.SYS_TYPE sysType) {
         this.sysType = sysType;
     }
 
+    /**
+     * Get the Addressable IP Address of this System
+     * Usually an IPv4 address
+     * @return the IP Address
+     */
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * Set the IP address for this System
+     * @param ipAddress The new IP address for this system
+     */
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * TimestampMillis of the last received IMCMessage from this system.
+     * @return timestamp millis
+     */
     public long getLastMsgReceivedTime() {
         return getLastMsgReceived().getTimestampMillis();
     }
@@ -91,6 +151,9 @@ public class Sys {
         return (System.currentTimeMillis()-getLastMsgReceived().getTimestampMillis())/1000;
     }
 
+    /**
+     * @return The last IMCMessage with generic type sent by this system
+    **/
     public IMCMessage getLastMsgReceived() {
         return lastMsgReceived;
     }

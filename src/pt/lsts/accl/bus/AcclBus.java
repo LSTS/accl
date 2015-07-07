@@ -1,17 +1,12 @@
 package pt.lsts.accl.bus;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import pt.lsts.accl.event.EventSystemConnected;
 import pt.lsts.accl.event.EventSystemDisconnected;
 import pt.lsts.accl.event.EventSystemVisible;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.sys.SysList;
+
 import pt.lsts.imc.Announce;
 import pt.lsts.imc.Heartbeat;
 import pt.lsts.imc.IMCMessage;
@@ -19,8 +14,16 @@ import pt.lsts.imc.net.IMCProtocol;
 import pt.lsts.neptus.messages.listener.MessageInfo;
 import pt.lsts.neptus.messages.listener.MessageListener;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
+
 
 public class AcclBus {
 
@@ -152,13 +155,13 @@ public class AcclBus {
 
 		@Override
 		public void onMessage(MessageInfo info, IMCMessage msg) {
-			// !!! TODO: scann all types of messages and post its specific type.
-			// 		devs can they add listenner and receive such messages
-			// Have different classes that handle all generic status messages:
-			// position(EstState), speeds, FuelLevel, pathcontrolstate, maneuvercontrolstate, ...
+			// !!! TODO: scann new types of messages to keep up the status of the vehicles and other system
+			// messages to scan: EstimatedState, True/IndicatedSpeeds, Path/PlanControlState ...
+			// Maybe seperate this scanning in different methods like in ASA.
+			
 			String source = msg.getSourceName();
 			int ID = msg.getSrc();
-			if (msg.getMgid() == Announce.ID_STATIC) {
+			if (msg.getMgid() == Announce.ID_STATIC) {//process Announce create new Sys and add to SysList
 				synchronized (sysList.getList()){
 					if (sysList.contains(ID)==false){//add new system
 						if (ID == imcProtocol.getLocalId())
@@ -171,9 +174,11 @@ public class AcclBus {
 					}
 				}
 			}
+
+			//updated lastMsgReceived:
 			Sys sys = sysList.getSys(ID);
 			if (sys!=null)
-				sys.setLastMsgReceived(msg);//updated lastMsgReceived
+				sys.setLastMsgReceived(msg);
 
 			// send specific and generic IMC Message types:
 			Class c = msg.getClass();
@@ -186,6 +191,7 @@ public class AcclBus {
 			stop();
 		}
 	}
+
 
 	public static void setMainSys(Sys sys){
 		AcclBus.mainSys = sys;
