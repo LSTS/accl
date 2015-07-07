@@ -28,7 +28,7 @@ public class AcclBus {
 	private static ImcAdapter imcAdapter = null;
 	private static HashSet<Integer> registeredListeners = new HashSet<Integer>();
 	private static Sys mainSys = null;
-	private static ArrayList<Sys> sysList = new ArrayList<Sys>();
+	public static SysList sysList = new SysList();
 
 	private synchronized static Bus bus() {
 		if (busInstance == null) {
@@ -103,7 +103,6 @@ public class AcclBus {
 	private static class ImcAdapter implements MessageListener<MessageInfo, IMCMessage> {
 
 		private IMCProtocol imcProtocol;
-		private SysList sysList = new SysList();
 
 		private Timer timer = new Timer(true);
 
@@ -117,7 +116,7 @@ public class AcclBus {
 
 				@Override
 				public void run() {
-					synchronized (sysList) {
+					synchronized (sysList.getList()) {
 						for (Sys sys : sysList.getList())
 							imcProtocol.sendMessage(sys.getName(), new Heartbeat());
 					}	
@@ -128,7 +127,7 @@ public class AcclBus {
 
 				@Override
 				public void run() {
-					synchronized (sysList) {
+					synchronized (sysList.getList()) {
 						sysList.clearInnactiveSys();
 					}
 				}
@@ -158,28 +157,28 @@ public class AcclBus {
 			// Have different classes that handle all generic status messages:
 			// position(EstState), speeds, FuelLevel, pathcontrolstate, maneuvercontrolstate, ...
 			String source = msg.getSourceName();
+			int ID = msg.getSrc();
 			if (msg.getMgid() == Announce.ID_STATIC) {
-				if (msg.getSrc() == imcProtocol.getLocalId())
-					return;
-				Announce announceMsg = (Announce) msg;
-				Sys sys = new Sys(announceMsg);
-				
-				synchronized (sysList) {
-					if (!sysList.contains(sys)){//add new system
+				synchronized (sysList.getList()){
+					if (sysList.contains(ID)==false){//add new system
+						if (ID == imcProtocol.getLocalId())
+							return;
+						Announce announceMsg = (Announce) msg;
+						Sys sys = new Sys(announceMsg);
+							
 						sysList.addSys(sys);
 						AcclBus.post(new EventSystemVisible(sys));
 					}
 				}
-					
 			}
-			else {//not an announce just update last msg for now
-				synchronized (sysList) {
-					Sys sys = sysList.getSys(msg.getSourceName());
-					sys.setLastMsgReceived(msg);
-				}	
-			}
+			Sys sys = sysList.getSys(ID);
+			if (sys!=null)
+				sys.setLastMsgReceived(msg);//updated lastMsgReceived
 
-			AcclBus.post(msg);//have a generic method with IMCMessage or a specific one with its type?
+			// send specific and generic IMC Message types:
+			Class c = msg.getClass();
+			AcclBus.post((c.cast(msg)));
+			AcclBus.post(msg);
 		}
 
 		@Override

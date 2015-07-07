@@ -1,10 +1,14 @@
 package pt.lsts.accl.sys;
 
 import pt.lsts.accl.util.IMCUtils;
+import pt.lsts.accl.bus.AcclBus;
+import pt.lsts.accl.event.EventSystemDisconnected;
+
 import pt.lsts.imc.Announce;
 import pt.lsts.imc.IMCMessage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The List of Systems active.
@@ -17,7 +21,7 @@ public class SysList {
 	/**
 	 * The ArrayList with the systems itself upon the methods are applied.
 	 */
-	private ArrayList<Sys> sysArrayList;
+	public ArrayList<Sys> sysArrayList;
 
 	public SysList(){
 		sysArrayList = new ArrayList<Sys>();
@@ -27,7 +31,7 @@ public class SysList {
 	 * Add a system to the List
 	 * @param sys The system to be added
 	 */
-	public void addSys(Sys sys){
+	public synchronized void addSys(Sys sys){
 		sysArrayList.add(sys);
 	}
 
@@ -35,13 +39,14 @@ public class SysList {
 	 * Remove a system if it exists. Usually used automatically by a periodic task if no message has been received from this system in a pre established amount of time.
 	 * @param sys The system to be removed
 	 */
-	public void removeSys(Sys sys){
-		for (int i=0;i<sysArrayList.size();i++){
-			if (sysArrayList.get(i).isEqualTo(sys)){
-				sysArrayList.remove(i);
-				return;
-			}
-		}
+	public synchronized void removeSys(Sys sys){
+		Iterator<Sys> iterator = sysArrayList.iterator();
+        while (iterator.hasNext()){
+            Sys sysIt = iterator.next();
+            if (sysIt.equals(sys))
+                iterator.remove();
+            //post event
+        }
 	}
 
 	/**
@@ -49,13 +54,29 @@ public class SysList {
 	 * @param sysName The name of the system to search for.
 	 * @return The sys, null if it doesn't exist.
 	 */
-	public Sys getSys(String sysName){
-		for (int i=0;i<sysArrayList.size();i++){
-			if (sysArrayList.get(i).getName().equals(sysName)){
-				return sysArrayList.get(i);
-			}
-		}
-		return null;
+	public synchronized Sys getSys(String sysName){
+		Iterator<Sys> iterator = sysArrayList.iterator();
+        while (iterator.hasNext()){
+            Sys sysIt = iterator.next();
+            if (sysIt.getName().equals(sysName))
+                return sysIt;
+        }
+        return null;
+	}
+
+	/**
+	 * Search for a system by its ID.
+	 * @param sysName The name of the system to search for.
+	 * @return The sys, null if it doesn't exist.
+	 */
+	public synchronized Sys getSys(int ID){
+		Iterator<Sys> iterator = sysArrayList.iterator();
+        while (iterator.hasNext()){
+            Sys sysIt = iterator.next();
+            if (sysIt.getID()==ID)
+                return sysIt;
+        }
+        return null;
 	}
 
 	/**
@@ -63,13 +84,15 @@ public class SysList {
 	 * @param sys The system to search for.
 	 * @return The system, null if it doesn't exist.
 	 */
-	public Sys containsSys(Sys sys){
-		for (int i=0;i<sysArrayList.size();i++){
-			if (sysArrayList.get(i).isEqualTo(sys)){
-				return sysArrayList.get(i);
-			}
-		}
-		return null;
+	public synchronized Sys containsSys(Sys sys){
+		Iterator<Sys> iterator = sysArrayList.iterator();
+        while (iterator.hasNext()){
+            Sys sysIt = iterator.next();
+            System.out.println("sysIt: "+sysIt.toString()+"\nsys: "+sys.toString());
+            if (sysIt.equals(sys))
+                return sysIt;
+        }
+        return null;
 	}
 
 	/**
@@ -77,13 +100,14 @@ public class SysList {
 	 * @param sys The system to search for.
 	 * @return true if system exists, false otherwise.
 	 */
-	public boolean contains(Sys sys){
-		for (int i=0;i<sysArrayList.size();i++){
-			if (sysArrayList.get(i).isEqualTo(sys)){
-				return true;
-			}
-		}
-		return false;
+	public synchronized boolean contains(int ID){
+		Iterator<Sys> iterator = sysArrayList.iterator();
+        while (iterator.hasNext()){
+            Sys sysIt = iterator.next();
+            if (sysIt.getID()==ID)
+                return true;
+        }
+        return false;
 	}
 
 	/**
@@ -97,12 +121,15 @@ public class SysList {
 	/**
 	 * Remove system which haven't received a message in over 60seconds/1min from the list.
 	 */
-	public void clearInnactiveSys(){
-		for (Sys sys : sysArrayList) {
-			if (sys.getLastMsgReceivedAgeInSeconds() > 60) {
-				removeSys(sys);
-			}
-		}
+	public synchronized void clearInnactiveSys(){
+		Iterator<Sys> iterator = sysArrayList.iterator();
+        while (iterator.hasNext()){
+        	Sys sysIt = iterator.next();
+            if (sysIt.getLastMsgReceivedAgeInSeconds()>90){
+            	AcclBus.post(new EventSystemDisconnected(sysIt));
+                iterator.remove();
+            }
+        }
 	}
 
 }
