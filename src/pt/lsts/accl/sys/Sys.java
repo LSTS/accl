@@ -22,7 +22,7 @@ public class Sys {
      * @param announceMsg the Announce of the system
      */
     public Sys(Announce announceMsg){
-        this(announceMsg.getOwner(), announceMsg.getSysName(), announceMsg.getSysType(), IMCUtils.getAnnounceIMCAddressPort(announceMsg)[0]);
+        this(announceMsg.getSrc(), announceMsg.getSysName(), announceMsg.getSysType(), IMCUtils.getAnnounceIMCAddressPort(announceMsg)[0]);
         setLastMsgReceived(announceMsg);
     }
 
@@ -88,7 +88,7 @@ public class Sys {
      * @return seconds since last message received
      */
     public double getLastMsgReceivedAgeInSeconds() {
-        return getLastMsgReceived().getAgeInSeconds();
+        return (System.currentTimeMillis()-getLastMsgReceived().getTimestampMillis())/1000;
     }
 
     public IMCMessage getLastMsgReceived() {
@@ -100,14 +100,12 @@ public class Sys {
     }
 
     /**
-     * Compare this system with another
+     * Compare this system with another. compare using ID
      * @param sys the system to compare with
      * @return true if same system, false otherwise
      */
-    public boolean isEqualTo(Sys sys){
-        if (sys.getName().equals(this.getName())
-            && sys.getIpAddress().equals(this.getIpAddress())
-            && sys.getID()==this.getID())
+    public boolean equals(Sys sys){
+        if (sys.getID()==this.getID())
             return true;
         return false;
     }
