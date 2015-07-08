@@ -1,8 +1,6 @@
 package pt.lsts.accl.bus;
 
 
-import pt.lsts.accl.event.EventSystemConnected;
-import pt.lsts.accl.event.EventSystemDisconnected;
 import pt.lsts.accl.event.EventSystemVisible;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.sys.SysList;
@@ -14,15 +12,13 @@ import pt.lsts.imc.net.IMCProtocol;
 import pt.lsts.neptus.messages.listener.MessageInfo;
 import pt.lsts.neptus.messages.listener.MessageListener;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
+
 
 /**
  * The Singleton class accessible and used by the application.

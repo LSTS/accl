@@ -3,6 +3,7 @@ package pt.lsts.accl.event;
 
 import pt.lsts.accl.sys.Sys;
 
+
 /**
  *
  * Event generated when a new system becomes visible
@@ -37,4 +38,5 @@ public class EventSystemVisible extends AbstractACCLEvent {
 	public String toString() {
 		return super.toString()+ " - "+sys.getName()+" is now visible";
 	}
+
 }

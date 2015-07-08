@@ -3,6 +3,7 @@ package pt.lsts.accl.event;
 
 import pt.lsts.accl.sys.Sys;
 
+
 /**
  *
  * Event generated when a new System is connected.
@@ -38,4 +39,5 @@ public class EventSystemConnected extends AbstractACCLEvent {
 	public String toString() {
 		return super.toString()+ " - "+sys.getName()+" connected";
 	}
+
 }

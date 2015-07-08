@@ -2,11 +2,7 @@ package pt.lsts.accl.util;
 
 
 import pt.lsts.imc.IMCMessage;
-import pt.lsts.imc.PlanDB;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 

@@ -1,5 +1,6 @@
 package pt.lsts.accl.event;
 
+
 import java.util.Date;
 
 
@@ -38,4 +39,5 @@ public abstract class AbstractACCLEvent {
 	public String toString() {
 		return "["+new Date((long)(timestamp * 1000))+"] "+getClass().getSimpleName();
 	}
+
 }

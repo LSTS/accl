@@ -1,8 +1,6 @@
 package pt.lsts.accl.util.pos;
 
 
-import pt.lsts.accl.util.pos.LatLng;
-
 import pt.lsts.imc.EstimatedState;
 
 

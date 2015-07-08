@@ -3,6 +3,7 @@ package pt.lsts.accl.event;
 
 import pt.lsts.accl.sys.Sys;
 
+
 /**
  *
  * Event generated when user or application selects a System as Main/Active
@@ -36,5 +37,6 @@ public class EventMainSystemSelected extends AbstractACCLEvent {
 	@Override
 	public String toString() {
 		return super.toString() + " - "+sys.getName()+" selected as Main system";
-	}	
+	}
+
 }

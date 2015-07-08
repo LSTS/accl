@@ -3,6 +3,7 @@ package pt.lsts.accl.event;
 
 import pt.lsts.accl.sys.Sys;
 
+
 /**
  *
  * Event generated when an update is made available in a system
@@ -37,4 +38,5 @@ public class EventSystemUpdated extends AbstractACCLEvent {
 	public String toString() {
 		return super.toString() + " - "+sys.getName()+" updated";
 	}	
+
 }

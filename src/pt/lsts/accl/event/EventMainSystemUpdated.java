@@ -3,6 +3,7 @@ package pt.lsts.accl.event;
 
 import pt.lsts.accl.sys.Sys;
 
+
 /**
  *
  * Event generated when new information is available on the Main/Active selected System
@@ -37,4 +38,5 @@ public class EventMainSystemUpdated extends AbstractACCLEvent {
 	public String toString() {
 		return super.toString() + " - "+sys.getName()+" (main Sys) updated";
 	}	
+
 }
