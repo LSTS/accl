@@ -66,7 +66,7 @@ public class SysList {
 
 	/**
 	 * Search for a system by its ID.
-	 * @param sysName The name of the system to search for.
+	 * @param ID The ID of the system to search for.
 	 * @return The sys, null if it doesn't exist.
 	 */
 	public synchronized Sys getSys(int ID){
@@ -97,7 +97,7 @@ public class SysList {
 
 	/**
 	 * Find if a system exists and return a boolean.
-	 * @param sys The system to search for.
+	 * @param ID The system ID to search for.
 	 * @return true if system exists, false otherwise.
 	 */
 	public synchronized boolean contains(int ID){

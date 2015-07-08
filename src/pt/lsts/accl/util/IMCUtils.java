@@ -70,16 +70,16 @@ public class IMCUtils {
 		return res;//none reachable, return last one
 	}
 
-  /**
+  /*
    * !!! TODO
-  **/
+  */
 	public static boolean isMsgFromActive(IMCMessage msg) {
-    return false;
+    	return false;
 	}
 
-  /**
+  /*
    * !!! TODO
-  **/
+  */
   public static void updateSysLastMsgReceived(IMCMessage msg){
 
   }
