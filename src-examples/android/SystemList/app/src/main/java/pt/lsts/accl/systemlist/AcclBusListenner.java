@@ -33,14 +33,13 @@ public class AcclBusListenner extends Service {
 
     @Subscribe
     public void on(EventSystemVisible event) {
-        Log.v(TAG, event.getSys().getName()+" became visible");
+        //Log.v(TAG, event.toString());
         AcclBus.post(event.getSys());
     }
 
     @Subscribe
     public void on(EventSystemConnected event) {
-
-        Log.v(TAG, event.getSys().getName() + " is now connected");
+        //Log.v(TAG, event.toString());
 
         if (selectedSystem == null) {
             Log.v(TAG, "selecting " + event.getSys().getName() + " as main system");
@@ -56,7 +55,7 @@ public class AcclBusListenner extends Service {
 
     @Subscribe
     public void on(EventSystemDisconnected event) {
-        Log.v(TAG, event.toString());
+        //Log.v(TAG, event.toString());
     }
 
     @Override

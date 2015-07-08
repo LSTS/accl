@@ -25,7 +25,7 @@ public class EventSystemDisconnected extends AbstractACCLEvent {
 	@Override
 	public String toString() {
 		// includes time since last message
-		return super.toString()+ " - "+sys.getName()+ " - last message in "+sys.getLastMsgReceivedAgeInSeconds();
+		return super.toString()+ " - "+sys.getName()+ " disconnected - last message in "+sys.getLastMsgReceivedAgeInSeconds();
 	}
 
 }

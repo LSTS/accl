@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 
 import pt.lsts.accl.bus.AcclBus;
+import pt.lsts.accl.event.EventSystemDisconnected;
 import pt.lsts.accl.event.EventSystemVisible;
 import pt.lsts.accl.sys.Sys;
 
@@ -45,13 +46,26 @@ public class SystemListFragment extends Fragment {
 
     @Subscribe
     public void on(EventSystemVisible event) {
-        //arrayAdapter.add(event.getSysName());
+        Log.v(TAG, event.toString());
+        final EventSystemVisible eventFinal = event;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                arrayAdapter.add(eventFinal.getSys().getName());
+            }
+        });
     }
 
     @Subscribe
-    public void onNewSys(Sys sys){
-        Log.v(TAG, "newSysDetected: " + sys.getName());
-        arrayAdapter.add(sys.getName());
+    public void on(EventSystemDisconnected event) {
+        Log.v(TAG, event.toString());
+        final EventSystemDisconnected eventFinal = event;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                arrayAdapter.remove(eventFinal.getSys().getName());
+            }
+        });
     }
 
     public void initListView(){

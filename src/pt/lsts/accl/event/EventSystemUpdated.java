@@ -21,6 +21,6 @@ public class EventSystemUpdated extends AbstractACCLEvent {
 	
 	@Override
 	public String toString() {
-		return super.toString() + " - "+sys.getName();
+		return super.toString() + " - "+sys.getName()+" updated";
 	}	
 }
