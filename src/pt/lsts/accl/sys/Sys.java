@@ -173,7 +173,22 @@ public class Sys {
         return false;
     }
 
-
-
+    /**
+     * Check if the system is a vehicle.
+     * @return true if SYS_TYPE = UUV, USV, UAV or UGV, false otherwise
+    **/
+    public boolean isVehicle(){
+        if (getSysType()==
+                Announce.SYS_TYPE.UUV
+            || getSysType()==
+                Announce.SYS_TYPE.USV
+            || getSysType()==
+                Announce.SYS_TYPE.UAV
+            || getSysType()==
+                Announce.SYS_TYPE.UGV)
+                return true;
+            else
+                return false;
+    }
 
 }
