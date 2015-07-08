@@ -24,7 +24,9 @@ import java.util.TimerTask;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
-
+/**
+ * The Singleton class accessible and used by the application.
+ */
 public class AcclBus {
 
 	private static Bus busInstance = null;
@@ -33,6 +35,16 @@ public class AcclBus {
 	private static Sys mainSys = null;
 	public static SysList sysList = new SysList();
 
+	/**
+	 *
+	 * Create a single, synchronized Bus Instance of Otto Communications.
+	 * Uses com.squareup.otto.Bus and android.os.Looper with com.squareup.otto.ThreadEnforcer.
+	 *
+	 * @return The bus created
+	 *
+	 * @see com.squareup.otto.Bus
+	 * @see com.squareup.otto.ThreadEnforcer
+	 */
 	private synchronized static Bus bus() {
 		if (busInstance == null) {
 			try {
@@ -49,6 +61,7 @@ public class AcclBus {
 	}
 
 	/**
+	 *
 	 * Start listening for IMC messages and start announcing this node
 	 * @param localname The name of this node in the IMC network
 	 * @param localport The port to bind to. 
@@ -60,6 +73,7 @@ public class AcclBus {
 	}
 
 	/**
+	 *
 	 * Post an event to the application
 	 * @param event The event to be posted
 	 */
@@ -69,6 +83,7 @@ public class AcclBus {
 	}
 
 	/**
+	 *
 	 * Register a component with ACCL
 	 * @param pojo An object that wishes to receive events
 	 */
@@ -79,6 +94,7 @@ public class AcclBus {
 	}
 
 	/**
+	 *
 	 * Unregister a component with ACCL
 	 * @param pojo An object that wishes to stop receiving events
 	 */
@@ -93,28 +109,69 @@ public class AcclBus {
 
 	}
 
+	/**
+	 *
+	 * Send and IMCMessage to a destination by its name
+	 * @param msg The IMCMessage to be sent
+	 * @param destinationName String with Destination system display name
+	 * @return false if there's no imcAdpater or msg sending fails, true if msg is sent
+	 */
 	public static boolean sendMessage(IMCMessage msg, String destinationName) {
 		if (imcAdapter == null)
 			return false;
 		return imcAdapter.sendMessage(msg, destinationName);
 	}
 
+	/**
+	 *
+	 * Send and IMCMessage to a destination by its object Sys
+	 * @param msg The IMCMessage to be sent
+	 * @param destination Sys to send msg to
+	 * @return false if there's no imcAdpater or msg sending fails, true if msg is sent
+	 */
 	public static boolean sendMessage(IMCMessage msg, Sys destination){
 		return sendMessage(msg, destination.getName());
+		/*
+		 * !!! TODO: add more generic send that reccur on this one, like:
+		 * sendMsgToSys, sendMsgToCCUs, sendMsgToALL, sendMsgToVehicles, ....
+		*/
 	}
 
+	/**
+	 *
+	 * Class responsabile for initiation of IMCProtocol and listenner and handler of sending and receiving IMCMessages
+	 *
+	 * @see pt.lsts.imc.net.IMCProtocol
+	 * @see pt.lsts.imc.IMCMessage
+	 * @see pt.lsts.neptus.messages.listener.MessageListener
+	 */
 	private static class ImcAdapter implements MessageListener<MessageInfo, IMCMessage> {
 
 		private IMCProtocol imcProtocol;
 
 		private Timer timer = new Timer(true);
 
+		/**
+		 *
+		 * @param name The name given to this System to be sent on IMCMessages Announce.
+		 * @param port the port where IMCMessages will be sent to, sent on IMCMessages Announce.
+		 *
+		 * @see pt.lsts.imc.IMCMessage
+		 * @see pt.lsts.imc.Announce
+		 */
 		protected ImcAdapter(String name, int port) {
 			imcProtocol = new IMCProtocol(name, port);
 			// Do not connect automatically
 			imcProtocol.setAutoConnect(":never:");
 			imcProtocol.addMessageListener(this);
 
+			/**
+			 *
+			 * Task responsabile for sending periodic IMCMessage Heartbeats to other systems so they keep this device alive
+			 *
+			 * @see pt.lsts.imc.IMCMessage
+			 * @see pt.lsts.imc.Heartbeat
+			 */
 			TimerTask sendHeartbeats = new TimerTask() {
 
 				@Override
@@ -125,7 +182,11 @@ public class AcclBus {
 					}	
 				}
 			};
-			
+
+			/**
+			 *
+			 * Task responsabile for periodically eliminate sys from sysList that haven't sent message in over 30seconds
+			 */
 			TimerTask clearInnactiveSys = new TimerTask() {
 
 				@Override
@@ -140,19 +201,39 @@ public class AcclBus {
 			timer.scheduleAtFixedRate(clearInnactiveSys, 30000, 30000);
 		}
 
+		/**
+		 *
+		 * Stop the IMCProtocol and tasks.
+		 *
+		 * @see pt.lsts.imc.net.IMCProtocol
+		 */
 		public void stop() {
 			timer.cancel();
 			imcProtocol.stop();
 		}
 
+		/**
+		 *
+		 * The Lower level method for sending IMCMessages, all other ultimatly use this one
+		 *
+		 * @param msg The IMCMessage to be sent
+		 * @param destination The name of the system to send msg to
+		 * @return true if message sent, false otherwise
+		 */
 		public boolean sendMessage(IMCMessage msg, String destination) {
 			return imcProtocol.sendMessage(destination, msg);
-			/**
-			 * !!! TODO: add more generic send that reccur on this one, like:
-			 * sendMsgToSys, sendMsgToCCUs, sendMsgToALL, sendMsgToVehicles, ....
-			**/
 		}
 
+		/**
+		 *
+		 * Listenner de IMCMessages. All incoming messages trigger this method.
+		 * @param info Generic meta information about the message including: time sent, type of sending, source.
+		 * @param msg The IMCMessage itself in its generic type.
+		 *
+		 * @see pt.lsts.imc.IMCMessage
+		 * @see pt.lsts.neptus.messages.listener.MessageInfo
+		 *
+		 */
 		@Override
 		public void onMessage(MessageInfo info, IMCMessage msg) {
 			// !!! TODO: scann new types of messages to keep up the status of the vehicles and other system
@@ -186,17 +267,30 @@ public class AcclBus {
 			AcclBus.post(msg);
 		}
 
+		/**
+		 *
+		 * Finalise all imc comms
+		 * @throws Throwable may throw erros and may be catched by developer on its application.
+		 */
 		@Override
 		protected void finalize() throws Throwable {
 			stop();
 		}
 	}
 
-
+	/**
+	 *
+	 * Set the Main/Active System
+	 * @param sys The new Main System
+	 */
 	public static void setMainSys(Sys sys){
 		AcclBus.mainSys = sys;
 	}
 
+	/**
+	 *
+	 * @return The Main/Active System, usually selected by user.
+	 */
 	public static Sys getMainSys(){
 		return AcclBus.mainSys;
 	}
