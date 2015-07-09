@@ -8,6 +8,8 @@ import pt.lsts.imc.EstimatedState;
 
 /**
  *
+ * Class Representative of vehicles with specific types of vehicles may have classes that extend this.
+ *
  * Extends Sys, which included:
  * ID
  * Name
