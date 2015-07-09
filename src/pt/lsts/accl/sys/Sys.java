@@ -191,4 +191,38 @@ public class Sys {
                 return false;
     }
 
+    /**
+     * Check if the system is a Unmanned Aerial Vehicle (UAV).
+     * @return true if SYS_TYPE = UAV, false otherwise
+     **/
+    public boolean isUAV(){
+        if (getSysType()== Announce.SYS_TYPE.UAV){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the system is a Unmanned Underwater Vehicle (UUV), also refered to as Autonomous Underwater Vehicle (AUV) or Light AUV (LAUV).
+     * @return true if SYS_TYPE = UUV, false otherwise
+     **/
+    public boolean isUUV(){
+        if (getSysType()== Announce.SYS_TYPE.UUV){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the system is a Command and Control Unit (CCU)
+     * Examples of CCUs: Neptus, ACCU, ASA, other systems that use ACCL.
+     * @return true if SYS_TYPE = CCU, false otherwise
+     **/
+    public boolean isCCU(){
+        if (getSysType()== Announce.SYS_TYPE.CCU){
+            return true;
+        }
+        return false;
+    }
+
 }

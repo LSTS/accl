@@ -134,6 +134,78 @@ public class AcclBus {
 	}
 
 	/**
+	 * Send a IMCMessage to ALL vehicles
+	 * @param msg The IMCMessage to be sent
+	 * @return true if every IMCMessage was sent without erros, false otherwise.
+	 */
+	public static boolean sendMessageToAllVehicles(IMCMessage msg){
+		boolean result=true;
+		for (Sys s : sysList.getList()){
+			if (s.isVehicle()==true){
+				boolean bool = sendMessage(msg, s);
+				if (bool==false) {
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Send a IMCMessage to ALL CCUs
+	 * @param msg The IMCMessage to be sent
+	 * @return true if every IMCMessage was sent without erros, false otherwise.
+	 */
+	public static boolean sendMessageToAllCCUs(IMCMessage msg){
+		boolean result=true;
+		for (Sys s : sysList.getList()){
+			if (s.isCCU()==true){
+				boolean bool = sendMessage(msg, s);
+				if (bool==false) {
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Send a IMCMessage to ALL UAVs
+	 * @param msg The IMCMessage to be sent
+	 * @return true if every IMCMessage was sent without erros, false otherwise.
+	 */
+	public static boolean sendMessageToAllUAVs(IMCMessage msg){
+		boolean result=true;
+		for (Sys s : sysList.getList()){
+			if (s.isUAV()==true){
+				boolean bool = sendMessage(msg, s);
+				if (bool==false) {
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Send a IMCMessage to ALL UUVs, also refered to as AUV or LAUV, (Light) Autnomous Underwater Vehicles
+	 * @param msg The IMCMessage to be sent
+	 * @return true if every IMCMessage was sent without erros, false otherwise.
+	 */
+	public static boolean sendMessageToAllUUVs(IMCMessage msg){
+		boolean result=true;
+		for (Sys s : sysList.getList()){
+			if (s.isUUV()==true){
+				boolean bool = sendMessage(msg, s);
+				if (bool==false) {
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
 	 *
 	 * Class responsabile for initiation of IMCProtocol and listenner and handler of sending and receiving IMCMessages
 	 *
