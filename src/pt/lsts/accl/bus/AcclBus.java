@@ -4,17 +4,22 @@ package pt.lsts.accl.bus;
 import pt.lsts.accl.event.EventSystemVisible;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.sys.SysList;
+import pt.lsts.accl.util.Log;
 
 import pt.lsts.imc.Announce;
 import pt.lsts.imc.Heartbeat;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.net.IMCProtocol;
+import pt.lsts.imc.lsf.LsfMessageLogger;
+import pt.lsts.imc.llf.LLFMessageLogger;
 import pt.lsts.neptus.messages.listener.MessageInfo;
 import pt.lsts.neptus.messages.listener.MessageListener;
 
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.File;
+import java.io.PrintWriter;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
@@ -25,11 +30,14 @@ import com.squareup.otto.ThreadEnforcer;
  */
 public class AcclBus {
 
+
 	private static Bus busInstance = null;
 	private static ImcAdapter imcAdapter = null;
 	private static HashSet<Integer> registeredListeners = new HashSet<Integer>();
 	private static Sys mainSys = null;
 	public static SysList sysList = new SysList();
+	public static boolean loggingBool=true;
+
 
 	/**
 	 *
@@ -115,6 +123,8 @@ public class AcclBus {
 	public static boolean sendMessage(IMCMessage msg, String destinationName) {
 		if (imcAdapter == null)
 			return false;
+		if (AcclBus.loggingBool==true)
+			Log.log(msg);
 		return imcAdapter.sendMessage(msg, destinationName);
 	}
 
@@ -205,6 +215,22 @@ public class AcclBus {
 		return result;
 	}
 
+
+	/**
+	 *
+	 * Check if an IMCMessage is from Main system
+	 *
+	 * @param imcMessage The IMCMessage to be checked
+	 * @return True if Source of Message is Main Sys, false otherwise.
+	 *
+	 * @see pt.lsts.imc.IMCMessage
+	 */
+	public static boolean isMsgFromMain(IMCMessage imcMessage){
+		if (imcMessage.getSrc()==mainSys.getID())
+			return true;
+		return false;
+	}
+
 	/**
 	 *
 	 * Class responsabile for initiation of IMCProtocol and listenner and handler of sending and receiving IMCMessages
@@ -246,7 +272,7 @@ public class AcclBus {
 				public void run() {
 					synchronized (sysList.getList()) {
 						for (Sys sys : sysList.getList())
-							imcProtocol.sendMessage(sys.getName(), new Heartbeat());
+							sendMessage(new Heartbeat(), sys.getName());
 					}	
 				}
 			};
@@ -289,6 +315,8 @@ public class AcclBus {
 		 * @return true if message sent, false otherwise
 		 */
 		public boolean sendMessage(IMCMessage msg, String destination) {
+			if (AcclBus.loggingBool==true)
+				Log.log(msg);
 			return imcProtocol.sendMessage(destination, msg);
 		}
 
@@ -303,11 +331,11 @@ public class AcclBus {
 		 *
 		 */
 		@Override
-		public void onMessage(MessageInfo info, IMCMessage msg) {
+		public void onMessage(MessageInfo info, IMCMessage msg){
 			// !!! TODO: scann new types of messages to keep up the status of the vehicles and other system
 			// messages to scan: EstimatedState, True/IndicatedSpeeds, Path/PlanControlState ...
 			// Maybe seperate this scanning in different methods like in ASA.
-			
+
 			String source = msg.getSourceName();
 			int ID = msg.getSrc();
 			if (msg.getMgid() == Announce.ID_STATIC) {//process Announce create new Sys and add to SysList
@@ -333,6 +361,9 @@ public class AcclBus {
 			Class c = msg.getClass();
 			AcclBus.post((c.cast(msg)));
 			AcclBus.post(msg);
+
+			if (AcclBus.loggingBool==true)
+				Log.log(msg);
 		}
 
 		/**
@@ -361,6 +392,15 @@ public class AcclBus {
 	 */
 	public static Sys getMainSys(){
 		return AcclBus.mainSys;
+	}
+
+
+	public static void enableLogging(){
+		AcclBus.loggingBool=true;
+	}
+
+	public static void disableLogging(){
+		AcclBus.loggingBool=false;
 	}
 
 }
