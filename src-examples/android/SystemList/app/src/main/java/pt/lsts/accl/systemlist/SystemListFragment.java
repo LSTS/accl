@@ -63,7 +63,10 @@ public class SystemListFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                arrayAdapter.remove(eventFinal.getSys().getName());
+                if (eventFinal!=null && eventFinal.getSys()!=null && eventFinal.getSys().getName()!=null)
+                    arrayAdapter.remove(eventFinal.getSys().getName());
+                else
+                    Log.e(TAG,"eventFinal!=null && eventFinal.getSys()!=null && eventFinal.getSys().getName()!=null");
             }
         });
     }

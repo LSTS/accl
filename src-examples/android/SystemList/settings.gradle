@@ -1,1 +1,1 @@
-include ':app', ':accl'
+include ':app'
