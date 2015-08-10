@@ -1,8 +1,6 @@
 package pt.lsts.accl.util;
 
 
-import pt.lsts.accl.util.FileOperations;
-
 import pt.lsts.imc.EstimatedState;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.IMCOutputStream;
@@ -30,9 +28,12 @@ public class Log{
     }
     protected String logPath = null;
     
-    public String logBaseDir = "/storage/emulated/0/Android/data/pt.lsts.accl/log/messages/";//versions 4.2 and above
+    public String logBaseDir = "/storage/emulated/0/data/pt.lsts.accl/log/messages/";//versions 4.2 and above
     public String logBaseDirLegacy = "/storage/sdcard0/data/pt.lsts.accl/log/messages/";//versions 4.0 and 4.1
 
+    /**
+     * Private constructor to ensure Singleton Pattern.
+     */
     private Log() {
         changeLog();
 
@@ -58,20 +59,33 @@ public class Log{
         }
     }
 
+    /**
+     * Get the Path to the Log directory.
+     * @return Full Path to the Log directory.
+     */
     public String getLogDir() {
         return logPath;
     }
 
+    /**
+     * Get the Path to the Log directory of the Singleton Obj.
+     * @return Full Path to the Log directory of the Singleton Obj.
+     */
     public static String getLogDirSingleton() {
-        return instance.logPath;
-    }
-    
-    public static boolean changeLogSingleton() {
-        return instance.changeLog();
+        return getInstance().logPath;
     }
 
     /**
-     * @return
+     * Call ChangeLog: create new directory for a new log file.
+     * @return true if succeed, false otherwise.
+     */
+    public static boolean changeLogSingleton() {
+        return getInstance().changeLog();
+    }
+
+    /**
+     * Reset log directory. Create a new log directory
+     * @return true if succeed, false otherwise.
      */
     public boolean changeLog() {
         logPath = logBaseDir + fmt.format(new Date());
@@ -107,6 +121,11 @@ public class Log{
         return false;
     }
 
+    /**
+     * Get the Log Instance of Singleton Obj. Create it if it is null.
+     * Private to ensure only certain methods may be called.
+     * @return the Singleton Obj for Log.
+     */
     private static Log getInstance() {
         if (instance == null)
             instance = new Log();
@@ -114,6 +133,11 @@ public class Log{
         return instance;
     }
 
+    /**
+     * Private method to Log an IMCMessage.
+     * @param msg The IMCMessage to be logged.
+     * @return true if succeed, false otherwise.
+     */
     private synchronized boolean logMessage(IMCMessage msg) {
         try {
             if (ios != null)
@@ -126,10 +150,21 @@ public class Log{
         return true;
     }
 
+    /**
+     * Public method used to log an IMCMessage.
+     * Main Method used outside of this class.
+     * @param msg
+     * @return
+     */
     public static boolean log(IMCMessage msg) {
         return getInstance().logMessage(msg);
     }
-    
+
+    /**
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
 		while(true) {
 			Thread.sleep(100);
@@ -137,33 +172,13 @@ public class Log{
 		}
 	}
 
+    /**
+     * Change the current Path to be used to store log file.
+     * @param newPath The new Full path to store Log.
+     */
     public static void changeLogBaseDir(String newPath){
         getInstance().logBaseDir = newPath;
     }
-	
-    /*
-	public static String getFullPath(File fileDir){
-				DateFormat dateFormatDay = new SimpleDateFormat("yyyyMMdd");
-		DateFormat dateFormatHours = new SimpleDateFormat("HHmmss");
-		Date date = new Date();
 
-		String path="/data/pt.lsts.accl";			
-		path += "/";
-		path += dateFormatDay.format(date);
-		path += "/";
-		path += "messages";
-		path += "/";
-		path += dateFormatDay.format(date);
-		path += "/";
-		path += dateFormatHours.format(date);
-		path += "/";
-
-		fileDir = new File (fileDir.getAbsolutePath()+path);
-		//File file = new File(fileDir, ("Data" + "." + "lsf"));
-		fileDir.mkdirs();
-
-		return fileDir.getAbsolutePath();
-	}
-	*/
 
 }

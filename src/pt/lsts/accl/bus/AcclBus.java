@@ -215,7 +215,6 @@ public class AcclBus {
 		return result;
 	}
 
-
 	/**
 	 *
 	 * Check if an IMCMessage is from Main system
@@ -362,6 +361,7 @@ public class AcclBus {
 			AcclBus.post((c.cast(msg)));
 			AcclBus.post(msg);
 
+			//Log the msg
 			if (AcclBus.loggingBool==true)
 				Log.log(msg);
 		}
@@ -395,10 +395,16 @@ public class AcclBus {
 	}
 
 
+	/**
+	 * Enable Logging of IMCMessages
+	 */
 	public static void enableLogging(){
 		AcclBus.loggingBool=true;
 	}
 
+	/**
+	 * Disable Logging of IMCMessages
+	 */
 	public static void disableLogging(){
 		AcclBus.loggingBool=false;
 	}
