@@ -58,6 +58,29 @@ public class AcclBusListenner extends Service {
         //Log.v(TAG, event.toString());
     }
 
+    @Subscribe
+    public void on(String s){
+
+        switch (s.charAt(0)){
+            case 'E'://ERROR
+                Log.e(TAG, s);
+                break;
+            case 'W'://Warning
+                Log.w(TAG, s);
+                break;
+            case 'I'://Info
+                Log.i(TAG, s);
+                break;
+            case 'D'://Debug
+                Log.d(TAG, s);
+                break;
+            case 'V':// Verbose
+            default:// none defined, print on Verbose
+                Log.v(TAG, s);
+                break;
+        }
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
