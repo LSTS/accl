@@ -59,6 +59,7 @@ public class AcclBus {
 			catch (Exception e) {
 				busInstance = new Bus(ThreadEnforcer.ANY, "accl");
 				System.err.println("WARNING: Running in a desktop environment");
+				post("WARNING: Running in a desktop environment");
 			}
 		}
 		return busInstance;	
@@ -74,6 +75,7 @@ public class AcclBus {
 		if (imcAdapter != null)
 			imcAdapter.stop();
 		imcAdapter = new AcclBus.ImcAdapter(localname, localport);
+		post("INFO - "+"Binded with localname: "+localname+" in port: "+localport);
 	}
 
 	/**
@@ -94,7 +96,7 @@ public class AcclBus {
 	public static void register(Object pojo) {
 		bus().register(pojo);
 		registeredListeners.add(pojo.hashCode());
-
+		post("INFO - " + "Register new listenner:" + pojo.toString());
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class AcclBus {
 			imcAdapter.stop();
 			imcAdapter = null;
 		}
-
+		post("WARN - "+"Unregister listenner:"+pojo.toString());
 	}
 
 	/**
@@ -125,6 +127,7 @@ public class AcclBus {
 			return false;
 		if (AcclBus.loggingBool==true)
 			Log.log(msg);
+		post("VERBOSE - "+"Send "+msg.getAbbrev()+":\n"+msg.toString());
 		return imcAdapter.sendMessage(msg, destinationName);
 	}
 
@@ -176,6 +179,7 @@ public class AcclBus {
 				}
 			}
 		}
+		post("INFO - "+"Sent "+msg.getAbbrev()+" to ALL CCU");
 		return result;
 	}
 
@@ -194,6 +198,7 @@ public class AcclBus {
 				}
 			}
 		}
+		post("INFO - "+"Sent "+msg.getAbbrev()+" to ALL UAV");
 		return result;
 	}
 
@@ -212,6 +217,7 @@ public class AcclBus {
 				}
 			}
 		}
+		post("INFO - "+"Sent "+msg.getAbbrev()+" to ALL UUV");
 		return result;
 	}
 
@@ -303,6 +309,7 @@ public class AcclBus {
 		public void stop() {
 			timer.cancel();
 			imcProtocol.stop();
+			post("WARN - "+"STOPPED");
 		}
 
 		/**
@@ -364,6 +371,7 @@ public class AcclBus {
 			//Log the msg
 			if (AcclBus.loggingBool==true)
 				Log.log(msg);
+			post("VERBOSE - "+"Received "+msg.getAbbrev()+":\n"+msg.toString());
 		}
 
 		/**

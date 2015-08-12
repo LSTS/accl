@@ -1,6 +1,8 @@
 package pt.lsts.accl.util;
 
 
+import pt.lsts.accl.bus.AcclBus;
+
 import pt.lsts.imc.EstimatedState;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.IMCOutputStream;
@@ -46,16 +48,19 @@ public class Log{
                         synchronized (Log.this) {
                             IMCOutputStream copy = ios;
                             ios = null;
-                            copy.close(); 
+                            copy.close();
+                            AcclBus.post("WARN - "+"Closed Log");
                         }                                               
                     }
                     catch (Exception e) {
+                        AcclBus.post("ERROR - "+e.getMessage());
                         e.printStackTrace();
                     }
                 }
             });
         }
         catch (Exception e) {
+            AcclBus.post("ERROR - "+e.getMessage());
             e.printStackTrace();
         }
     }
@@ -105,6 +110,7 @@ public class Log{
         	iosTmp = new IMCOutputStream(new GZIPOutputStream(new FileOutputStream(new File(outputDir, "Data.lsf.gz"))));
         }
         catch (Exception e) {
+            AcclBus.post("ERROR - "+e.getMessage());
             e.printStackTrace();
         }
 
@@ -115,11 +121,13 @@ public class Log{
                         ios.close();
                     }
                     catch (IOException e) {
+                        AcclBus.post("ERROR - "+"IOException - "+e.getMessage());
                         e.printStackTrace();
                     }
                 }
                 ios = iosTmp;    
-            }            
+            }
+            AcclBus.post("WARN - "+"Changed Log to new folder: "+logPath);
             return true;
         }
         return false;
@@ -148,6 +156,7 @@ public class Log{
                 ios.writeMessage(msg);
         }
         catch (Exception e) {
+            AcclBus.post("ERROR - "+e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -161,6 +170,7 @@ public class Log{
      * @return
      */
     public static boolean log(IMCMessage msg) {
+        AcclBus.post("VERBOSE - "+"Logged "+msg.getAbbrev()+":\n"+msg.toString());
         return getInstance().logMessage(msg);
     }
 
@@ -186,10 +196,12 @@ public class Log{
 
 
     public static void activateLogBaseDirLegacy(){
+        AcclBus.post("INFO - "+"ActivateLogBaseDirLegacy()");
         Log.getInstance().legacyBool=true;
     }
 
     public static void deactivateLogBaseDirLegacy(){
+        AcclBus.post("INFO - "+"DeactivateLogBaseDirLegacy()");
         Log.getInstance().legacyBool=false;
     }
 
