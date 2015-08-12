@@ -29,7 +29,8 @@ public class Log{
     protected String logPath = null;
     
     public String logBaseDir = "/storage/emulated/0/data/pt.lsts.accl/log/messages/";//versions 4.2 and above
-    public String logBaseDirLegacy = "/storage/sdcard0/data/pt.lsts.accl/log/messages/";//versions 4.0 and 4.1
+    public static String logBaseDirLegacy = "/storage/sdcard0/data/pt.lsts.accl/log/messages/";//versions 4.0 and 4.1
+    public static boolean legacyBool = false;// if true, path will be logBaseDirLegacy
 
     /**
      * Private constructor to ensure Singleton Pattern.
@@ -88,7 +89,10 @@ public class Log{
      * @return true if succeed, false otherwise.
      */
     public boolean changeLog() {
-        logPath = logBaseDir + fmt.format(new Date());
+        if (legacyBool==true)
+            logPath = logBaseDirLegacy + fmt.format(new Date());
+        else
+            logPath = logBaseDir + fmt.format(new Date());
         
         File outputDir = new File(logPath);
         outputDir.mkdirs();
@@ -126,7 +130,7 @@ public class Log{
      * Private to ensure only certain methods may be called.
      * @return the Singleton Obj for Log.
      */
-    private static Log getInstance() {
+    public static Log getInstance() {
         if (instance == null)
             instance = new Log();
 
@@ -180,5 +184,13 @@ public class Log{
         getInstance().logBaseDir = newPath;
     }
 
+
+    public static void activateLogBaseDirLegacy(){
+        Log.getInstance().legacyBool=true;
+    }
+
+    public static void deactivateLogBaseDirLegacy(){
+        Log.getInstance().legacyBool=false;
+    }
 
 }
