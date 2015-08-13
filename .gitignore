@@ -6,4 +6,3 @@ hs_err_pid*
 *.iml
 .idea/
 *.aar
-local.properties
