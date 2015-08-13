@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 
+import pt.lsts.accl.androidlib.AcclActivity;
 import pt.lsts.accl.bus.AcclBus;
+
 
 /**
  * Created by jloureiro on 02-07-2015.
@@ -22,7 +24,7 @@ public class App extends Application{
         Log.v(TAG, "AcclBus.bind()");
         AcclBusListenner acclBusListenner = new AcclBusListenner();
         Intent intent = new Intent(this,AcclBusListenner.class);
-        acclBusListenner.onStartCommand(intent,0,0);
+        acclBusListenner.onStartCommand(intent, 0, 0);
         acclBusListenner.onBind(intent);
         AcclBus.register(acclBusListenner);
         Log.v(TAG, "AcclBus.register()");
