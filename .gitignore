@@ -2,6 +2,8 @@
 bin/
 build/
 hs_err_pid*
-accl.jar
+*.jar
 *.iml
 .idea/
+*.aar
+local.properties

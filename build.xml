@@ -23,8 +23,12 @@
 	   	  <include name="**/*.java"/>	    
 		</fileset>
 	</delete>
-  	<jar destfile="accl.jar" basedir="build" index="true"/>
+
+  	<jar destfile="outputs/accl.jar" basedir="build" index="true"/>
   	<delete dir="build"/>
+
+    <copy file="androidlib/build/outputs/aar/androidlib-release.aar" tofile="outputs/androidlib.aar"/>
+
   </target>
 	
   <target name="compile">
@@ -35,6 +39,10 @@
                 <file name="build.xml"/>
             </filelist>
       </subant>
+
+    <exec executable="gradle" dir="androidlib">
+        <arg value="assembleRelease"/>
+    </exec>
 
 	<javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false">
 		<classpath refid="classpath.libs"/>
