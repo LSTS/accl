@@ -1,2 +1,2 @@
 configurations.create("default")
-artifacts.add("default", file('accl.jar'))
+artifacts.add("default", file('accl.aar'))
