@@ -6,3 +6,6 @@ hs_err_pid*
 *.iml
 .idea/
 *.aar
+./androidlib/.gradle/*
+./androidlib/gradle/*
+./androidlib/gradlew
