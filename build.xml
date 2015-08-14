@@ -18,11 +18,12 @@
   <target name="dist" depends="compile" description="generates accl.jar">
   	<unjar src="libs/otto-1.3.6.jar" dest="build"/>
     <unjar src="libs/imcjava/dist/imc-stripped.jar" dest="build"/>
-  	<delete>
-		<fileset dir="build">
-	   	  <include name="**/*.java"/>	    
-		</fileset>
-	</delete>
+  	
+    <delete>
+  		<fileset dir="build">
+  	   	  <include name="**/*.java"/>	    
+  		</fileset>
+    </delete>
 
   	<jar destfile="outputs/accl.jar" basedir="build" index="true"/>
   	<delete dir="build"/>
@@ -33,7 +34,6 @@
     </exec>
 
     <copy file="androidlib/build/outputs/aar/androidlib-release.aar" tofile="outputs/accl.aar"/>
-
 
   </target>
 	
@@ -47,7 +47,7 @@
       </filelist>
     </subant>
 
-    <javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false">
+    <javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java"  target="1.6" source="1.6" fork="false" includeantruntime="false">
 		  <classpath refid="classpath.libs"/>
   	</javac>
 

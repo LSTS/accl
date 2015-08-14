@@ -1,11 +1,19 @@
 package pt.lsts.accl.androidlib;
 
-import android.support.v7.app.ActionBarActivity;
+
+import java.util.HashSet;
+
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class AcclActivity extends ActionBarActivity {
+
+/**
+ *
+ */
+public class AcclActivity extends AppCompatActivity{
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,4 +43,6 @@ public class AcclActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
