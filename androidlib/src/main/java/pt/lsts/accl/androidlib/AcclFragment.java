@@ -23,7 +23,7 @@ public class AcclFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return onCreateView(inflater,container, R.layout.fragment_accl);
+        return onCreateView(inflater, container, R.layout.fragment_accl);
     }
 
     @Override
@@ -37,7 +37,17 @@ public class AcclFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, int fragmentID){
-        return inflater.inflate(fragmentID, container, false);
+        v = inflater.inflate(fragmentID, container, false);
+        return v;
     }
+
+    public void showToastShort(String msg){
+        //((AcclActivity) getActivity()).showToastShort(msg);
+    }
+
+    public void showToastLong(String msg){
+        //((AcclActivity) getActivity()).showToastLong(msg);
+    }
+
 
 }
