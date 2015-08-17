@@ -13,12 +13,13 @@ import pt.lsts.accl.bus.AcclBus;
  */
 public class App extends Application{
 
-    private static final String TAG = "App";
+    private static String TAG;
     AcclBus acclBus;//the main interaction with the lib ACCL
 
     @Override
     public void onCreate() {
         super.onCreate();
+        TAG = this.getClass().getSimpleName();
         Log.v(TAG, "App.onCreate()");
         AcclBus.bind("SystemListExample", 6006);
         Log.v(TAG, "AcclBus.bind()");
@@ -28,7 +29,6 @@ public class App extends Application{
         acclBusListenner.onBind(intent);
         AcclBus.register(acclBusListenner);
         Log.v(TAG, "AcclBus.register()");
-
     }
 
     public AcclBus getAcclBus() {
