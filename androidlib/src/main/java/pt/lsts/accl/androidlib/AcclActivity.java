@@ -1,6 +1,8 @@
 package pt.lsts.accl.androidlib;
 
 
+import pt.lsts.accl.bus.AcclBus;
+
 import java.util.HashSet;
 
 import android.os.Bundle;
@@ -13,12 +15,16 @@ import android.view.MenuItem;
  *
  */
 public class AcclActivity extends AppCompatActivity{
-    
+
+    private HashSet<Integer> registeredListeners;
+    public static String TAG = "TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TAG = this.getClass().getSimpleName();
         setContentView(R.layout.activity_accl);
+        registeredListeners = new HashSet<Integer>();
     }
 
 
@@ -44,5 +50,34 @@ public class AcclActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void register(Object pojo) {
+        AcclBus.register(pojo);
+        registeredListeners.add(pojo.hashCode());
+    }
+
+
+    public synchronized void unregister(Object pojo) {
+        AcclBus.unregister(pojo);
+        registeredListeners.remove(pojo.hashCode());
+    }
+
+
+    public void unregisterAll(){
+        for (Object pojo : registeredListeners){
+            unregister(pojo);
+        }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        unregisterAll();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
 
 }
