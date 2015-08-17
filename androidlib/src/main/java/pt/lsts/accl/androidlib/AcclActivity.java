@@ -108,6 +108,25 @@ public class AcclActivity extends AppCompatActivity{
         return true;
     }
 
+    public void removeFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(fragment).commit();
+        getSupportFragmentManager().executePendingTransactions();
+    }
+
+    public void removeFragments(ArrayList<Fragment> fragmentList){
+        for (Fragment fragment : fragmentList)
+            removeFragment(fragment);
+    }
+
+    public void removeAllFragments(){
+        for (Fragment fragment : getSupportFragmentManager().getFragments()){
+            removeFragment(fragment);
+        }
+    }
+
+
     public int getFragmentHolderID() {
         return fragmentHolderID;
     }
