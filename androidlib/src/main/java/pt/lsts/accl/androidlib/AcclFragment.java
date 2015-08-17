@@ -42,11 +42,11 @@ public class AcclFragment extends Fragment {
     }
 
     public void showToastShort(String msg){
-        //((AcclActivity) getActivity()).showToastShort(msg);
+        ((AcclActivity) getActivity()).showToastShort(msg);
     }
 
     public void showToastLong(String msg){
-        //((AcclActivity) getActivity()).showToastLong(msg);
+        ((AcclActivity) getActivity()).showToastLong(msg);
     }
 
 

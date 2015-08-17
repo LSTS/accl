@@ -126,6 +126,15 @@ public class AcclActivity extends AppCompatActivity{
         }
     }
 
+    public void showToastShort(String msg){
+        Toast toast = Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    public void showToastLong(String msg){
+        Toast toast = Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_LONG);
+        toast.show();
+    }
 
     public int getFragmentHolderID() {
         return fragmentHolderID;
