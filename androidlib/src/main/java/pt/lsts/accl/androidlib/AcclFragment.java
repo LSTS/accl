@@ -46,6 +46,23 @@ public class AcclFragment extends Fragment {
         return view;
     }
 
+    public void register(Object pojo) {
+        AcclActivity acclActivity = (AcclActivity) getActivity();
+        acclActivity.register(pojo);
+    }
+
+
+    public synchronized void unregister(Object pojo) {
+        AcclActivity acclActivity = (AcclActivity) getActivity();
+        acclActivity.unregister(pojo);
+    }
+
+
+    public void unregisterAll(){
+        AcclActivity acclActivity = (AcclActivity) getActivity();
+        acclActivity.unregisterAll();
+    }
+
     public void showToastShort(String msg){
         AcclActivity acclActivity = ((AcclActivity) getActivity());
         acclActivity.showToastShort(msg);
