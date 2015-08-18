@@ -4,7 +4,6 @@ package pt.lsts.accl.androidlib;
 import pt.lsts.accl.bus.AcclBus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import android.os.Bundle;
@@ -18,6 +17,8 @@ import android.widget.Toast;
 
 /**
  *
+ * Created by jloureiro on 11-08-2015.
+ *
  */
 public class AcclActivity extends AppCompatActivity{
 
@@ -30,7 +31,6 @@ public class AcclActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TAG = this.getClass().getSimpleName();
-        //setContentView(R.layout.activity_accl);
         registeredListeners = new HashSet<Integer>();
     }
 
@@ -101,9 +101,9 @@ public class AcclActivity extends AppCompatActivity{
             AcclBus.post("ERROR - "+"FragmentHolderID Not Set");
             return false;
         }
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(getFragmentHolderID(), fragmentObj);
-        ft.commit();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(getFragmentHolderID(), fragmentObj);
+        fragmentTransaction.commit();
         getSupportFragmentManager().executePendingTransactions();
         return true;
     }

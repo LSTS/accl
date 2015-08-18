@@ -14,7 +14,6 @@ import pt.lsts.accl.bus.AcclBus;
 public class App extends Application{
 
     private static String TAG;
-    AcclBus acclBus;//the main interaction with the lib ACCL
 
     @Override
     public void onCreate() {
@@ -31,11 +30,5 @@ public class App extends Application{
         Log.v(TAG, "AcclBus.register()");
     }
 
-    public AcclBus getAcclBus() {
-        return acclBus;
-    }
 
-    public void setAcclBus(AcclBus acclBus) {
-        this.acclBus = acclBus;
-    }
 }

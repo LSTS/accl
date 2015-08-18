@@ -23,7 +23,6 @@ import com.squareup.otto.Subscribe;
  */
 public class SystemListFragment extends AcclFragment {
 
-    public static final String TAG ="SystemListFragment";
 
     ListView systemListListView=null;
     ArrayAdapter<String> arrayAdapter;
@@ -41,24 +40,32 @@ public class SystemListFragment extends AcclFragment {
     @Override
     public void onResume(){
         super.onResume();
+
         initListView();
-        showToastShort(TAG+": finished onResume");
+        //showToastShort(TAG+": finished onResume");
     }
 
     public void initListView(){
-        systemListListView = (ListView) v.findViewById(R.id.systemListListView);
-        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<String>());
-        systemListListView.setAdapter(arrayAdapter);
+        systemListListView = (ListView) view.findViewById(R.id.systemListListView);
+
+        if (systemListListView!=null){
+            arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<String>());
+            systemListListView.setAdapter(arrayAdapter);
+        }else{
+            Log.e(TAG, "SystemListView failed to be initialized");
+        }
     }
 
     @Subscribe
     public void on(EventSystemVisible event) {
         Log.v(TAG, event.toString());
+
         final EventSystemVisible eventFinal = event;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                arrayAdapter.add(eventFinal.getSys().getName());
+                if (arrayAdapter!=null)
+                    arrayAdapter.add(eventFinal.getSys().getName());
             }
         });
     }
@@ -66,6 +73,7 @@ public class SystemListFragment extends AcclFragment {
     @Subscribe
     public void on(EventSystemDisconnected event) {
         Log.v(TAG, event.toString());
+
         final EventSystemDisconnected eventFinal = event;
         getActivity().runOnUiThread(new Runnable() {
             @Override

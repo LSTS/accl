@@ -9,12 +9,17 @@ import android.view.ViewGroup;
 
 
 /**
+ *
  * A placeholder fragment containing a simple view.
+ *
+ *
+ * Created by jloureiro on 12-08-2015.
+ *
  */
 public class AcclFragment extends Fragment {
 
     public static String TAG = "TAG";
-    public View v;
+    public View view;//View to be used to search for subviews.
 
     public AcclFragment() {
         TAG = this.getClass().getSimpleName();
@@ -37,16 +42,18 @@ public class AcclFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, int fragmentID){
-        v = inflater.inflate(fragmentID, container, false);
-        return v;
+        view = inflater.inflate(fragmentID, container, false);
+        return view;
     }
 
     public void showToastShort(String msg){
-        ((AcclActivity) getActivity()).showToastShort(msg);
+        AcclActivity acclActivity = ((AcclActivity) getActivity());
+        acclActivity.showToastShort(msg);
     }
 
     public void showToastLong(String msg){
-        ((AcclActivity) getActivity()).showToastLong(msg);
+        AcclActivity acclActivity = ((AcclActivity) getActivity());
+        acclActivity.showToastLong(msg);
     }
 
 

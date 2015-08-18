@@ -11,6 +11,7 @@ import pt.lsts.accl.androidlib.AcclActivity;
 
 public class SystemListActivity extends AcclActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class SystemListActivity extends AcclActivity {
 
     @Override
     public void onResume(){
-        showToastShort(TAG+": onResume");
+        //showToastShort(TAG+": onResume");
         super.onResume();
 
     }
