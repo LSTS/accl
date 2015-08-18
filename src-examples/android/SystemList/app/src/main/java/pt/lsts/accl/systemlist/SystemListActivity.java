@@ -2,16 +2,27 @@ package pt.lsts.accl.systemlist;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import pt.lsts.accl.androidlib.AcclActivity;
 
-public class SystemList extends ActionBarActivity {
+
+public class SystemListActivity extends AcclActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_list);
+        setFragmentHolderID(R.id.fragment_placeholder);
+        SystemListFragment systemListFragment = new SystemListFragment();
+
+        boolean bool = loadFragment(systemListFragment);
+        if (bool==true)
+            Log.i(TAG,"systemListFragment loaded");
+        if (bool==false)
+            Log.e(TAG, "systemListFragment failed to load");
     }
 
     @Override
@@ -35,4 +46,13 @@ public class SystemList extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onResume(){
+        showToastShort(TAG+": onResume");
+        super.onResume();
+
+    }
+
+
 }

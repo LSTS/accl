@@ -1,7 +1,12 @@
 package pt.lsts.accl.systemlist;
 
-import android.content.Intent;
-import android.support.v4.app.Fragment;
+import pt.lsts.accl.androidlib.AcclFragment;
+import pt.lsts.accl.bus.AcclBus;
+import pt.lsts.accl.event.EventSystemDisconnected;
+import pt.lsts.accl.event.EventSystemVisible;
+
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,22 +17,14 @@ import android.widget.ListView;
 
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
-
-import pt.lsts.accl.bus.AcclBus;
-import pt.lsts.accl.event.EventSystemDisconnected;
-import pt.lsts.accl.event.EventSystemVisible;
-import pt.lsts.accl.sys.Sys;
-
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SystemListFragment extends Fragment {
+public class SystemListFragment extends AcclFragment {
 
     public static final String TAG ="SystemListFragment";
 
-    View v;
     ListView systemListListView=null;
     ArrayAdapter<String> arrayAdapter;
 
@@ -38,10 +35,20 @@ public class SystemListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_system_list, container, false);
-        initListView();
+        return onCreateView(inflater, container, R.layout.fragment_system_list);
+    }
 
-        return v;
+    @Override
+    public void onResume(){
+        super.onResume();
+        initListView();
+        showToastShort(TAG+": finished onResume");
+    }
+
+    public void initListView(){
+        systemListListView = (ListView) v.findViewById(R.id.systemListListView);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<String>());
+        systemListListView.setAdapter(arrayAdapter);
     }
 
     @Subscribe
@@ -63,18 +70,13 @@ public class SystemListFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (eventFinal!=null && eventFinal.getSys()!=null && eventFinal.getSys().getName()!=null)
+                if (eventFinal != null && eventFinal.getSys() != null && eventFinal.getSys().getName() != null)
                     arrayAdapter.remove(eventFinal.getSys().getName());
                 else
-                    Log.e(TAG,"eventFinal!=null && eventFinal.getSys()!=null && eventFinal.getSys().getName()!=null");
+                    Log.e(TAG, "eventFinal!=null && eventFinal.getSys()!=null && eventFinal.getSys().getName()!=null");
             }
         });
     }
 
-    public void initListView(){
-        systemListListView = (ListView) v.findViewById(R.id.systemListListView);
-        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<String>());
-        systemListListView.setAdapter(arrayAdapter);
-    }
 
 }
