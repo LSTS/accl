@@ -94,7 +94,14 @@ public class AcclBus {
 	 * @param pojo An object that wishes to receive events
 	 */
 	public static void register(Object pojo) {
-		bus().register(pojo);
+		try{
+			bus().register(pojo);
+		}
+		catch(java.lang.IllegalArgumentException e){
+			post("WARNING - " + "Attempted to register already registered listenner:" + pojo.toString());
+			post("ERRROR - " + e.getMessage());
+			return;
+		}
 		registeredListeners.add(pojo.hashCode());
 		post("INFO - " + "Register new listenner:" + pojo.toString());
 	}
@@ -105,7 +112,14 @@ public class AcclBus {
 	 * @param pojo An object that wishes to stop receiving events
 	 */
 	public static synchronized void unregister(Object pojo) {
-		bus().unregister(pojo);
+		try{
+			bus().unregister(pojo);
+		}
+		catch(java.lang.IllegalArgumentException e){
+			post("WARNING - " + "Attempted to unregister unregistered listenner:" + pojo.toString());
+			post("ERRROR - " + e.getMessage());
+			return;
+		}
 		registeredListeners.remove(pojo.hashCode());
 
 		if (registeredListeners.isEmpty() && imcAdapter != null) {
