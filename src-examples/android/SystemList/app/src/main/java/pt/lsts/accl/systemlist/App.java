@@ -22,10 +22,10 @@ public class App extends Application{
         Log.v(TAG, "App.onCreate()");
         AcclBus.bind("SystemListExample", 6006);
         Log.v(TAG, "AcclBus.bind()");
+
         AcclBusListenner acclBusListenner = new AcclBusListenner();
-        Intent intent = new Intent(this,AcclBusListenner.class);
-        acclBusListenner.onStartCommand(intent, 0, 0);
-        acclBusListenner.onBind(intent);
+        acclBusListenner.start(this);
+
         AcclBus.register(acclBusListenner);
         Log.v(TAG, "AcclBus.register()");
     }

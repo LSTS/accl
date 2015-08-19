@@ -1,6 +1,7 @@
 package pt.lsts.accl.systemlist;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.util.Log;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
+import pt.lsts.accl.androidlib.AcclActivity;
+import pt.lsts.accl.androidlib.AcclService;
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.event.EventMainSystemSelected;
 import pt.lsts.accl.event.EventSystemConnected;
@@ -18,18 +21,13 @@ import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.PlanControlState;
 
 /**
+ *
+ *
  * Created by jloureiro on 02-07-2015.
  */
-public class AcclBusListenner extends Service {
-
-    public static final String TAG = "AcclBusListenner";
+public class AcclBusListenner extends AcclService {
 
     private EventMainSystemSelected selectedSystem = null;
-
-    @Produce
-    public EventMainSystemSelected produceSelectedSystem() {
-        return selectedSystem;
-    }
 
     @Subscribe
     public void on(EventSystemVisible event) {
@@ -79,11 +77,6 @@ public class AcclBusListenner extends Service {
                 Log.v(TAG, s);
                 break;
         }
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
 }
