@@ -33,6 +33,7 @@ public class Vehicle extends Sys {
      * @see pt.lsts.accl.util.pos.Position
      */
     private Position position;
+
     /**
      *
      * also referred to as ground speed
@@ -40,11 +41,13 @@ public class Vehicle extends Sys {
     private double trueSpeed;
     private double indicatedSpeed;
     private float fuelLevel;
+
     /**
      *
      *  current Plan ID
      */
     private String planID;
+
     /**
      *
      * Current Maneuver ID

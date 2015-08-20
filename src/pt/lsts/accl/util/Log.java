@@ -20,6 +20,14 @@ import java.util.TimeZone;
 import java.util.zip.GZIPOutputStream;
 
 
+/**
+ *
+ * Class Responsible for logging the IMCMessages.
+ * Based on {@link pt.lsts.imc.lsf.LsfMessageLogger}
+ *
+ * Singleton. Only public method needed is {@link #log(IMCMessage)}
+ *
+ */
 public class Log{
 
     private static Log instance = null;
@@ -194,12 +202,23 @@ public class Log{
         getInstance().logBaseDir = newPath;
     }
 
-
+    /**
+     *
+     * For version prior to 4.2:
+     * This method should be called on Creation of first {@link android.app.Activity} and/or {@link android.app.Application}
+     *
+     */
     public static void activateLogBaseDirLegacy(){
         AcclBus.post("INFO - "+"ActivateLogBaseDirLegacy()");
         Log.getInstance().legacyBool=true;
     }
 
+    /**
+     *
+     * For version 4.2 and above:
+     * IF {@link #activateLogBaseDirLegacy()} was called, then this method should be called to revert to original path.
+     *
+     */
     public static void deactivateLogBaseDirLegacy(){
         AcclBus.post("INFO - "+"DeactivateLogBaseDirLegacy()");
         Log.getInstance().legacyBool=false;

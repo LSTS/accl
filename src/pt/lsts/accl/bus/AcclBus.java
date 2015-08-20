@@ -26,7 +26,10 @@ import com.squareup.otto.ThreadEnforcer;
 
 
 /**
+ *
+ *
  * The Singleton class accessible and used by the application.
+ *
  */
 public class AcclBus {
 
@@ -372,17 +375,17 @@ public class AcclBus {
 				}
 			}
 
-			//updated lastMsgReceived:
+			// updated lastMsgReceived:
 			Sys sys = sysList.getSys(ID);
 			if (sys!=null)
 				sys.setLastMsgReceived(msg);
 
-			// send specific and generic IMC Message types:
+			// post both specific and generic IMCMessage types:
 			Class c = msg.getClass();
 			AcclBus.post((c.cast(msg)));
 			AcclBus.post(msg);
 
-			//Log the msg
+			// Log the msg
 			if (AcclBus.loggingBool==true)
 				Log.log(msg);
 			post("VERBOSE - "+"Received "+msg.getAbbrev()+":\n"+msg.toString());

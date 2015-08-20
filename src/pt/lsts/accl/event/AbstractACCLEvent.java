@@ -5,6 +5,7 @@ import java.util.Date;
 
 
 /**
+ *
  * The Abstract event. All events extend this.
  */
 public abstract class AbstractACCLEvent {

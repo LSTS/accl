@@ -5,8 +5,9 @@ import pt.lsts.imc.EstimatedState;
 
 
 /**
+ *
  * Position of the system, useful for vehicles mostly.
- * Includes Lat, Lon, Orientation, diferent Altitudes/Heights.
+ * Includes Lat, Lon, Orientation and diferent Altitudes/Heights.
  * Most Information is extrapolated from IMCMessage EstimatedState.
  *
  * @see pt.lsts.imc.EstimatedState
@@ -24,7 +25,8 @@ public class Position {
     private EulerAngles eulerAngles;//euler angles phi theta psi
 
     /**
-     * Build a Position from an IMCMessage: EstimatedState
+     *
+     * Build a Position from an IMCMessage EstimatedState.
      *
      * @param estimatedStateMsg The IMCMessage to build the position
      * @return returns the built Position
@@ -50,6 +52,7 @@ public class Position {
     }
 
     /**
+     *
      * Apply offset to get absolute latitude,longitude
      *
      * @param lat latitude in degrees
@@ -75,6 +78,7 @@ public class Position {
     }
 
     /**
+     *
      * Apply offset to get absolute latitude,longitude
      *
      * @param latLng latitude,longitude in degrees
@@ -200,6 +204,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new (Latitude, Longitude) in degrees
      * @param latLng tje new (Latitude, Longitude) in degrees
      */
@@ -216,6 +221,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new Height in meters for the system
      * @param height The new height in meters
      */
@@ -232,6 +238,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new Z in meters for the system
      * @param z The new Z in meters
      */
@@ -248,6 +255,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new depth in meters for the system
      * @param depth The new depth in meters
      */
@@ -264,6 +272,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new altitude in meters for the system
      * @param altitude The new altitude in meters
      */
@@ -280,6 +289,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new Euler Angles (Phi, Theta, Psi) in degrees
      * @param eulerAngles The new Euler Angles (Phi, Theta, Psi) in degrees
      */
@@ -289,6 +299,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new Euler Angles (Phi, Theta, Psi) from IMCMessage EulerAngles
      * @param eulerAnglesMsg The IMCMessage EulerAngles to build EulerAngles from.
      *
@@ -299,6 +310,7 @@ public class Position {
     }
 
     /**
+     *
      * Set a new Euler Angles (Phi, Theta, Psi) from IMCMessage EstimatedState
      * @param estimatedStateMsg The IMCMessage EstimatedState to build EulerAngles from.
      *

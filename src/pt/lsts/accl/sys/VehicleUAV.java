@@ -6,7 +6,7 @@ import pt.lsts.imc.EstimatedState;
 /**
  *
  * Class representative of UAV Vehicles.
- * Unmanned Aerial Vehicles, commercially known as drones
+ * Unmanned Aerial Vehicles, commercially known as drones.
  *
  * Extends Vehicle, which includes:
  * Position
@@ -26,12 +26,15 @@ public class VehicleUAV extends Vehicle {
      * ASSISTED(1L),
      * AUTO(2L);
      */
-    private AutopilotMode.AUTONOMY autonomy;//UAV mode: ASSISTED, AUTO, MANUAL
+    private AutopilotMode.AUTONOMY autonomy;
+
     /**
      *
      * The Relative Altitude, the value most used by CCUs, extrapolated from IMCMessage EstimatedState: Height - Z
+     *
+     * @see pt.lsts.imc.EstimatedState
      */
-    private double relativeAlt;//Height-Z
+    private double relativeAlt;
 
     /**
      *
@@ -79,7 +82,7 @@ public class VehicleUAV extends Vehicle {
     /**
      *
      * Relative Altitude, the value most used by CCUs, extrapolated from IMCMessage EstimatedState: Height - Z
-     * @return the Relative Altitude
+     * @return the last known Relative Altitude of the UAV
      *
      * @see pt.lsts.imc.EstimatedState
      */

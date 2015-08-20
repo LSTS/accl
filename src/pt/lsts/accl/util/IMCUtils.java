@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 
 /**
-  * Based on ACCU/ASA 
+ *
+ * Based on ACCU/ASA
+ *
 **/
 public class IMCUtils {
 

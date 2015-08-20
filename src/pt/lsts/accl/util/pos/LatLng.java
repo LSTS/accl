@@ -2,6 +2,7 @@ package pt.lsts.accl.util.pos;
 
 
 /**
+ *
  * Latitude and Longitude in degrees from EstimatedState
  *
  * Created by jloureiro on 08-07-2015.

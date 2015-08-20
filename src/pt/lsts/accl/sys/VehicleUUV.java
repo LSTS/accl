@@ -5,7 +5,7 @@ import pt.lsts.imc.VehicleState;
 /**
  *
  * Class representative of UUV
- * Unmaned Underwater Vehicles, also refered to as LAUV or AUV Light Autnomous Underwater Vehicles
+ * Unmaned Underwater Vehicles, also refered to as (L)AUV - (Light) Autnomous Underwater Vehicles
  *
  * Extends Vehicle, which includes:
  * Position

@@ -14,11 +14,13 @@ import pt.lsts.imc.IMCMessage;
  * Created by jloureiro on 02-07-2015.
  */
 public class Sys {
+
     private int ID;
     private String name;
     private Announce.SYS_TYPE sysType;
     private String ipAddress;
     private IMCMessage lastMsgReceived;
+
 
     /**
      *  Build a sys from its Announce Message
@@ -32,9 +34,7 @@ public class Sys {
     /**
      * Necessary empty construtor to extend class
      */
-    public Sys(){
-
-    }
+    public Sys(){}
 
     /**
      * Generic Construtor specifying each field
