@@ -184,6 +184,38 @@ public class Log{
 
     /**
      *
+     * Close the stream of file. Close the Log file to avoid corrupiton and missuse by Neptus MRA.
+     *
+     * @return true if succeed, false otherwise.
+     */
+    public synchronized boolean closeStream() {
+        try {
+            if (ios != null) {
+                ios.close();                            
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     * Method used to close logs to avoid errors in file.
+     * Prevent erros in Neptus MRA when opening "unclosed" log files.
+     *
+     * @return true if succeeds, false otherwise.
+     */
+    public static boolean close() {
+        Log ins = getInstance();
+        instance = null;
+        return ins.closeStream();
+    }
+
+    /**
+     *
      * @param args
      * @throws Exception
      */
