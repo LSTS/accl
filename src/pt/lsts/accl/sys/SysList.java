@@ -118,17 +118,26 @@ public class SysList {
 	}
 
 	/**
-	 * Remove system which haven't received a message in over 60seconds/1min from the list.
+	 * Remove system which haven't received a message in over 10seconds from the list.
 	 */
 	public synchronized void clearInnactiveSys(){
 		Iterator<Sys> iterator = sysArrayList.iterator();
         while (iterator.hasNext()){
         	Sys sysIt = iterator.next();
-            if (sysIt.getLastMsgReceivedAgeInSeconds()>90){
+            if (sysIt.isConnected()==false){
             	AcclBus.post(new EventSystemDisconnected(sysIt));
                 iterator.remove();
             }
         }
+	}
+
+	/**
+	 *
+	 * Remove all Systems
+	 *
+	 */
+	public synchronized void clear(){
+		sysArrayList.clear();
 	}
 
 }

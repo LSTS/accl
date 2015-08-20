@@ -225,4 +225,15 @@ public class Sys {
         return false;
     }
 
+    /**
+     * Check if a sys hasn't send messages in over 10 seconds, consider it disconnected if so.
+     *
+     * @return false if more than 10 seconds since last Message, true otherwise.
+     */
+    public boolean isConnected(){
+        if (getLastMsgReceivedAgeInSeconds()>10)
+            return false;
+        return true;
+    }
+
 }
