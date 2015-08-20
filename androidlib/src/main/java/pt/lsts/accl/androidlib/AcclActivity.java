@@ -6,6 +6,7 @@ import pt.lsts.accl.bus.AcclBus;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -130,6 +131,7 @@ public class AcclActivity extends AppCompatActivity{
     public void onPause(){
         super.onPause();
         unregisterAll();
+        AcclBus.onPause();
     }
 
     /**
@@ -141,6 +143,7 @@ public class AcclActivity extends AppCompatActivity{
     @Override
     public void onResume(){
         super.onResume();
+        AcclBus.onResume();
     }
 
     public boolean loadFragments(ArrayList<AcclFragment> fragmentList) {
@@ -189,9 +192,15 @@ public class AcclActivity extends AppCompatActivity{
      * @param msg The Message to be shown.
      *
      */
-    public void showToastShort(String msg){
-        Toast toast = Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_SHORT);
-        toast.show();
+    public void showToastShort(final String msg){
+        final Context context = this.getApplicationContext();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
     /**
@@ -201,9 +210,16 @@ public class AcclActivity extends AppCompatActivity{
      * @param msg The Message to be shown.
      *
      */
-    public void showToastLong(String msg){
-        Toast toast = Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_LONG);
-        toast.show();
+    public void showToastLong(final String msg){
+        final Context context = this.getApplicationContext();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+
     }
 
     /**
