@@ -39,7 +39,8 @@ public class AcclBus {
 	private static HashSet<Integer> registeredListeners = new HashSet<Integer>();
 	private static Sys mainSys = null;
 	public static SysList sysList = new SysList();
-	public static boolean loggingBool=true;
+	public static String localname;
+	public static int localport;
 
 
 	/**
@@ -79,6 +80,8 @@ public class AcclBus {
 			imcAdapter.stop();
 		imcAdapter = new AcclBus.ImcAdapter(localname, localport);
 		post("INFO - "+"Binded with localname: "+localname+" in port: "+localport);
+		AcclBus.localname = localname;
+		AcclBus.localport = localport;
 	}
 
 	/**
@@ -142,10 +145,9 @@ public class AcclBus {
 	public static boolean sendMessage(IMCMessage msg, String destinationName) {
 		if (imcAdapter == null)
 			return false;
-		if (AcclBus.loggingBool==true)
-			Log.log(msg);
 		post("VERBOSE - "+"Send "+msg.getAbbrev()+":\n"+msg.toString());
-		return imcAdapter.sendMessage(msg, destinationName);
+		boolean result = imcAdapter.sendMessage(msg, destinationName);
+		return result;
 	}
 
 	/**
@@ -338,9 +340,8 @@ public class AcclBus {
 		 * @return true if message sent, false otherwise
 		 */
 		public boolean sendMessage(IMCMessage msg, String destination) {
-			if (AcclBus.loggingBool==true)
-				Log.log(msg);
-			return imcProtocol.sendMessage(destination, msg);
+			boolean result = imcProtocol.sendMessage(destination, msg);
+			return result;
 		}
 
 		/**
@@ -385,9 +386,6 @@ public class AcclBus {
 			AcclBus.post((c.cast(msg)));
 			AcclBus.post(msg);
 
-			// Log the msg
-			if (AcclBus.loggingBool==true)
-				Log.log(msg);
 			post("VERBOSE - "+"Received "+msg.getAbbrev()+":\n"+msg.toString());
 		}
 
@@ -400,6 +398,18 @@ public class AcclBus {
 		protected void finalize() throws Throwable {
 			stop();
 		}
+	}
+
+	public static void onPause(){
+		AcclBus.disableLogging();
+		Log.close();
+		sysList.clear();
+		imcAdapter.stop();
+	}
+
+	public static void onResume(){
+		AcclBus.bind(AcclBus.localname, AcclBus.localport);
+		AcclBus.enableLogging();
 	}
 
 	/**
@@ -424,14 +434,14 @@ public class AcclBus {
 	 * Enable Logging of IMCMessages
 	 */
 	public static void enableLogging(){
-		AcclBus.loggingBool=true;
+		AcclBus.imcAdapter.imcProtocol.setMessageLogger(Log.getIMessageLogger());
 	}
 
 	/**
 	 * Disable Logging of IMCMessages
 	 */
 	public static void disableLogging(){
-		AcclBus.loggingBool=false;
+		AcclBus.imcAdapter.imcProtocol.setMessageLogger(null);
 	}
 
 }

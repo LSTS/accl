@@ -7,6 +7,7 @@ import pt.lsts.imc.EstimatedState;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.IMCOutputStream;
 import pt.lsts.imc.ImcStringDefs;
+import pt.lsts.imc.net.IMessageLogger;
 
 import java.io.File;
 import java.util.Vector;
@@ -254,6 +255,15 @@ public class Log{
     public static void deactivateLogBaseDirLegacy(){
         AcclBus.post("INFO - "+"DeactivateLogBaseDirLegacy()");
         Log.getInstance().legacyBool=false;
+    }
+
+    public static IMessageLogger getIMessageLogger(){
+        return new IMessageLogger() {
+            @Override
+            public void logMessage(IMCMessage message) throws Exception {
+                Log.log(message);
+            }
+        };
     }
 
 }
