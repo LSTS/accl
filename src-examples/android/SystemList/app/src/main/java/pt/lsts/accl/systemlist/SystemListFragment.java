@@ -23,7 +23,6 @@ import com.squareup.otto.Subscribe;
  */
 public class SystemListFragment extends AcclFragment {
 
-
     ListView systemListListView=null;
     ArrayAdapter<String> arrayAdapter;
 
@@ -73,6 +72,7 @@ public class SystemListFragment extends AcclFragment {
     @Subscribe
     public void on(EventSystemDisconnected event) {
         Log.v(TAG, event.toString());
+        showToastLong(event.getSys().getName()+" Disconnected!");
 
         final EventSystemDisconnected eventFinal = event;
         getActivity().runOnUiThread(new Runnable() {
