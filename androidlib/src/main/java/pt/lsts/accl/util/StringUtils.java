@@ -10,12 +10,38 @@ import android.widget.VideoView;
 
 
 /**
+ *
+ *
  * Created by jloureiro on 31-08-2015.
  */
 public class StringUtils {
 
     public static final String TAG = StringUtils.class.getName();
 
+    public static String arraytoString(String[] array){
+        String result = "";
+        for (String s : array){
+            result += s;
+        }
+        return result;
+    }
+
+    public static String arraytoStringWithSeperator(String[] array, String separator){
+        String result = array[0];
+        for (int i=1;i<array.length;i++){
+            result += separator;
+            result += array[i];
+        }
+        return result;
+    }
+
+    public static String arraytoStringWithCommas(String[] array){
+        return arraytoStringWithSeperator(array,",");
+    }
+
+    public static String arraytoStringWithSemicommas(String[] array){
+        return arraytoStringWithSeperator(array,";");
+    }
 
     public static String removeSysExtraInfo(String sysName){
         String res = sysName.split(" | ")[0];

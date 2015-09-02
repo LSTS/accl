@@ -11,6 +11,11 @@ import java.util.Vector;
 
 import android.util.Log;
 
+/**
+ *
+ *
+ * Created by jloureiro on 01-09-2015.
+ */
 public class Profile {
 
     public static final String TAG = Profile.class.getSimpleName();
@@ -39,22 +44,22 @@ public class Profile {
 		return "Load of file:\n" + name + "\nSucessful!";
 	}
 
-	public static void loadSetting(String setting) {
+	public static boolean loadSetting(String setting) {
         String parts[] = setting.split(",");
 		if (parts.length<=0)
-			return;
+			return false;
 		if (parts[0].length()<=0)
-			return;
+			return false;
         if (parts[0].charAt(0) == '#'){
             Log.i(TAG,"setting commented: "+setting);
-            return;
+            return false;
         }
 		if (StringUtils.validateSetting(setting)==false){
             Log.i(TAG,"setting not valid: "+setting);
-            return;
+            return false;
         }
         String key = parts[2];
-        Settings.putFullString(key,setting);
+        return Settings.putFullString(key,setting);
 		//Log.e(TAG, "Line not added:" + setting);
 
 	}
