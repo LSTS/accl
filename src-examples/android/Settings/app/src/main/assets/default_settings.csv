@@ -1,0 +1,18 @@
+type,category,key,description,value(s)
+# commented line
+java.lang.Boolean,category 1,boolean example true,an example of a boolean setting,true
+java.lang.Boolean,category 1,boolean example false,an example of a boolean setting,false
+
+java.lang.Integer,category 1,integer example1,an example of a int setting,25
+java.lang.Integer,category 2,integer example2,an example of a int setting,255
+java.lang.Integer,category 2,integer example22,an example of a int setting,-125
+java.lang.Integer,category 3,integer example3,an example of a int setting,-1256
+java.lang.Integer,category 1,integer example,an example of a int setting,25
+
+java.lang.String,category 1,string example,an example of a string,text in the string setting
+java.lang.String,category 3,string example3,an example of a string,another text in the string setting
+
+# another commented line
+
+java.lang.String,category 3,some radio options,choose one of the options,radio default value
+java.lang.String,category 3,some radio options_options,not used,radio default value,another radio value,a 3rd radio value
