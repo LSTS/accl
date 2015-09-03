@@ -1,6 +1,10 @@
 package pt.lsts.accl.androidlib;
 
 
+import pt.lsts.accl.bus.AcclBus;
+import pt.lsts.accl.settings.Settings;
+import pt.lsts.accl.settings.SettingsFactory;
+
 import java.util.HashSet;
 import java.util.Vector;
 
@@ -10,14 +14,13 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import pt.lsts.accl.bus.AcclBus;
-import pt.lsts.accl.settings.SettingsFactory;
 
 /**
+ *
+ *
  * Created by jloureiro on 01-09-2015.
  */
 public class AcclSettingsActivity extends PreferenceActivity {
@@ -39,6 +42,7 @@ public class AcclSettingsActivity extends PreferenceActivity {
     protected void onResume(){
         super.onResume();
         AcclBus.onResume();
+        Settings.registerACCLSettingsAnnotationsFromClass(this.getClass());
 
         preferenceScreen = getPreferenceManager().createPreferenceScreen(this);
 

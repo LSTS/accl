@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import pt.lsts.accl.settings.Settings;
+
 
 /**
  *
@@ -52,6 +54,8 @@ public class AcclFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        Settings.registerACCLSettingsAnnotationsFromClass(this);
+        Settings.updateAllAnnotations(this);
     }
 
     /**

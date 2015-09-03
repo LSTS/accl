@@ -2,6 +2,7 @@ package pt.lsts.accl.androidlib;
 
 
 import pt.lsts.accl.bus.AcclBus;
+import pt.lsts.accl.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -144,6 +145,8 @@ public class AcclActivity extends AppCompatActivity{
     public void onResume(){
         super.onResume();
         AcclBus.onResume();
+        Settings.registerACCLSettingsAnnotationsFromClass(this);
+        Settings.updateAllAnnotations(this);
     }
 
     public boolean loadFragments(ArrayList<AcclFragment> fragmentList) {

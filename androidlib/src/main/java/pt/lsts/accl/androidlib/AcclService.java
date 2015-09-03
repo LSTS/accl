@@ -2,6 +2,7 @@ package pt.lsts.accl.androidlib;
 
 
 import pt.lsts.accl.bus.AcclBus;
+import pt.lsts.accl.settings.Settings;
 
 import android.app.Service;
 import android.content.Context;
@@ -31,6 +32,8 @@ public class AcclService extends Service {
     public AcclService(){
         TAG = this.getClass().getSimpleName();
         register();
+        Settings.registerACCLSettingsAnnotationsFromClass(this);
+        Settings.updateAllAnnotations(this);
     }
 
     /**
