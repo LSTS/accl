@@ -6,11 +6,22 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Map;
 
+import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.util.FileOperations;
+import pt.lsts.accl.util.StringUtils;
+
+import static pt.lsts.accl.settings.ACCLSetting.*;
 
 
+/**
+ *
+ *
+ * Created by jloureiro on 01-09-2015.
+ */
 public class Settings {
 
     private static String TAG = "TAG";
@@ -34,6 +45,10 @@ public class Settings {
 	}
 
     public static boolean putFullString(String key, String value) {
+        if (sharedPreferences.contains(key)){
+            AcclBus.post("ERROR - "+"Setting with key:\""+key+"\" already registered.");
+            return false;
+        }
         boolean result = sharedPreferences.edit().putString(key, value).commit();
         return result;
     }
@@ -190,6 +205,154 @@ public class Settings {
             return Boolean.parseBoolean(valueString.split(",")[4]);
         }
         return defValue;
+    }
+
+
+    public static boolean registerACCLSettingsAnnotationsFromClass(Object obj){
+        boolean result=true;
+        Class c = obj.getClass();
+        for (Field field : c.getDeclaredFields()){
+            if (field.isAnnotationPresent(ACCLSetting.class)){
+                Annotation annotation = field.getAnnotation(ACCLSetting.class);
+                ACCLSetting acclSetting = (ACCLSetting) annotation;
+                boolean bool = registerACCLSettingsAnnotation(field, obj, acclSetting);
+                if (bool==false)
+                    result=false;
+            }
+        }
+        return result;
+    }
+
+    public static boolean registerACCLSettingsAnnotation(Field field, Object obj, ACCLSetting acclSetting){
+
+
+        AcclBus.post("INFO - "+"acclSetting.toString():\n"+acclSetting.toString());
+        try {
+
+            if (field.getGenericType() == int.class) {
+                String setting="";//final string with whole line of setting
+                setting += "java.lang.Integer";
+                setting += ",";
+                setting += acclSetting.category();
+                setting += ",";
+                setting += field.getName();
+                setting += ",";
+                setting += acclSetting.description();
+                setting += ",";
+                setting += field.getInt(obj);
+
+                return Profile.loadSetting(setting);
+            }
+            if (field.getGenericType() == boolean.class) {
+                String setting="";//final string with whole line of setting
+                setting += "java.lang.Boolean";
+                setting += ",";
+                setting += acclSetting.category();
+                setting += ",";
+                setting += field.getName();
+                setting += ",";
+                setting += acclSetting.description();
+                setting += ",";
+                setting += field.getBoolean(obj);
+
+                return Profile.loadSetting(setting);
+            }
+            if (field.getGenericType() == String[].class) {
+                String setting="";//final string with whole line of setting
+                String type = "java.lang.String";
+                String cat = acclSetting.category();
+                String key = field.getName();
+                String description = acclSetting.description();
+                String value = ((String[]) field.get(obj))[0];
+
+                setting = "";
+                setting += type;
+                setting += ",";
+                setting += cat;
+                setting += ",";
+                setting += key;
+                setting += ",";
+                setting += description;
+                setting += ",";
+                setting += value;
+
+                boolean result = true;
+                boolean bool = Profile.loadSetting(setting);
+                if (bool == false)
+                    result = false;
+
+                key += "_options";
+                value = StringUtils.arraytoStringWithCommas((String[])field.get(obj));
+
+                setting = "";
+                setting += type;
+                setting += ",";
+                setting += cat;
+                setting += ",";
+                setting += key;
+                setting += ",";
+                setting += description;
+                setting += ",";
+                setting += value;
+
+                bool = Profile.loadSetting(setting);
+                if (bool == false)
+                    result = false;
+                return result;
+            }
+            //else treat it as a string:
+            String setting="";//final string with whole line of setting
+            setting += "java.lang.String";
+            setting += ",";
+            setting += acclSetting.category();
+            setting += ",";
+            setting += field.getName();
+            setting += ",";
+            setting += acclSetting.description();
+            setting += ",";
+            setting += field.get(obj).toString();
+
+            return Profile.loadSetting(setting);
+
+        }catch(Exception e){
+            AcclBus.post("ERROR - "+"register @ACCLSetting Exception:\n"+e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean updateAllAnnotations(Object obj){
+        boolean result=true;
+        for (Field field : obj.getClass().getDeclaredFields()){
+            if (field.isAnnotationPresent(ACCLSetting.class)){
+                Annotation annotation = field.getAnnotation(ACCLSetting.class);
+                ACCLSetting acclSetting = (ACCLSetting) annotation;
+                boolean bool = updateAnnotation(obj, field, acclSetting);
+                if (bool==false)
+                    result=false;
+            }
+        }
+        return result;
+    }
+
+    public static boolean updateAnnotation(Object obj, Field field, ACCLSetting acclSetting){
+        try{
+            if(field.getType()==String.class){
+                //field.setBoolean(c, Settings.getBoolean(acclSetting.name(), false));
+            }
+            if(field.getType()==Integer.class) {
+                field.setAccessible(true);
+                field.setInt(obj, Settings.getInt(field.getName(), -1));
+            }
+            if(field.getType()==Integer.class) {
+                //do nothing, options are static not updatable
+            }
+            //none of this, treat as a string:
+            //field.set(c, Settings.getString(acclSetting.name(), ""));
+        }catch (Exception e){
+            AcclBus.post("ERROR - "+"updateAnnotation Exception:\n"+e.getMessage());
+            return false;
+        }
+        return true;
     }
 
 }

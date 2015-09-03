@@ -48,6 +48,10 @@ public class StringUtils {
         return res;
     }
 
+    public static String[] stringWithCommastoArray(String str){
+        return str.split(",");
+    }
+
     public static String timeSinceLastMessage(long t1, long t2){
         String string="Time since last message:\n";
         long hours=0;
