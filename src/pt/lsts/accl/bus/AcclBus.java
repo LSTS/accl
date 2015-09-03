@@ -62,8 +62,8 @@ public class AcclBus {
 			}
 			catch (Exception e) {
 				busInstance = new Bus(ThreadEnforcer.ANY, "accl");
-				System.err.println("WARNING: Running in a desktop environment");
-				post("WARNING: Running in a desktop environment");
+				System.err.println("WARNING - "+" Running in a desktop environment");
+				post("WARNING - "+" Running in a desktop environment");
 			}
 		}
 		return busInstance;	

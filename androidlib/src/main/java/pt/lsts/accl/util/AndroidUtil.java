@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
+ *
+ *
  * Created by jloureiro on 01-09-2015.
  */
 public class AndroidUtil {

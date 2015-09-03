@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 /**
  *
+ *
+ * Created by jloureiro on 01-09-2015.
  */
 public class SettingsFactory {
 
