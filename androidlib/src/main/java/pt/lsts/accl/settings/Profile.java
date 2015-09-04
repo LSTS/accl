@@ -1,5 +1,6 @@
 package pt.lsts.accl.settings;
 
+
 import pt.lsts.accl.util.FileOperations;
 import pt.lsts.accl.util.StringUtils;
 
@@ -10,6 +11,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import android.util.Log;
+
 
 /**
  *
@@ -26,10 +28,21 @@ public class Profile {
 	public static String firstLineInCsvFile = "type,category,key,description,value(s)";
 	public static final String extension = "csv";
 
+	/**
+	 * Restore the defaults, load the default_settings.csv file provided in your Assets folder.
+	 *
+	 * @return a String msg with the result of the load to be displayed in a {@link android.widget.Toast}.
+	 */
 	public static String restoreDefaults() {
 		return load(defaultSettingsName);
 	}
 
+	/**
+	 * Load a Profile from a .csv file in the device.
+	 *
+	 * @param name The name of the file to be loaded WITHOUT the extension. usually chosen form a List.
+	 * @return a String message with the result of the load to be displayed in a {@link android.widget.Toast}.
+	 */
 	public static String load(String name) {
 		File profile = new File(FileOperations.getMainDir(), name+"."+extension);
 		if (!profile.exists())
@@ -44,6 +57,12 @@ public class Profile {
 		return "Load of file:\n" + name + "\nSucessful!";
 	}
 
+	/**
+	 * Load a Setting from a line.
+	 *
+	 * @param setting The string with the line from the .csv format.
+	 * @return false if failed to load setting, true otherwise.
+	 */
 	public static boolean loadSetting(String setting) {
         String parts[] = setting.split(",");
 		if (parts.length<=0)
@@ -64,6 +83,12 @@ public class Profile {
 
 	}
 
+	/**
+	 * Save a set of settings to a .csv file stored in the device accessible and editable.
+	 *
+	 * @param name the name to give the file WITHOUT the extension
+	 * @return String with a msg of sucess or failure of saving the file which can be displayed in {@link android.widget.Toast} or {@link Log}
+	 */
 	public static String save(String name) {
 		Vector<String> lines = new Vector<String>();
 		lines.add(firstLineInCsvFile);
@@ -107,6 +132,11 @@ public class Profile {
 		return "Save of file to:\n" + name + "\nSucessful!";
 	}
 
+	/**
+	 * Gets the Profile associated .csv files in the device.
+	 *
+	 * @return An array of Strings with the filenames available in the device WITHOUT the extension.
+	 */
 	public static String[] getProfilesAvailable() {
 		String[] filesArray = FileOperations.getMainDir().list();
 		String[] result = FileOperations.filterFilesByExtension(filesArray,extension);

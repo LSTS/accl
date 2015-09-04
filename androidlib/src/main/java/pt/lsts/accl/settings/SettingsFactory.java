@@ -24,7 +24,8 @@ import android.widget.Toast;
 
 
 /**
- *
+ * The Factory that builds the Settings Activity.
+ * Used by {@link pt.lsts.accl.androidlib.AcclSettingsActivity}.
  *
  * Created by jloureiro on 01-09-2015.
  */
@@ -32,6 +33,12 @@ public class SettingsFactory {
 
     public static final String TAG =  SettingsFactory.class.getName();
 
+	/**
+	 * Populate a category with its related settings.
+	 *
+	 * @param category The Category to be populated.
+	 * @param context The Settings Activity Context.
+	 */
 	public static void populate(PreferenceCategory category, Context context) {
 		createHideEntry(category, context);
 		Map<String, ?> keys = Settings.getAll();
@@ -66,6 +73,12 @@ public class SettingsFactory {
 		}
 	}
 
+	/**
+	 * Create the Hide Entry to provide an organization way to hide categories.
+	 *
+	 * @param category The Category to be hidden by the created option.
+	 * @param context The Settings Activity Context.
+	 */
 	public static void createHideEntry(final PreferenceCategory category,
 			final Context context) {
 		CheckBoxPreference checkBoxPref = new CheckBoxPreference(context);
@@ -83,6 +96,12 @@ public class SettingsFactory {
 		category.addPreference(checkBoxPref);
 	}
 
+	/**
+	 * Hide the settings of a category.
+	 *
+	 * @param category The Category to be hidden.
+	 * @param context The Settings Activity Context.
+	 */
 	public static void hideCategory(final PreferenceCategory category,
 			final Context context) {
 		category.removeAll();
@@ -103,6 +122,15 @@ public class SettingsFactory {
 		category.addPreference(checkBoxPref);
 	}
 
+	/**
+	 * Create an entry for a String setting.
+	 *
+	 * @param category The category the setting belongs to.
+	 * @param key The Setting key.
+	 * @param valString The Default value to start the setting and display in Settings' Activity.
+	 * @param context The Settings Activity Context.
+	 * @return The Object representing this Setting editor.
+	 */
 	public static EditTextPreference createEntry(PreferenceCategory category,
 			String key, String valString, Context context) {
 		EditTextPreference editTextPreference = new EditTextPreference(context);
@@ -114,6 +142,15 @@ public class SettingsFactory {
 		return editTextPreference;
 	}
 
+	/**
+	 * Create an entry for a Integer setting.
+	 *
+	 * @param category The category the setting belongs to.
+	 * @param key The Setting key.
+	 * @param valInteger The Default value to start the setting and display in Settings' Activity.
+	 * @param context The Settings Activity Context.
+	 * @return The Object representing this Setting editor.
+	 */
 	public static EditTextPreference createEntry(PreferenceCategory category,
 			String key, Integer valInteger, Context context) {
 
@@ -128,6 +165,15 @@ public class SettingsFactory {
         return editTextPreference;
 	}
 
+	/**
+	 * Create an entry for a String setting with a set of options.
+	 *
+	 * @param category The category the setting belongs to.
+	 * @param key The Setting key.
+	 * @param list The List of possible values to be displayed and choosen from onClick.
+	 * @param context The Settings Activity Context.
+	 * @return The Object representing this Setting editor.
+	 */
     public static ListPreference createEntry(PreferenceCategory category, String key, String defValue, String[] list, Context context){
         ListPreference listPreference = new ListPreference(context);
         listPreference.setTitle(Settings.getKey(key,"ERROR")+": "+defValue);
@@ -140,6 +186,12 @@ public class SettingsFactory {
         return listPreference;
     }
 
+	/**
+	 * Listenner for changes on Set of String option setting.
+	 *
+	 * @param listPreference The ListPreference to register listener in.
+	 * @param key The key of the setting to be changed.
+	 */
     public static void setOnChangeListenerList(final ListPreference listPreference, final String key){
         listPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
@@ -154,6 +206,12 @@ public class SettingsFactory {
 		});
     }
 
+	/**
+	 * Listenner for Settings' changes.
+	 *
+	 * @param editTextPreference The Preference to register the listener on.
+	 * @param key The key of the setting associated with this preference.
+	 */
 	public static void setOnChangeListener(
 			final EditTextPreference editTextPreference, final String key) {
 		editTextPreference
@@ -171,6 +229,15 @@ public class SettingsFactory {
 				});
 	}
 
+	/**
+	 * Create a boolean entry with a checkbox.
+	 *
+	 * @param category The category the setting belongs to.
+	 * @param key The Setting key.
+	 * @param val The Default value to start the setting and display in Settings' Activity.
+	 * @param context The Settings Activity Context.
+	 * @return The Object representing this Setting editor.
+	 */
 	public static void createEntry(PreferenceCategory category,
 			final String key, Boolean val, Context context) {
 		CheckBoxPreference checkBoxPref = new CheckBoxPreference(context);
@@ -194,6 +261,13 @@ public class SettingsFactory {
 		category.addPreference(checkBoxPref);
 	}
 
+	/**
+	 * Change a value of a setting.
+	 *
+	 * @param key The Setting key.
+	 * @param newValue The new value of the setting.
+	 * @return false if errors occur, true otherwise.
+	 */
 	public static boolean changeValue(String key, Object newValue) {
 		String type = Settings.getType(key,"ERROR");
 
@@ -209,6 +283,13 @@ public class SettingsFactory {
 		return false;
 	}
 
+	/**
+	 * Create a category of settings.
+	 *
+	 * @param name The name of the category.
+	 * @param context The Settings Activity Context.
+	 * @return The obj representing the category to add editors to.
+	 */
 	public static PreferenceCategory createCategory(String name,
 			final Context context) {
 		final PreferenceCategory category = new PreferenceCategory(context);
@@ -226,6 +307,12 @@ public class SettingsFactory {
 		return category;
 	}
 
+	/**
+	 * Fetch the categories from the Settings' instance.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @return A vector with the Categories to have the editors add to.
+	 */
 	public static Vector<PreferenceCategory> fetchCategories(Context context) {
 		Vector<PreferenceCategory> preferenceCategories = new Vector<PreferenceCategory>();
 		Vector<String> categoriesStrings = new Vector<String>();
@@ -245,6 +332,14 @@ public class SettingsFactory {
 		return preferenceCategories;
 	}
 
+	/**
+	 * Fetch the Preferences Buttons:
+	 * Save, Load and RESTORE DEFAULTS.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @param activity The Settings Activity Class.
+	 * @return
+	 */
 	public static Vector<Preference> fetchPreferencesButtons(
 			final Context context, Class activity) {
 		Vector<Preference> preferenceButtons = new Vector<Preference>();
@@ -255,6 +350,12 @@ public class SettingsFactory {
 
 	}
 
+	/**
+	 * Create the Save Button.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @return The Save Button Preference obj
+	 */
 	public static Preference createSaveButton(final Context context) {
 		Preference preference = new Preference(context);
 		preference.setTitle("Save Profile");
@@ -269,6 +370,12 @@ public class SettingsFactory {
 		return preference;
 	}
 
+	/**
+	 * Create the Load Button.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @return The Load Button Preference obj
+	 */
 	public static Preference createLoadButton(final Context context, final Class activity) {
 		Preference preference = new Preference(context);
 		preference.setTitle("Load Profile");
@@ -283,6 +390,12 @@ public class SettingsFactory {
 		return preference;
 	}
 
+	/**
+	 * Create the RESTORE DEFAULTS Button.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @return The RESTORE DEFAULTS Button Preference obj
+	 */
 	public static Preference createRestoreButton(final Context context, final Class actitivity) {
 		Preference preference = new Preference(context);
 		preference.setTitle("RESTORE DEFAULTS");
@@ -297,6 +410,12 @@ public class SettingsFactory {
 		return preference;
 	}
 
+	/**
+	 * Restore the default settings. Load the settings from default_settings.csv file.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @param activity The Settings Activity Class.
+	 */
 	public static void restoreDefaults(final Context context, final Class activity) {
 		new AlertDialog.Builder(context)
 				.setTitle("Restore Settings Default")
@@ -319,6 +438,12 @@ public class SettingsFactory {
 						}).create().show();
 	}
 
+	/**
+	 * Load the settings from a file chosen from a list.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @param activity The Settings Activity Class.
+	 */
 	public static void load(final Context context, final Class activity) {
 		final String[] array = Profile.getProfilesAvailable();
 		new AlertDialog.Builder(context).setTitle("Choose a Profile:")
@@ -332,6 +457,11 @@ public class SettingsFactory {
 				}).create().show();
 	}
 
+	/**
+	 * Save the current Settings in a file. Name of file to be chosen from a prompt.
+	 *
+	 * @param context The Settings Activity Context.
+	 */
 	public static void save(final Context context) {
 		final EditText input = new EditText(context);
 		new AlertDialog.Builder(context)
@@ -355,11 +485,16 @@ public class SettingsFactory {
                         }).create().show();
 	}
 
+	/**
+	 * Regenerate the Activity uppon loading/saving/restoring defaults.
+	 *
+	 * @param context The Settings Activity Context.
+	 * @param activity The Settings Activity Class.
+	 */
 	public static void regenerateActivity(Context context, Class activity) {
 		Intent i = new Intent(context, activity);
 		context.startActivity(i);
 	}
-
 
 
 }
