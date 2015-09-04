@@ -3,22 +3,15 @@ package pt.lsts.accl.settings;
 
 import pt.lsts.accl.androidlib.AcclSettingsActivity;
 
-import android.util.Log;
-
-import com.squareup.otto.Subscribe;
-
 
 /**
  *
+ * Nothing extra necessary in this class.
+ * AcclSettingsActivity provide everything to view/edit/save/update/manage your settings and profiles.
+ * You can override the onPause() and onResume() for customization.
+ * You can also add your settings here with the {@link ACCLSetting}.
  *
  * Created by jloureiro on 03-09-2015.
  */
 public class SettingsActivity extends AcclSettingsActivity{
-
-    @Subscribe
-    public void onString(String s){
-        if (s.charAt(0)=='I')
-            Log.i(TAG, s);
-    }
-
 }

@@ -16,6 +16,6 @@ public class App extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
-        Settings.initSettings(getBaseContext());
+        Settings.initSettings(getBaseContext());//Line necessary to copy default_values.csv asset to android device.
     }
 }

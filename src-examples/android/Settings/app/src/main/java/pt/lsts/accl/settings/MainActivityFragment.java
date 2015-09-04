@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 /**
  *
+ * Simple Fragment with some {@link ACCLSetting} settings of all different types.
+ * These Fragment as part of the MainActivity launched with the Application will load all these settings on the startup of this app.
  *
  * Created by jloureiro on 03-09-2015.
  */

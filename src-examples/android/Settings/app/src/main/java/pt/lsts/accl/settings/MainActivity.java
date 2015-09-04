@@ -16,6 +16,8 @@ import com.squareup.otto.Subscribe;
 
 /**
  *
+ * Simple MainActivity with a Button to access an extension of the {@link pt.lsts.accl.androidlib.AcclSettingsActivity}.
+ *
  *
  * Created by jloureiro on 03-09-2015.
  */
@@ -58,12 +60,6 @@ public class MainActivity extends AcclActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Subscribe
-    public void onString(String s){
-        if (s.charAt(0)=='I')
-            Log.i(TAG, s);
     }
 
 }
