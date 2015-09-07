@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 /**
  *
+ * Provides a User Interface to see and modify settings and profiles.
+ *
  *
  * Created by jloureiro on 01-09-2015.
  */
@@ -31,6 +33,11 @@ public class AcclSettingsActivity extends PreferenceActivity {
     private boolean fragmentHolderIDsetBool=false;
 	PreferenceScreen preferenceScreen;
 
+    /**
+     * Similar to {@link AcclActivity}, instantiate a registeredListeners of {@link AcclBus}.
+     *
+     * @param savedInstanceState the saved instance to be restored
+     */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,6 +45,11 @@ public class AcclSettingsActivity extends PreferenceActivity {
         registeredListeners = new HashSet<Integer>();
 	}
 
+    /**
+     * Creates the screen, everything is generated dynamically on this method
+     * Fetches the categories and their respective settings.
+     *
+     */
     @Override
     protected void onResume(){
         super.onResume();
@@ -59,6 +71,11 @@ public class AcclSettingsActivity extends PreferenceActivity {
 
     }
 
+    /**
+     * Populates ALL categories with their respective settings.
+     *
+     * @param preferenceCategories The Vector with the Categories.
+     */
 	public void populateCategories(
 			Vector<PreferenceCategory> preferenceCategories) {
 		for (PreferenceCategory preferenceCategory : preferenceCategories) {
@@ -70,6 +87,12 @@ public class AcclSettingsActivity extends PreferenceActivity {
 		}
 	}
 
+    /**
+     * Creates the profile category with the buttons:
+     * Save, Load, RESTORE DEFAULTS.
+     *
+     * @param preferenceCategory The category to create the buttons on.
+     */
 	public void createProfileCategory(PreferenceCategory preferenceCategory) {
 		Vector<Preference> preferenceButtons = SettingsFactory
 				.fetchPreferencesButtons(this, this.getClass());
@@ -78,6 +101,10 @@ public class AcclSettingsActivity extends PreferenceActivity {
 			preferenceCategory.addPreference(preferenceButton);
 	}
 
+    /**
+     * Remove the Categories and settings, unregister listenners and Pause AcclBus.
+     *
+     */
     @Override
     protected void onPause(){
         Log.i(TAG, "AcclSettingsActivity.onPause() called");
@@ -165,7 +192,6 @@ public class AcclSettingsActivity extends PreferenceActivity {
                 toast.show();
             }
         });
-
     }
 
 }

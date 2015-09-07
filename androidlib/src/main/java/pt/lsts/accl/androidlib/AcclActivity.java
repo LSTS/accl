@@ -149,6 +149,12 @@ public class AcclActivity extends AppCompatActivity{
         Settings.updateAllAnnotations(this);
     }
 
+    /**
+     * Loads a list of Fragments in this Activity.
+     *
+     * @param fragmentList The Fragments to be loaded into the Activity.
+     * @return true if all fragments are loaded successfully, false otherwise.
+     */
     public boolean loadFragments(ArrayList<AcclFragment> fragmentList) {
         boolean bool=true;
         for (AcclFragment fragment : fragmentList){
@@ -158,6 +164,12 @@ public class AcclActivity extends AppCompatActivity{
         return bool;
     }
 
+    /**
+     * Load a Fragments in this Activity.
+     *
+     * @param fragmentObj The Fragment To be loaded
+     * @return true if Fragment is loaded successfull, false otherwise.
+     */
     public boolean loadFragment(AcclFragment fragmentObj){
         if (fragmentHolderIDsetBool==false){
             AcclBus.post("ERROR - "+"FragmentHolderID Not Set");
@@ -170,6 +182,11 @@ public class AcclActivity extends AppCompatActivity{
         return true;
     }
 
+    /**
+     * Remove a Fragment from this Activity.
+     *
+     * @param fragment The Fragment to be removed
+     */
     public void removeFragment(Fragment fragment){
         getSupportFragmentManager()
                 .beginTransaction()
@@ -177,11 +194,19 @@ public class AcclActivity extends AppCompatActivity{
         getSupportFragmentManager().executePendingTransactions();
     }
 
+    /**
+     * Removes a List of Fragments from this Activity.
+     *
+     * @param fragmentList The Fragments to be removed from this Activity.
+     */
     public void removeFragments(ArrayList<Fragment> fragmentList){
         for (Fragment fragment : fragmentList)
             removeFragment(fragment);
     }
 
+    /**
+     * Removes ALL Fragments from this Activity.
+     */
     public void removeAllFragments(){
         for (Fragment fragment : getSupportFragmentManager().getFragments()){
             removeFragment(fragment);
