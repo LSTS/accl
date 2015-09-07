@@ -38,7 +38,9 @@ public class FileOperations {
 		dir.mkdirs();
 	}
 
-	/* Checks if external storage is available for read and write */
+	/**
+	 *  Checks if external storage is available for read and write
+	 */
 	public static boolean isExternalStorageWritable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -47,7 +49,9 @@ public class FileOperations {
 		return false;
 	}
 
-	/* Checks if external storage is available to at least read */
+	/**
+	 *  Checks if external storage is available to at least read
+	 */
 	public static boolean isExternalStorageReadable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)
@@ -57,15 +61,35 @@ public class FileOperations {
 		return false;
 	}
 
+	/**
+	 * Copy a file from an inputstream to an output stream previously created.
+	 *
+	 * @param in The inputstream of the file to be copied.
+	 * @param out The outputstream of the destination of the file.
+	 * @throws IOException Possible exception may occur while coping.
+	 */
 	public static void copyFile(InputStream in, OutputStream out)
 			throws IOException {
 		writeLines(readLines(in), out);
 	}
 
+	/**
+	 * Copy a file from a File obj to another File obj.
+	 *
+	 * @param fileIn The ojbect of the file to be copied.
+	 * @param fileOut The object representing the destination File.
+	 * @throws IOException Possible exception may occur while coping.
+	 */
 	public static void copyFile(File fileIn, File fileOut) throws IOException {
 		writeLines(readLines(fileIn), fileOut);
 	}
 
+	/**
+	 * Read lines from a File and place them on a String Vector.
+	 *
+	 * @param file The file to read the lines from.
+	 * @return The Vector of String, one per line.
+	 */
 	public static Vector<String> readLines(File file) {
 		try {
 			return readLines(new FileInputStream(file));
@@ -75,6 +99,12 @@ public class FileOperations {
 		return null;
 	}
 
+	/**
+	 * Read lines from an Inputstream of a file previously created.
+	 *
+	 * @param in The inputstream to read the lines from.
+	 * @return The Vector of String, one per line.
+	 */
 	public static Vector<String> readLines(InputStream in) {
 		Vector<String> lines = new Vector<String>();
 		// Construct BufferedReader from InputStreamReader
@@ -92,6 +122,12 @@ public class FileOperations {
 		return lines;
 	}
 
+	/**
+	 * Write a line in a outputstream previously created.
+	 *
+	 * @param line The String with the line to be written.
+	 * @param out The outputstream of a File to write to.
+	 */
 	public static void writeLine(String line, OutputStream out) {
 		byte[] buffer = line.getBytes();
 		try {
@@ -102,11 +138,23 @@ public class FileOperations {
 		}
 	}
 
+	/**
+	 * Write may lines in a outputstream previously created.
+	 *
+	 * @param lines The Vector of String with the lines to be written.
+	 * @param out The outputstream of a File to write to.
+	 */
 	public static void writeLines(Vector<String> lines, OutputStream out) {
 		for (String line : lines)
 			writeLine(line, out);
 	}
 
+	/**
+	 * Write a line in a File.
+	 *
+	 * @param line The String with the line to be written.
+	 * @param file The File to write the line into.
+	 */
 	public static void writeLine(String line, File file) {
 		try {
 			FileOutputStream out = new FileOutputStream(file);
@@ -116,6 +164,12 @@ public class FileOperations {
 		}
 	}
 
+	/**
+	 * Write lines on a File.
+	 *
+	 * @param lines The Vector with the String of the lines to be written.
+	 * @param file The File to write the lines into.
+	 */
 	public static void writeLines(Vector<String> lines, File file) {
 		try {
 			FileOutputStream out = new FileOutputStream(file);
@@ -125,6 +179,13 @@ public class FileOperations {
 		}
 	}
 
+	/**
+	 * Filter a list of Filenames by their extension.
+	 *
+	 * @param filesArray The List of files to be filtered.
+	 * @param extension The wanted extension to filter by.
+	 * @return The List of files filtered by the {@param extension}.
+	 */
 	public static String[] filterFilesByExtension(String[] filesArray,
 			String extension) {
 		Vector<String> filesVector = new Vector<String>();
@@ -138,6 +199,14 @@ public class FileOperations {
 		return resultArray;
 	}
 
+	/**
+	 * Remove the {@param extension} from the filename of an array of filenames.
+	 * Filenames with different extensions remain.
+	 *
+	 * @param filesArray The Array with the filenames to have their extension removed
+	 * @param extension The extension to be removed.
+	 * @return The Array with the filenames without the extension.
+	 */
 	public static String[] removeExtension(String[] filesArray, String extension){
 		String[] result = new String[filesArray.length];
 		for (int i=0;i<filesArray.length;i++) {
@@ -148,8 +217,16 @@ public class FileOperations {
 		return result;
 	}
 
-    public static void copyAssetsFolder(Context context, String listPath) {
+	/**
+	 * Copy ALL assets in the asset folder.
+	 *
+	 * @param context The context of the application to get the assets folder from.
+	 * @param listPath The path for the asset folder.
+	 * @return true if every asset is copied successful, false otherwise.
+	 */
+    public static boolean copyAssetsFolder(Context context, String listPath) {
         File dir;
+		boolean result=true;
         if (listPath.equalsIgnoreCase(""))
             dir = getMainDir();
         else
@@ -162,22 +239,34 @@ public class FileOperations {
             files = assetManager.list(listPath);
             for (String filename : files) {
                 if (assetManager.list(filename).length==0){
-                    if (listPath.equalsIgnoreCase("")) {
-                        Log.i(TAG,"copySpecificAsset(context, "+filename+");");
-                        copySpecificAsset(context, filename);
+					boolean bool;
+					if (listPath.equalsIgnoreCase("")) {
+                        Log.i(TAG, "copySpecificAsset(context, " + filename + ");");
+                        bool = copySpecificAsset(context, filename);
                     }else{
                         Log.i(TAG,"copySpecificAsset(context, "+listPath+"/"+filename+");");
-                        copySpecificAsset(context, listPath+"/"+filename);
+                        bool = copySpecificAsset(context, listPath+"/"+filename);
                     }
+					if (bool==false)
+						result=false;
                 }else{
                     Log.i(TAG,filename+".isFolder");
+					result=false;
                 }
             }
         } catch (IOException e) {
             Log.e(TAG, "Failed to get asset file list.", e);
         }
+		return result;
     }
 
+	/**
+	 * Copy a specific Asset only.
+	 *
+	 * @param context The Application context to find asset folder.
+	 * @param name The name/path to the Asset file to be copied.
+	 * @return true if sucessfull, false otherwise.
+	 */
     public static boolean copySpecificAsset(Context context, String name) {
         AssetManager assetManager = context.getAssets();
         InputStream in = null;
@@ -201,6 +290,11 @@ public class FileOperations {
         return false;
     }
 
+	/**
+	 * Get the main directory, depends on Android version.
+	 *
+	 * @return The File representing the main Directory.
+	 */
     public static File getMainDir(){
         int SDK_INT = Build.VERSION.SDK_INT;
 		if (SDK_INT==14 || SDK_INT==15 || SDK_INT==16) {// ICS 4.0 & JB 4.1 Legacy
