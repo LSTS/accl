@@ -1,7 +1,7 @@
 ./build
 ./gradlew.bat
 ./gradlew
-./gradle/*
-./.gradle/*
+./gradle/2.4/**
+./.gradle/**
 /gradlew.bat
 /gradlew
