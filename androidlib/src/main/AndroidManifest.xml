@@ -7,12 +7,12 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat" >
         <activity
-            android:name=".AcclActivity"
+            android:name="pt.lsts.accl.android.AcclActivity"
             android:label="@string/app_name" >
         </activity>
 
         <service
-            android:name=".AcclService"
+            android:name="pt.lsts.accl.android.AcclService"
             android:enabled="true"
             android:exported="true" >
         </service>

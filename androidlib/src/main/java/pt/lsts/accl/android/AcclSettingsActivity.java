@@ -1,4 +1,4 @@
-package pt.lsts.accl.androidlib;
+package pt.lsts.accl.android;
 
 
 import pt.lsts.accl.bus.AcclBus;

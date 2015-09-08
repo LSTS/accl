@@ -19,7 +19,7 @@ public @interface ACCLSetting {
 
     /**
      * The category it belongs to.
-     * Used to have organization in the {@link pt.lsts.accl.androidlib.AcclSettingsActivity}.
+     * Used to have organization in the {@link pt.lsts.accl.android.AcclSettingsActivity}.
      *
      * @return The name of the category, "other" by default.
      */

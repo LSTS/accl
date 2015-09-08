@@ -1,4 +1,4 @@
-package pt.lsts.accl.androidlib;
+package pt.lsts.accl.android;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

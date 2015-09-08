@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 /**
  * The Factory that builds the Settings Activity.
- * Used by {@link pt.lsts.accl.androidlib.AcclSettingsActivity}.
+ * Used by {@link pt.lsts.accl.android.AcclSettingsActivity}.
  *
  * Created by jloureiro on 01-09-2015.
  */

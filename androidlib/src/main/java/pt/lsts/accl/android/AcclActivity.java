@@ -1,8 +1,9 @@
-package pt.lsts.accl.androidlib;
+package pt.lsts.accl.android;
 
 
-import pt.lsts.accl.androidlib.interfaces.AcclBusListennersList;
-import pt.lsts.accl.androidlib.interfaces.ShowToasts;
+import pt.lsts.accl.android.interfaces.AcclBusListennersList;
+import pt.lsts.accl.android.interfaces.ShowToasts;
+import pt.lsts.accl.androidlib.R;
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.settings.Settings;
 

@@ -1,4 +1,4 @@
-package pt.lsts.accl.androidlib.interfaces;
+package pt.lsts.accl.android.interfaces;
 
 /**
  * Created by jloureiro on 08-09-2015.

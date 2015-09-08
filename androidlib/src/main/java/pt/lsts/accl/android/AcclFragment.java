@@ -1,4 +1,4 @@
-package pt.lsts.accl.androidlib;
+package pt.lsts.accl.android;
 
 
 import android.support.v4.app.Fragment;
@@ -7,8 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import pt.lsts.accl.androidlib.interfaces.AcclBusListennersList;
-import pt.lsts.accl.androidlib.interfaces.ShowToasts;
+import pt.lsts.accl.android.interfaces.AcclBusListennersList;
+import pt.lsts.accl.android.interfaces.ShowToasts;
+import pt.lsts.accl.androidlib.R;
 import pt.lsts.accl.settings.Settings;
 
 
@@ -88,7 +89,7 @@ public class AcclFragment extends Fragment
     /**
      *
      * Register a listenner with AcclBus using this Fragment's Activity register method.
-     * Please refer to {@link pt.lsts.accl.androidlib.AcclActivity#register(Object)}
+     * Please refer to {@link pt.lsts.accl.android.AcclActivity#register(Object)}
      *
      * @param pojo The Listenner to be registed.
      *
@@ -101,7 +102,7 @@ public class AcclFragment extends Fragment
     /**
      *
      * Unregister a listenner with AcclBus using this Fragment's Activity unregister method.
-     * Please refer to {@link pt.lsts.accl.androidlib.AcclActivity#unregister(Object)}
+     * Please refer to {@link pt.lsts.accl.android.AcclActivity#unregister(Object)}
      *
      * @param pojo The Listenner to be unregisted.
      *
@@ -114,7 +115,7 @@ public class AcclFragment extends Fragment
     /**
      *
      * Unregister all listenners with AcclBus using this Fragment's Activity unregisterAll method.
-     * Please refer to {@link pt.lsts.accl.androidlib.AcclActivity#unregisterAll()}
+     * Please refer to {@link pt.lsts.accl.android.AcclActivity#unregisterAll()}
      *
      */
     public void unregisterAll(){
@@ -124,7 +125,7 @@ public class AcclFragment extends Fragment
 
     /**
      * Show a message for a short time via a Toast using this Fragment's Activity showToastShort method.
-     * Please refer to {@link pt.lsts.accl.androidlib.AcclActivity#showToastShort(String)}
+     * Please refer to {@link pt.lsts.accl.android.AcclActivity#showToastShort(String)}
      * Please refer to {@link android.widget.Toast}
      *
      * @param msg The Message to be shown.
@@ -137,7 +138,7 @@ public class AcclFragment extends Fragment
 
     /**
      * Show a long message for a long time via a Toast using this Fragment's Activity showToastLong method.
-     * Please refer to {@link pt.lsts.accl.androidlib.AcclActivity#showToastLong(String)}
+     * Please refer to {@link pt.lsts.accl.android.AcclActivity#showToastLong(String)}
      * Please refer to {@link android.widget.Toast}
      *
      * @param msg The Message to be shown.
