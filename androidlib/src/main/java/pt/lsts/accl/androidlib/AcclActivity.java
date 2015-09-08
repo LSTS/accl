@@ -1,6 +1,8 @@
 package pt.lsts.accl.androidlib;
 
 
+import pt.lsts.accl.androidlib.interfaces.AcclBusListennersList;
+import pt.lsts.accl.androidlib.interfaces.ShowToasts;
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.settings.Settings;
 
@@ -29,7 +31,8 @@ import android.widget.Toast;
  * Created by jloureiro on 11-08-2015.
  *
  */
-public class AcclActivity extends AppCompatActivity{
+public class AcclActivity extends AppCompatActivity
+    implements ShowToasts, AcclBusListennersList {
 
     public static String TAG = "TAG";
     private HashSet<Integer> registeredListeners;

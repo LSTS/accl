@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import pt.lsts.accl.androidlib.interfaces.AcclBusListennersList;
+import pt.lsts.accl.androidlib.interfaces.ShowToasts;
 import pt.lsts.accl.settings.Settings;
 
 
@@ -19,7 +21,8 @@ import pt.lsts.accl.settings.Settings;
  * Created by jloureiro on 12-08-2015.
  *
  */
-public class AcclFragment extends Fragment {
+public class AcclFragment extends Fragment
+    implements ShowToasts, AcclBusListennersList{
 
     public static String TAG = "TAG";
     public View view;//View to be used to search for subviews.
