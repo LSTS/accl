@@ -187,6 +187,17 @@ public class AcclBus {
 		return result;
 	}
 
+	public static boolean sendBroadcastMessage(IMCMessage msg){
+		boolean result=true;
+		for (Sys s : sysList.getList()){
+			boolean bool = sendMessage(msg, s);
+			if (bool==false) {
+				result = false;
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * Send a IMCMessage to ALL CCUs
 	 * @param msg The IMCMessage to be sent
