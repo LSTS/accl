@@ -5,6 +5,7 @@ import pt.lsts.accl.event.EventSystemVisible;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.sys.SysList;
 import pt.lsts.accl.util.Log;
+import pt.lsts.accl.util.pos.Position;
 
 import pt.lsts.imc.Announce;
 import pt.lsts.imc.Heartbeat;
@@ -41,6 +42,9 @@ public class AcclBus {
 	public static SysList sysList = new SysList();
 	public static String localname;
 	public static int localport;
+	public static Position position;
+	public static float pressure;
+	public static float orientation=0.0f;
 
 
 	/**
@@ -442,6 +446,30 @@ public class AcclBus {
 	 */
 	public static void disableLogging(){
 		AcclBus.imcAdapter.imcProtocol.setMessageLogger(null);
+	}
+
+	public static void setPosition(Position position){
+		AcclBus.position = position;
+	}
+
+	public static Position getPosition(){
+		return AcclBus.position;
+	}
+
+	public static void setPressure(float pressure){
+		AcclBus.pressure = pressure;
+	}
+
+	public static float getPressure(){
+		return AcclBus.pressure;
+	}
+
+	public static void setOrientation(float orientation){
+		AcclBus.orientation = orientation;
+	}
+
+	public static float getOrientation(){
+		return AcclBus.orientation;
 	}
 
 }
