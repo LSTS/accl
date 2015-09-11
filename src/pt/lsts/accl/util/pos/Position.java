@@ -176,6 +176,8 @@ public class Position {
      */
     public void setOrientation(double orientation) {
         this.orientation = orientation;
+        if (this.eulerAngles==null)
+            this.eulerAngles = new EulerAngles(0,0,orientation);
         this.eulerAngles.setPsi(orientation);
     }
 
@@ -318,6 +320,19 @@ public class Position {
      */
     public void setEulerAngles(EstimatedState estimatedStateMsg){
         setEulerAngles(new EulerAngles(estimatedStateMsg));
+    }
+
+
+    @Override
+    public String toString(){
+        return 
+            "Lat: "+ getLatitude()
+                + " , Lon: "+getLatitude()
+                +"\nAltitude: "
+                +String.format("%.2f",getAltitude())
+                +"\nOrientation: "
+                +String.format("%.2f",getOrientation())
+                ;
     }
 
 }
