@@ -1,15 +1,18 @@
 package pt.lsts.accl.bus;
 
 
-import pt.lsts.accl.event.EventSystemVisible;
 import pt.lsts.accl.sys.Sys;
 import pt.lsts.accl.sys.SysList;
 import pt.lsts.accl.util.Log;
 import pt.lsts.accl.util.pos.Position;
 
+import pt.lsts.accl.event.EventSystemVisible;
+import pt.lsts.accl.event.EventSystemUpdated;
+
+import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.Announce;
 import pt.lsts.imc.Heartbeat;
-import pt.lsts.imc.IMCMessage;
+import pt.lsts.imc.EstimatedState;
 import pt.lsts.imc.net.IMCProtocol;
 import pt.lsts.imc.lsf.LsfMessageLogger;
 import pt.lsts.imc.llf.LLFMessageLogger;
@@ -176,11 +179,13 @@ public class AcclBus {
 	 */
 	public static boolean sendMessageToAllVehicles(IMCMessage msg){
 		boolean result=true;
-		for (Sys s : sysList.getList()){
-			if (s.isVehicle()==true){
-				boolean bool = sendMessage(msg, s);
-				if (bool==false) {
-					result = false;
+		synchronized (sysList.getList()) {
+			for (Sys s : sysList.getList()){
+				if (s.isVehicle()==true){
+					boolean bool = sendMessage(msg, s);
+					if (bool==false) {
+						result = false;
+					}
 				}
 			}
 		}
@@ -189,10 +194,12 @@ public class AcclBus {
 
 	public static boolean sendBroadcastMessage(IMCMessage msg){
 		boolean result=true;
-		for (Sys s : sysList.getList()){
-			boolean bool = sendMessage(msg, s);
-			if (bool==false) {
-				result = false;
+		synchronized (sysList.getList()) {
+			for (Sys s : sysList.getList()){
+				boolean bool = sendMessage(msg, s);
+				if (bool==false) {
+					result = false;
+				}
 			}
 		}
 		return result;
@@ -205,11 +212,13 @@ public class AcclBus {
 	 */
 	public static boolean sendMessageToAllCCUs(IMCMessage msg){
 		boolean result=true;
-		for (Sys s : sysList.getList()){
-			if (s.isCCU()==true){
-				boolean bool = sendMessage(msg, s);
-				if (bool==false) {
-					result = false;
+		synchronized (sysList.getList()) {
+			for (Sys s : sysList.getList()){
+				if (s.isCCU()==true){
+					boolean bool = sendMessage(msg, s);
+					if (bool==false) {
+						result = false;
+					}
 				}
 			}
 		}
@@ -224,11 +233,13 @@ public class AcclBus {
 	 */
 	public static boolean sendMessageToAllUAVs(IMCMessage msg){
 		boolean result=true;
-		for (Sys s : sysList.getList()){
-			if (s.isUAV()==true){
-				boolean bool = sendMessage(msg, s);
-				if (bool==false) {
-					result = false;
+		synchronized (sysList.getList()) {
+			for (Sys s : sysList.getList()){
+				if (s.isUAV()==true){
+					boolean bool = sendMessage(msg, s);
+					if (bool==false) {
+						result = false;
+					}
 				}
 			}
 		}
@@ -243,11 +254,13 @@ public class AcclBus {
 	 */
 	public static boolean sendMessageToAllUUVs(IMCMessage msg){
 		boolean result=true;
-		for (Sys s : sysList.getList()){
-			if (s.isUUV()==true){
-				boolean bool = sendMessage(msg, s);
-				if (bool==false) {
-					result = false;
+		synchronized (sysList.getList()) {
+			for (Sys s : sysList.getList()){
+				if (s.isUUV()==true){
+					boolean bool = sendMessage(msg, s);
+					if (bool==false) {
+						result = false;
+					}
 				}
 			}
 		}
@@ -401,7 +414,7 @@ public class AcclBus {
 			AcclBus.post((c.cast(msg)));
 			AcclBus.post(msg);
 
-			post("VERBOSE - "+"Received "+msg.getAbbrev()+":\n"+msg.toString());
+			AcclBus.post("DEBUG - "+"Received "+msg.getAbbrev()+" from: "+msg.getSourceName()+"\n"+msg.toString());
 		}
 
 		/**
