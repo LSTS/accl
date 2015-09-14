@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 
-import pt.lsts.accl.androidlib.AcclActivity;
 import pt.lsts.accl.bus.AcclBus;
 
 

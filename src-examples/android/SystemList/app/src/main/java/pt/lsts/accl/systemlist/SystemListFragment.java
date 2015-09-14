@@ -1,9 +1,11 @@
 package pt.lsts.accl.systemlist;
 
-import pt.lsts.accl.androidlib.AcclFragment;
+import pt.lsts.accl.android.AcclFragment;
+import pt.lsts.accl.android.AcclFragment;
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.event.EventSystemDisconnected;
 import pt.lsts.accl.event.EventSystemVisible;
+import pt.lsts.imc.IMCMessage;
 
 import java.util.ArrayList;
 
@@ -53,6 +55,11 @@ public class SystemListFragment extends AcclFragment {
         }else{
             Log.e(TAG, "SystemListView failed to be initialized");
         }
+    }
+
+    @Subscribe
+    public void onMsg(IMCMessage msg){
+        Log.v(TAG, "received msg: "+msg.getMessageType());
     }
 
     @Subscribe

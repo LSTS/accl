@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import pt.lsts.accl.androidlib.AcclActivity;
+import pt.lsts.accl.android.AcclActivity;
 
 
 public class SystemListActivity extends AcclActivity {

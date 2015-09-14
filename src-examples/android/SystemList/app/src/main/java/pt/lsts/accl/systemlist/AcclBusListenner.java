@@ -9,8 +9,8 @@ import android.util.Log;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
-import pt.lsts.accl.androidlib.AcclActivity;
-import pt.lsts.accl.androidlib.AcclService;
+import pt.lsts.accl.android.AcclActivity;
+import pt.lsts.accl.android.AcclService;
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.event.EventMainSystemSelected;
 import pt.lsts.accl.event.EventSystemConnected;
