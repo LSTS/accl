@@ -2,9 +2,11 @@ package pt.lsts.accl.sys;
 
 
 import pt.lsts.accl.util.IMCUtils;
+import pt.lsts.accl.util.pos.Position;
 
-import pt.lsts.imc.Announce;
 import pt.lsts.imc.IMCMessage;
+import pt.lsts.imc.Announce;
+import pt.lsts.imc.EstimatedState;
 
 
 /**
@@ -20,6 +22,7 @@ public class Sys {
     private Announce.SYS_TYPE sysType;
     private String ipAddress;
     private IMCMessage lastMsgReceived;
+    private Position position;
 
 
     /**
@@ -48,6 +51,18 @@ public class Sys {
         setName(name);
         setSysType(sysType);
         setIpAddress(ipAddress);
+    }
+
+    public void update(EstimatedState estimatedState){
+        setPosition(Position.calcPositionFromEstimatedState(estimatedState));
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     /**
