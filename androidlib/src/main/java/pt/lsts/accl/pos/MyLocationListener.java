@@ -29,6 +29,11 @@ public class MyLocationListener implements SensorEventListener{
     private float[] gravity;
     private float[] geomagnetic;
 
+    /**
+     * Create a Location Listener from a {@link Context}.
+     *
+     * @param context The context to create the location listener in, this context will be used to access device's sensors.
+     */
     public MyLocationListener(Context context) {
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         initLocationListener();
@@ -48,6 +53,10 @@ public class MyLocationListener implements SensorEventListener{
         sensorManager.registerListener(this, magnetometerSensor, SensorManager.SENSOR_DELAY_UI);
         }
 
+    /**
+     * Initializa the location listener using both Network and GPS Providers.
+     * Needs permission in Manifest: {@link android.permission#ACCESS_COARSE_LOCATION}
+     */
     public void initLocationListener(){
 
         // Define a listener that responds to location updates
@@ -69,6 +78,11 @@ public class MyLocationListener implements SensorEventListener{
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
+    /**
+     * Register the listener to be called upon changes.
+     *
+     * @param locationListener The listener to be registered.
+     */
     public void registerListener(LocationListener locationListener){
         // In IDE these may display a warning of missing permission for:
         // ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION
@@ -77,6 +91,11 @@ public class MyLocationListener implements SensorEventListener{
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
+    /**
+     * The required method to be called upon event from sensor.
+     * Value is to be extracted depending on type of sensors from an array of values: {@link SensorEvent#values}
+     * @param event the event occored.
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PRESSURE)
@@ -97,6 +116,12 @@ public class MyLocationListener implements SensorEventListener{
         }
     }
 
+    /**
+     * Required method to be Overrided, not used.
+     *
+     * @param sensor
+     * @param accuracy
+     */
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }

@@ -1,10 +1,12 @@
 package pt.lsts.accl.googlemap;
 
-import android.app.Application;
 
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.pos.MyLocationDisseminator;
 import pt.lsts.accl.pos.MyLocationListener;
+
+import android.app.Application;
+
 
 /**
  * Created by jloureiro on 09-09-2015.
@@ -14,6 +16,13 @@ public class App extends Application {
 
     private MyLocationListener myLocationListener;
 
+    /**
+     * Bind the AcclBus.
+     * @see AcclBus
+     *
+     * Create and start the {@link MyLocationDisseminator}.
+     *
+     */
     @Override
     public void onCreate(){
         super.onCreate();
@@ -28,6 +37,6 @@ public class App extends Application {
 
         // start disseminating this location, altitude and orientation with EstimatedState messages
         MyLocationDisseminator.startMyLocationDisseminator();
-
     }
+
 }

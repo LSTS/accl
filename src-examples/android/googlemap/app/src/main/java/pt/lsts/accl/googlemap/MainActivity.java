@@ -11,11 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+
 /**
+ *
  * Created by jloureiro on 17-09-2015.
  */
 public class MainActivity extends AcclActivity {
 
+    /**
+     * Setup both buttons.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +29,20 @@ public class MainActivity extends AcclActivity {
         setupButtons();
     }
 
+    /**
+     * Setup both buttons.
+     * This method is triggered by {@link #onCreate(Bundle)}.
+     */
     public void setupButtons(){
         setupShowPosButton();
         setupGoToMapButton();
     }
 
+    /**
+     * Setup the button to show position.
+     *
+     * @see AcclBus#getPosition()
+     */
     public void setupShowPosButton() {
         Button button = (Button) findViewById(R.id.showPosButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +57,11 @@ public class MainActivity extends AcclActivity {
         });
     }
 
+    /**
+     * Setup the GoTo {@link MapsActivity} button.
+     *
+     * @see MapsActivity
+     */
     public void setupGoToMapButton() {
         Button button = (Button) findViewById(R.id.goToMapButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +72,11 @@ public class MainActivity extends AcclActivity {
         });
     }
 
+    /**
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -59,6 +84,11 @@ public class MainActivity extends AcclActivity {
         return true;
     }
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -73,4 +103,5 @@ public class MainActivity extends AcclActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

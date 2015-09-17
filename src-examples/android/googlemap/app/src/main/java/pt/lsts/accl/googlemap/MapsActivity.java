@@ -25,11 +25,24 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends AcclActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
+    /**
+     *
+     * The Vector containing the markers added to #mMap.
+     *
+     * These can be updated and/or removed as needed and triggered by events:
+     * {@link pt.lsts.accl.event.EventSystemDisconnected} {@link pt.lsts.accl.event.EventSystemUpdated} and {@link pt.lsts.accl.event.EventSystemDisconnected}.
+     */
     private Vector<Marker> markers = new Vector<Marker>();
 
     //AcclService responsible for receiving IMCMessages and AcclBus events
     private MessageReceiverService messageReceiverService;
 
+    /**
+     * Setup Map and Button.
+     *
+     * @param savedInstanceState The SavedInstance of this activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +51,10 @@ public class MapsActivity extends AcclActivity {
         setUpButton();
     }
 
+    /**
+     *
+     * Setup map if needed, start the {@link MessageReceiverService}.
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -47,6 +64,12 @@ public class MapsActivity extends AcclActivity {
         messageReceiverService = new MessageReceiverService(this);
     }
 
+    /**
+     * Update the marker representing the {@param sys}
+     * This method should be triggered by {@link pt.lsts.accl.event.EventSystemUpdated}.
+     *
+     * @param sys The System which marker is to be updated
+     */
     public void updateMarker(Sys sys){
         for (Marker marker : markers){
             if (marker.getId()==sys.getName()){
@@ -65,6 +88,12 @@ public class MapsActivity extends AcclActivity {
         addMarker(sys);
     }
 
+    /**
+     * Remove the marker representing the {@param sys}.
+     * This method should be triggered by {@link pt.lsts.accl.event.EventSystemDisconnected}.
+     *
+     * @param sys The System which marker is to be removed
+     */
     public void removeMarker(Sys sys){
         for (Marker marker : markers) {
             if (marker.getId() == sys.getName()) {
@@ -73,6 +102,12 @@ public class MapsActivity extends AcclActivity {
         }
     }
 
+    /**
+     * Add a new marker to represent {@param sys}.
+     * This method is triggered by {@link #updateMarker(Sys)} when the {@param sys} doesn't have a marker yet.
+     *
+     * @param sys The System represented by the new marker.
+     */
     public void addMarker(final Sys sys){
         runOnUiThread(new Runnable() {
             @Override
@@ -89,7 +124,12 @@ public class MapsActivity extends AcclActivity {
         });
     }
 
-
+    /**
+     * Check if a system has a marker representing it yet.
+     *
+     * @param name The name of the system.
+     * @return true if the sys has a marker already, false otherwise.
+     */
     public boolean doesSysHaveMarker(String name){
         for (Marker marker : markers)
             if (marker.getId().equalsIgnoreCase(name))
@@ -137,6 +177,11 @@ public class MapsActivity extends AcclActivity {
 
     }
 
+    /**
+     * Setup the button to show position.
+     *
+     * @see AcclBus#getPosition()
+     */
     public void setUpButton(){
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
