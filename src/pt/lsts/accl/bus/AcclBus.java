@@ -19,6 +19,7 @@ import pt.lsts.imc.llf.LLFMessageLogger;
 import pt.lsts.neptus.messages.listener.MessageInfo;
 import pt.lsts.neptus.messages.listener.MessageListener;
 
+import java.lang.String;
 import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -152,7 +153,7 @@ public class AcclBus {
 	public static boolean sendMessage(IMCMessage msg, String destinationName) {
 		if (imcAdapter == null)
 			return false;
-		post("VERBOSE - "+"Send "+msg.getAbbrev()+":\n"+msg.toString());
+		post("VERBOSE - " + "Send " + msg.getAbbrev() + ":\n" + msg.toString());
 		boolean result = imcAdapter.sendMessage(msg, destinationName);
 		return result;
 	}
@@ -402,6 +403,14 @@ public class AcclBus {
 						AcclBus.post(new EventSystemVisible(sys));
 					}
 				}
+			}else if (msg.getMgid() == EstimatedState.ID_STATIC){
+				EstimatedState estimatedState = (EstimatedState) msg;
+				int sysID = msg.getSrc();
+				if (sysList.contains(sysID)!=false){
+					Sys sys = sysList.getSys(sysID);
+					sys.update(estimatedState);
+					AcclBus.post(new EventSystemUpdated(sys));
+				}
 			}
 
 			// updated lastMsgReceived:
@@ -428,6 +437,13 @@ public class AcclBus {
 		}
 	}
 
+	/**
+	 *
+	 * Pause and close logs, clear sysytems list, stop imcAdapter.
+	 *
+	 * To be called onPause of Activities.
+	 *
+	 */
 	public static void onPause(){
 		AcclBus.disableLogging();
 		Log.close();
@@ -435,6 +451,13 @@ public class AcclBus {
 		imcAdapter.stop();
 	}
 
+	/**
+	 * Restart the AcclBus with the {@link #bind(String, int)} with same params as before.
+	 * Re-enable logging.
+	 *
+	 * To be called onResume of Activities.
+	 *
+	 */
 	public static void onResume(){
 		AcclBus.bind(AcclBus.localname, AcclBus.localport);
 		AcclBus.enableLogging();
@@ -472,26 +495,56 @@ public class AcclBus {
 		AcclBus.imcAdapter.imcProtocol.setMessageLogger(null);
 	}
 
+	/**
+	 * Set the position of the device retrieved from its sensors.
+	 *
+	 * @param position The new position of the device.
+	 */
 	public static void setPosition(Position position){
 		AcclBus.position = position;
 	}
 
+	/**
+	 * Set the position of the device retrieved from its sensors.
+	 *
+	 * @return The current position of the device.
+	 */
 	public static Position getPosition(){
 		return AcclBus.position;
 	}
 
+	/**
+	 * Set the pressure measured by the sensor {@link android.hardware.Sensor.TYPE_PRESSURE}.
+	 *
+	 * @param pressure The pressure measured by the sensor.
+	 */
 	public static void setPressure(float pressure){
 		AcclBus.pressure = pressure;
 	}
 
+	/**
+	 * Get the current pressure measured by the sensor {@link android.hardware.Sensor.TYPE_PRESSURE}.
+	 *
+	 * @return the current pressure.
+	 */
 	public static float getPressure(){
 		return AcclBus.pressure;
 	}
 
+	/**
+	 * Set a new orientation of the device, measured by the sensors {@link android.hardware.Sensor.TYPE_ACCELEROMETER} and {@link android.hardware.Sensor.TYPE_MAGNETIC_FIELD}.
+	 *
+	 * @param orientation the orienation measured by the sensors.
+	 */
 	public static void setOrientation(float orientation){
 		AcclBus.orientation = orientation;
 	}
 
+	/**
+	 * Get the current orientation of the device measured by the sensors {@link android.hardware.Sensor.TYPE_ACCELEROMETER} and {@link android.hardware.Sensor.TYPE_MAGNETIC_FIELD}.
+	 *
+	 * @return The current Orientation of the device.
+	 */
 	public static float getOrientation(){
 		return AcclBus.orientation;
 	}
