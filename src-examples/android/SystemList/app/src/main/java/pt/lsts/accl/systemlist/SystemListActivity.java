@@ -1,6 +1,6 @@
 package pt.lsts.accl.systemlist;
 
-import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,9 +9,16 @@ import android.view.MenuItem;
 import pt.lsts.accl.android.AcclActivity;
 
 
+/**
+ * Created by jloureiro on 08-2015
+ */
 public class SystemListActivity extends AcclActivity {
 
-
+    /**
+     * Set Fragment holder, initialize fragment and load it.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +33,12 @@ public class SystemListActivity extends AcclActivity {
             Log.e(TAG, "systemListFragment failed to load");
     }
 
+    /**
+     * Auto-generated
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -33,6 +46,12 @@ public class SystemListActivity extends AcclActivity {
         return true;
     }
 
+    /**
+     * Auto-generated
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -47,13 +66,5 @@ public class SystemListActivity extends AcclActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onResume(){
-        //showToastShort(TAG+": onResume");
-        super.onResume();
-
-    }
-
 
 }

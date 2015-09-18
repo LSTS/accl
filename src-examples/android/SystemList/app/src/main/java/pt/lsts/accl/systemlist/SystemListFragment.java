@@ -1,6 +1,6 @@
 package pt.lsts.accl.systemlist;
 
-import pt.lsts.accl.android.AcclFragment;
+
 import pt.lsts.accl.android.AcclFragment;
 import pt.lsts.accl.bus.AcclBus;
 import pt.lsts.accl.event.EventSystemDisconnected;
@@ -28,16 +28,29 @@ public class SystemListFragment extends AcclFragment {
     ListView systemListListView=null;
     ArrayAdapter<String> arrayAdapter;
 
+    /**
+     * Register this as a listenners for {@link AcclBus} messages and Events.
+     */
     public SystemListFragment() {
         AcclBus.register(this);
     }
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return onCreateView(inflater, container, R.layout.fragment_system_list);
     }
 
+    /**
+     * Initialize the List View.
+     */
     @Override
     public void onResume(){
         super.onResume();
@@ -46,6 +59,9 @@ public class SystemListFragment extends AcclFragment {
         //showToastShort(TAG+": finished onResume");
     }
 
+    /**
+     * Find the List View and create an {@link ArrayAdapter<String>}.
+     */
     public void initListView(){
         systemListListView = (ListView) view.findViewById(R.id.systemListListView);
 
@@ -57,6 +73,11 @@ public class SystemListFragment extends AcclFragment {
         }
     }
 
+    /**
+     * Listener for generic {@link IMCMessage}.
+     *
+     * @param msg The {@link IMCMessage} received by the system.
+     */
     @Subscribe
     public void onMsg(IMCMessage msg){
         Log.v(TAG, "received msg: "+msg.getMessageType());
@@ -76,6 +97,11 @@ public class SystemListFragment extends AcclFragment {
         });
     }
 
+    /**
+     * Remove a system from the list upon an {@link EventSystemDisconnected}.
+     *
+     * @param event The event containing the System that has been disconnected.
+     */
     @Subscribe
     public void on(EventSystemDisconnected event) {
         Log.v(TAG, event.toString());

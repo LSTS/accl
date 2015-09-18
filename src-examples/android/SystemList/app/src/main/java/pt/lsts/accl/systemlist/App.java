@@ -14,6 +14,9 @@ public class App extends Application{
 
     private static String TAG;
 
+    /**
+     * Start a {@link pt.lsts.accl.android.AcclService} to listen for AcclBus {@link pt.lsts.accl.event.AbstractACCLEvent} and {@link pt.lsts.imc.IMCMessage}.
+     */
     @Override
     public void onCreate() {
         super.onCreate();
