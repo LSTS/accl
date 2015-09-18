@@ -29,6 +29,12 @@ public class AndroidUtil {
         currentActivityContext.startActivity(i);
     }
 
+    /**
+     * Calculate a {@link Position} obj from a {@link Location} obj.
+     *
+     * @param location The {@link Location} obj.
+     * @return The {@link Position} obj.
+     */
     public static Position calcPositionFromLocation(Location location){
         double lat= location.getLatitude();
         double lon= location.getLongitude();

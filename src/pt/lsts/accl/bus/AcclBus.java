@@ -193,6 +193,12 @@ public class AcclBus {
 		return result;
 	}
 
+	/**
+	 * Send an {@link pt.lsts.imc.IMCMessage} to ALL sys.
+	 *
+	 * @param msg The {@link pt.lsts.imc.IMCMessage} to be sent
+	 * @return true if every message was sent sucessfully, false otherwise.
+	 */
 	public static boolean sendBroadcastMessage(IMCMessage msg){
 		boolean result=true;
 		synchronized (sysList.getList()) {
@@ -479,7 +485,6 @@ public class AcclBus {
 	public static Sys getMainSys(){
 		return AcclBus.mainSys;
 	}
-
 
 	/**
 	 * Enable Logging of IMCMessages

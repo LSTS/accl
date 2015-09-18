@@ -53,14 +53,31 @@ public class Sys {
         setIpAddress(ipAddress);
     }
 
-    public void update(EstimatedState estimatedState){
+    /**
+     * Update this system from an incoming {@link pt.lsts.imc.EstimatedState}.
+     * 
+     * @param estimatedState The {@link pt.lsts.imc.EstimatedState} message.
+     */
+    public void update(EstimatedState estimatedState) {
         setPosition(Position.calcPositionFromEstimatedState(estimatedState));
     }
 
+    /**
+     * Get this System's position.
+     * 
+     * @return The {@link Position} of this system.
+     */
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * Set a new position for this system.
+     * 
+     * This is called from the #update method.
+     * 
+     * @param position The new {@link Position}.
+     */
     public void setPosition(Position position) {
         this.position = position;
     }

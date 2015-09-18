@@ -322,7 +322,11 @@ public class Position {
         setEulerAngles(new EulerAngles(estimatedStateMsg));
     }
 
-
+    /**
+     * A comprehensive humand readable message describing this position.
+     *
+     * @return "Lat: X , Lon: Y \n Altitude: Z \n Orientation: T"
+     */
     @Override
     public String toString(){
         return 
