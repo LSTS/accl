@@ -30,20 +30,31 @@ public class MainActivityFragment extends AcclFragment {
     @ACCLSetting()
     boolean booleanSettingWithoutNoAnnotationArgs = false;
 
+    /**
+     * Nothing extra needed in constructor.
+     */
     public MainActivityFragment() {
     }
 
+    /**
+     * Auto-generated.
+     */
     @Override
     public void onPause(){
         super.onPause();
     }
 
+    /**
+     * Auto-generated.
+     */
     @Override
     public void onResume(){
         super.onResume();
     }
 
-
+    /**
+     * Auto-generated.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

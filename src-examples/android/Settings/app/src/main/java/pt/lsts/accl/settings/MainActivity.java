@@ -23,6 +23,11 @@ import com.squareup.otto.Subscribe;
  */
 public class MainActivity extends AcclActivity {
 
+    /**
+     * Set the button listenner.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,9 @@ public class MainActivity extends AcclActivity {
         setButtonListenner();
     }
 
+    /**
+     * Change the Activity to the Settings one.
+     */
     public void setButtonListenner(){
         Button settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +48,11 @@ public class MainActivity extends AcclActivity {
         });
     }
 
+    /**
+     * Auto-generated.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -47,6 +60,11 @@ public class MainActivity extends AcclActivity {
         return true;
     }
 
+    /**
+     * Auto-generated.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

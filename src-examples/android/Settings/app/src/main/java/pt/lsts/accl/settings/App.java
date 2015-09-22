@@ -13,6 +13,9 @@ public class App extends Application {
 
     public static final String TAG = "App";
 
+    /**
+     * Just init the Settings with this application context.
+     */
     @Override
     public void onCreate(){
         super.onCreate();
